@@ -5,10 +5,16 @@ import * as appActions from '../actions';
 
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
+import Modal from "../components/modal/Modal";
+
 const App = (props) => {
   const { store, actions, children } = props;
   return(
     <div>
+      <Modal
+        setModal={actions.setModal}
+        isOpen={store.modal.isOpen}
+      />
       <Header {...{store, actions}}/>
       <section className="section">
         <div className="container">

@@ -20,10 +20,14 @@ export default (props) => {
           <div className="nav-item">
             <div className="field is-grouped">
               <p className="control">
-                <a className="button nav-button" href="#">Sign in </a>
+                <a
+                  onClick={()=> props.actions.setModal(true)}
+                  className="button nav-button" href="#">Sign in </a>
               </p>
               <p className="control">
-                <a href="#" className="button nav-button">Sign up </a>
+                <a
+                  onClick={()=> props.actions.setModal(true)}
+                  href="#" className="button nav-button">Sign up </a>
               </p>
             </div>
           </div>
