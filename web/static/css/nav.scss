@@ -1,0 +1,21 @@
+.nav {
+  background-color: $primary;
+  a.nav-item, .nav-item a {
+    color: $text-invert;
+  }
+  .nav-button {
+    background-color: lighten($primary, 5%);
+    border: 0;
+    &:hover {
+      background-color: lighten($primary, 10%);
+    }
+  }
+}
+.nav-toggle, .nav-toggle.is-active {
+  &:hover {
+    background-color: lighten($primary, 5%);
+  }
+  span {
+    background-color: $text-invert;
+  }
+}

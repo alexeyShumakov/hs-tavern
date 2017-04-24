@@ -13,7 +13,7 @@ const App = (props) => {
       <section className="section">
         <div className="container">
           <div className="columns">
-            <div className="column is-2">
+            <div className="column is-2 is-hidden-mobile">
               <Sidebar {...{store, actions}}/>
             </div>
             <div className="column">
