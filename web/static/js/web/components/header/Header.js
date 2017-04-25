@@ -8,6 +8,13 @@ export default (props) => {
           <a className="nav-item is-brand">
             <h3>HS tavern</h3>
           </a>
+          <div className="nav-item">
+            <div className="field">
+              <p className="control">
+                <input className="input nav-search" type="text" placeholder="Search"/>
+              </p>
+            </div>
+          </div>
         </div>
 
         <span className="nav-toggle">
