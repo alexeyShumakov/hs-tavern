@@ -1,18 +1,14 @@
 defmodule HsTavern.CardView do
   use HsTavern.Web, :view
+  alias HsTavern.Serializers.CardSerializer
 
-  def card_json(card) do
-    %{
-      cards: %{
-        card: card_to_json(card)
-      }
-    }
-    |> Poison.encode!
-    |> escape_javascript
-    |> raw
+  def cards_json(cards) do
+    %{index: Enum.map(cards, &CardSerializer.to_map&1)}
+    |> CardSerializer.serialize |> raw
   end
 
-  def card_to_json(card) do
-    card |> Map.take([:id, :slug, :title])
+  def card_json(card) do
+    %{show: CardSerializer.to_map(card)}
+    |> CardSerializer.serialize |> raw
   end
 end

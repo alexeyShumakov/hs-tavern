@@ -1,0 +1,5 @@
+const SET_CARD = "SET_CARD";
+const SET_CARDS = "SET_CARDS";
+const CLEAR_CARDS = "CLEAR_CARDS";
+
+export default { SET_CARD, SET_CARDS, CLEAR_CARDS };

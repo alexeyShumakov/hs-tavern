@@ -1,9 +1,13 @@
-//const shared = (typeof $shared === 'undefined') ? {} : JSON.parse($shared);
+import _ from "lodash";
+const shared = (typeof $shared === 'undefined') ? {} : JSON.parse($shared);
 
-const shared = {};
 const initialState = {
   header: {
     name: "world"
+  },
+  cards: {
+    index: [],
+    show: {}
   }
 }
-export default Object.assign({}, shared, initialState)
+export default _.merge(shared, initialState)
