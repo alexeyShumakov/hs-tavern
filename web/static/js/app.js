@@ -1,15 +1,19 @@
-import "../css/app.scss";
 import "phoenix_html"
 import socket from "./socket"
 import React from "react";
 import {render} from "react-dom";
 import { Provider } from 'react-redux'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+
+import "../css/app.scss";
 import store from "./web/store/store";
-import App from "./web/containers/App"
+import App from "./web/containers/App";
 
 render(
   <Provider store={store}>
-    <App/>
+    <Router>
+      <Route path="/" component={App}/>
+    </Router>
   </Provider>,
   document.getElementById("app")
 )

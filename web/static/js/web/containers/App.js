@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 import * as appActions from '../actions';
 
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import Modal from "../components/modal/Modal";
+import Cards from "../components/cards/index";
 
 const App = (props) => {
   const { store, actions, children } = props;
@@ -23,7 +25,12 @@ const App = (props) => {
               <Sidebar {...{store, actions}}/>
             </div>
             <div className="column">
-              <h1>Main Content</h1>
+              <Route path="/cards"
+                render={route => (<Cards {...{route, store, actions}}/>)}
+              />
+              <Route exact path="/"
+                render={() => ( <h3>Home</h3>)}
+              />
             </div>
           </div>
         </div>

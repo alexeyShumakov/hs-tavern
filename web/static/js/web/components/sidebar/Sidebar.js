@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 export default (props) => (
   <div>
     <aside className="menu">
       <ul className="menu-list">
-        <li><a href="#">Cards</a></li>
+        <li><Link to="/cards">Cards</Link></li>
+        <li><Link to="/">Home</Link></li>
         <li><a href="#">Desks</a></li>
         <li><a href="#">Desk builder</a></li>
         <li><a href="#">Expansions</a></li>

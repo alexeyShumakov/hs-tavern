@@ -6,6 +6,4 @@ const initialState = {
     name: "world"
   }
 }
-
-console.log(shared, initialState)
 export default Object.assign({}, shared, initialState)
