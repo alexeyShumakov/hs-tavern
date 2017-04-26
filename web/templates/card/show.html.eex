@@ -1,0 +1,22 @@
+<h2>Show card</h2>
+
+<script type="text/javascript" charset="utf-8">
+  var $shared = "<%= card_json @card %>"
+</script>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @card.title %>
+  </li>
+
+  <li>
+    <strong>Slug:</strong>
+    <%= @card.slug %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: card_path(@conn, :edit, @card) %>
+<%= link "Back", to: card_path(@conn, :index) %>

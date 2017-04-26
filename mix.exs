@@ -17,9 +17,13 @@ defmodule HsTavern.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {HsTavern, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+    [
+      mod: {HsTavern, []},
+      applications: [
+      :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy,
+      :logger, :gettext, :phoenix_ecto, :postgrex,
+      :httpoison, :scrivener_ecto, :arc_ecto, :poolboy]
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -37,6 +41,11 @@ defmodule HsTavern.Mixfile do
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
+     {:httpoison, "~> 0.11.1"},
+     {:scrivener_ecto, "~> 1.2"},
+     {:arc, "~> 0.7.0"},
+     {:arc_ecto, "~> 0.6.0"},
+     {:ecto_autoslug_field, "~> 0.2"},
      {:cowboy, "~> 1.0"}]
   end
 
