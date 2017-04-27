@@ -4,9 +4,9 @@ defmodule HsTavern.Api.CardController do
   alias HsTavern.Card
   alias HsTavern.CardProvider
 
-  def index(conn, _params) do
-    cards = Repo.all(Card)
-    render(conn, "index.json", cards: cards)
+  def index(conn, params) do
+    page = Card |> Repo.paginate(params)
+    render(conn, "index.json", cards: page.entries)
   end
 
   def show(conn, %{"id" => id}) do
