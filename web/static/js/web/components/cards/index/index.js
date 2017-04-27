@@ -1,10 +1,12 @@
 import React from "react";
+import Card from "./card";
 
 export default class ShowCard extends React.Component {
   constructor(props) {
     super(props);
     props.actions.fetchCards();
   }
+
   componentWillUnmount() {
     this.props.actions.clearCards();
 
@@ -12,7 +14,7 @@ export default class ShowCard extends React.Component {
 
   render() {
     const cards = this.props.store.cards.index.map((card)=>{
-      return <div key={card.id}>{card.title} </div>
+      return <Card key={card.id} card={card}/>
     })
     return(
       <div>

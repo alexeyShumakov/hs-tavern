@@ -7,7 +7,7 @@ import * as appActions from '../actions';
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import Modal from "../components/modal/Modal";
-import Cards from "../components/cards/index";
+import Cards from "../components/cards/index/index";
 import Card from "../components/cards/show";
 
 const App = (props) => {
@@ -26,10 +26,10 @@ const App = (props) => {
               <Sidebar {...{store, actions}}/>
             </div>
             <div className="column">
-              <Route path="/cards/:cardId"
+              <Route exact path="/cards/:cardId"
                 render={route => (<Card {...{route, store, actions}}/>)}
               />
-              <Route path="/cards"
+              <Route exact path="/cards"
                 render={route => (<Cards {...{route, store, actions}}/>)}
               />
               <Route exact path="/"
