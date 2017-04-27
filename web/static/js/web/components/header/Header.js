@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 export default (props) => {
   return(
     <nav className="nav has-shadow">
       <div className="container">
         <div className="nav-left">
-          <a className="nav-item is-brand">
+          <Link to="/" className="nav-item is-brand">
             <h3>HS tavern</h3>
-          </a>
+          </Link>
           <div className="nav-item">
             <div className="field">
               <p className="control">

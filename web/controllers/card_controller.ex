@@ -2,6 +2,7 @@ defmodule HsTavern.CardController do
   use HsTavern.Web, :controller
 
   alias HsTavern.Card
+  alias HsTavern.CardProvider
 
   def index(conn, _params) do
     cards = Repo.all(Card)
@@ -27,7 +28,7 @@ defmodule HsTavern.CardController do
   end
 
   def show(conn, %{"id" => id}) do
-    card = Repo.get!(Card, id)
+    card = CardProvider.one_card!(id)
     render(conn, "show.html", card: card)
   end
 

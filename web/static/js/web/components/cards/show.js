@@ -13,9 +13,11 @@ export default class CardsIndex extends React.Component {
   }
 
   render() {
+    const card = this.props.store.cards.show;
     return(
       <div>
-        {this.props.store.cards.show.title}
+        {card.title}
+        <img src={card.img} alt=""/>
       </div>
     )
   }
