@@ -15,7 +15,7 @@ defmodule HsTavern.CardFilter do
 
   defp keyword_filter({card, filters, params}) do
     case params["keyword"] do
-      nil -> { card, filters, params }
+      nil -> { card, Map.put(filters, :keyword, ""), params }
       keyword -> {
         card |> where([c], like(fragment("lower(?)", c.title), ^"%#{String.downcase(keyword)}%")),
         Map.put(filters, :keyword, keyword),

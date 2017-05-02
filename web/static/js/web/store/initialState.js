@@ -7,6 +7,7 @@ const initialState = {
   },
   cards: {
     filters: {
+      keyword: "",
       pagination: {
         page: 1,
         total_pages: 2

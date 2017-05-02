@@ -50,20 +50,23 @@ export function pushCards() {
   return(dispatch, getState) => {
     const filters = getState().cards.filters;
     return axios.get('/api/cards', {params: createParams(filters)}).then((response) => {
-        dispatch(setCards(response.data.index));
-        dispatch(setCardsFilters(response.data.filters));
+      const cards = getState().cards.index.concat(response.data.index);
+      dispatch(setCards(cards));
+      dispatch(setCardsFilters(response.data.filters));
     })
   }
 
 }
-export function fetchCards() {
+export function fetchCards(force = false) {
   return(dispatch, getState) => {
     const filters = getState().cards.filters;
-    if(_.isEmpty(getState().cards.index)) {
+    if(_.isEmpty(getState().cards.index) || force) {
       return axios.get('/api/cards', {params: createParams(filters)}).then((response) => {
         dispatch(setCards(response.data.index));
         dispatch(setCardsFilters(response.data.filters));
       })
+    } else {
+      return Promise.resolve();
     }
   }
 }
@@ -71,13 +74,12 @@ export function fetchCards() {
 function createParams(filters) {
   let f = {}
   f["page"] = filters.pagination.page;
+  f["keyword"] = filters.keyword || ""
   if(filters.player_class)
     f["class"] = filters.player_class;
   if(filters.cost)
     f["cost"] = `${filters.cost.min};${filters.cost.max}`
   if(filters.collectible == false)
     f["collectible"] = filters.collectible
-  if(filters.keyword)
-    f["keyword"] = filters.keyword
   return f;
 }

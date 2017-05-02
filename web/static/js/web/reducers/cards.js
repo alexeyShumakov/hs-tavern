@@ -3,6 +3,7 @@ const defaultState = {
   show: {},
   index: [],
   filters: {
+    keyword: "",
     pagination: {
       page: 1,
       total_pages: 2
@@ -11,7 +12,6 @@ const defaultState = {
 }
 export default (state = {}, action) => {
   switch (action.type) {
-
     case actionTypes.SET_CARDS_FILTERS:
       return Object.assign({}, state, {filters: action.filters})
 
@@ -23,7 +23,7 @@ export default (state = {}, action) => {
       return Object.assign({}, state, {show: action.card})
 
     case actionTypes.SET_CARDS:
-      return Object.assign({}, state, {index: state.index.concat(action.cards)})
+      return Object.assign({}, state, {index: action.cards})
 
     default:
       return state;
