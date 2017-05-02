@@ -2,10 +2,14 @@ import React from "react";
 import { Link } from 'react-router-dom';
 
 export default (props) => {
+  const style = {
+    backgroundImage: `url(${props.card.img})`
+  }
   return(
-    <div>
-      <Link to={`/cards/${props.card.slug}`}>{props.card.title}</Link>
-      <img src={props.card.img} alt=""/>
+    <div className="column is-one-third-tablet is-one-quarter-desktop">
+      <Link to={`/cards/${props.card.slug}`}>
+        <div style={style} className="hs-card"/>
+      </Link>
     </div>
   )
 }

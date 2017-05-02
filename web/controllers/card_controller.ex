@@ -5,8 +5,8 @@ defmodule HsTavern.CardController do
   alias HsTavern.CardProvider
 
   def index(conn, params) do
-    page = Card |> Repo.paginate(params)
-    render(conn, "index.html", cards: page.entries)
+    {cards, filters} = HsTavern.CardFilter.filter(params)
+    render(conn, "index.html", cards: cards, filters: filters)
   end
 
   def new(conn, _params) do

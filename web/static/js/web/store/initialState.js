@@ -6,8 +6,14 @@ const initialState = {
     name: "world"
   },
   cards: {
+    filters: {
+      pagination: {
+        page: 1,
+        total_pages: 2
+      }
+    },
     index: [],
     show: {}
   }
 }
-export default _.merge(shared, initialState)
+export default _.merge(initialState, shared)
