@@ -1,20 +1,36 @@
 import React from "react";
+import _ from "lodash";
 
-export default (props) => {
-  const {keyword} = props.filters;
-  const handleChange = (e) => {
-    const pagination = {pagination: {page: 1}}
-    const keywordFilter = {keyword: e.target.value};
-    const new_filters = Object.assign({}, props.filters, keywordFilter, pagination);
-    props.setFilters(new_filters);
-    props.fetchCards(true);
+export default class KeywordFilter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {keyword: ""};
+    this.setFilters = this.setFilters.bind(this);
+    const fetchCards = () => { props.fetchCards(true) }
+    this.fetchCards = _.debounce(fetchCards, 300);
   }
-  return(
+  setFilters(keyword) {
+    const pagination = {pagination: {page: 1}};
+    const newFilters = Object.assign({}, this.props.filters, {keyword}, pagination);
+    this.props.setFilters(newFilters);
+  }
+
+  componentDidMount(){
+    this.Input.focus();
+  }
+  render() {
+    const {keyword} = this.state;
+    return(
     <div className="field">
       <p className="control">
         <input
+          ref={(input) => { this.Input = input; }}
           value={keyword}
-          onChange={handleChange}
+          onChange={(e)=> {
+            this.setState({keyword: e.target.value});
+            this.setFilters(e.target.value);
+            this.fetchCards();
+          }}
           className="input"
           type="text"
           placeholder="Search card"
@@ -22,5 +38,6 @@ export default (props) => {
       </p>
     </div>
 
-  )
+    )
+  }
 }

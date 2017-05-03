@@ -38,16 +38,26 @@ export default class ShowCard extends React.Component {
       )
     })
     return(
-      <div>
-        <KeywordFilter
-          filters={store.cards.filters}
-          fetchCards={actions.fetchCards}
-          setFilters={actions.setCardsFilters}
-        />
-        <div className="columns is-multiline">
-          {cards}
+      <div className="columns">
+        <div className="column is-three-quarters">
+          <div className="box">
+            <h1 className="title">Cards</h1>
+            <KeywordFilter
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+            />
+            <div className="columns is-multiline">
+              {cards}
+            </div>
+            <Waypoint onEnter={this.nextPage} />
+          </div>
         </div>
-        <Waypoint onEnter={this.nextPage} />
+        <div className="column">
+          <div className="box">
+            sidebar
+          </div>
+        </div>
       </div>
     )
   }

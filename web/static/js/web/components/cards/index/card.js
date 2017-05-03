@@ -6,7 +6,7 @@ export default (props) => {
     backgroundImage: `url(${props.card.img})`
   }
   return(
-    <div className="column is-one-third-tablet is-one-quarter-desktop">
+    <div className="column is-one-third-tablet is-one-third-desktop">
       <Link to={`/cards/${props.card.slug}`}>
         <div style={style} className="hs-card"/>
       </Link>
