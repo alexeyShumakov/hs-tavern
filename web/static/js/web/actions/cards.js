@@ -79,6 +79,10 @@ function createParams(filters) {
     f["class"] = filters.player_class;
   if(filters.cost)
     f["cost"] = `${filters.cost.min};${filters.cost.max}`
+  if(filters.health)
+    f["health"] = `${filters.health.min};${filters.health.max}`
+  if(filters.attack)
+    f["attack"] = `${filters.attack.min};${filters.attack.max}`
   if(filters.collectible == false)
     f["collectible"] = filters.collectible
   return f;

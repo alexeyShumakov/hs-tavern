@@ -1,0 +1,32 @@
+.slider-wrapper {
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 45px;
+}
+
+.cost-filter {
+  .rc-slider-track {
+    background-color: #2196f3;
+  }
+  .rc-slider-handle {
+    border: solid 2px #2196f3;
+  }
+}
+
+.attack-filter {
+  .rc-slider-track {
+    background-color: #ff9800;
+  }
+  .rc-slider-handle {
+    border: solid 2px #ff9800;
+  }
+}
+
+.health-filter {
+  .rc-slider-track {
+    background-color: #f44336;
+  }
+  .rc-slider-handle {
+    border: solid 2px #f44336;
+  }
+}

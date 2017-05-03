@@ -2,6 +2,9 @@ import React from "react";
 import Card from "./card";
 import Waypoint from "react-waypoint";
 import KeywordFilter from "./keywordFilter";
+import RangeFilter from "./rangeFilter";
+import ClassFilter from "./classFilter";
+import CollectibleFilter from "./collectibleFilter";
 
 export default class ShowCard extends React.Component {
   constructor(props) {
@@ -31,6 +34,7 @@ export default class ShowCard extends React.Component {
   }
 
   render() {
+    const {filters} = this.props.store.cards;
     const { store, actions } = this.props;
     const cards = store.cards.index.map((card)=>{
       return(
@@ -55,7 +59,37 @@ export default class ShowCard extends React.Component {
         </div>
         <div className="column">
           <div className="box">
-            sidebar
+            <ClassFilter
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+            />
+            <RangeFilter
+              classFilter="cost-filter"
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+              field="cost"
+            />
+            <RangeFilter
+              classFilter="attack-filter"
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+              field="attack"
+            />
+            <RangeFilter
+              classFilter="health-filter"
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+              field="health"
+            />
+            <CollectibleFilter
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+            />
           </div>
         </div>
       </div>

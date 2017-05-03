@@ -10,6 +10,8 @@ defmodule HsTavern.CardFilter do
     |> keyword_filter
     |> class_filter
     |> cost_filter
+    |> attack_filter
+    |> health_filter
     |> page_filter
   end
 
@@ -35,42 +37,15 @@ defmodule HsTavern.CardFilter do
     end
   end
 
-  defp cost_filter({card, filters, params}) do
-    case params["cost"] do
-      nil  -> {card, filters, params}
-      cost ->
-        split_cost = Regex.scan(~r(\d+), cost) |> List.flatten |> Enum.sort |> Enum.map(&String.to_integer&1)
-        {
-          get_cost(split_cost, card),
-          Map.put(filters, :cost, get_cost_filters(split_cost)),
-          params
-        }
-    end
-  end
-
   defp order_filter({card, filters, params}) do
     { card |> order_by([:cost, :title]), filters, params }
   end
 
-  defp get_cost(cost, card) do
-    case cost do
-      [min] -> card |> where([c], c.cost >= ^min)
-      [min, "7"] -> card |> where([c], c.cost >= ^min)
-      [min, max] -> card |> where([c], c.cost >= ^min) |> where([c], c.cost <= ^max)
-      _ -> card
-    end
-  end
-  defp get_cost_filters(cost) do
-    case cost do
-      [min] -> %{min: min, max: 7}
-      [min, max] -> %{min: min, max: max}
-      _ -> %{min: 0, max: 7}
-    end
-  end
 
   defp class_filter({card, filters, params}) do
     case params["class"] do
       nil -> {card, filters, params}
+      "All" -> {card, filters, params}
       class ->
         {
           where(card, player_class: ^class),
@@ -84,5 +59,52 @@ defmodule HsTavern.CardFilter do
     page = card |> Repo.paginate(params)
     pag_params = %{ page: page.page_number, total_pages: page.total_pages }
     { page.entries, Map.put(filters, :pagination, pag_params) }
+  end
+
+
+  defp cost_filter({card, filters, params}) do
+    range_filter({card, filters, params}, :cost)
+  end
+
+  defp attack_filter({card, filters, params}) do
+    range_filter({card, filters, params}, :attack)
+  end
+
+  defp health_filter({card, filters, params}) do
+    range_filter({card, filters, params}, :health)
+  end
+
+  defp range_filter({card, filters, params}, card_field) do
+    case params[Atom.to_string(card_field)] do
+      nil  -> {card, filters, params}
+      str ->
+        range = normalize_str(str)
+        {
+          get_range(range, card, card_field),
+          Map.put(filters, card_field, get_range_filters(range)),
+          params
+        }
+    end
+  end
+
+  defp normalize_str(str) do
+    Regex.scan(~r(\d+), str) |> List.flatten |> Enum.sort |> Enum.map(&String.to_integer&1)
+  end
+
+  defp get_range(range, card, card_field) do
+    case range do
+      [min]      -> card |> where([c], field(c, ^card_field) >= ^min)
+      [0, 7] -> card
+      [min, 7] -> card |> where([c], field(c, ^card_field) >= ^min)
+      [min, max] -> card |> where([c], field(c, ^card_field) >= ^min) |>where([c], field(c, ^card_field) <= ^max)
+      _ -> card
+    end
+  end
+  defp get_range_filters(range) do
+    case range do
+      [min] -> %{min: min, max: 7}
+      [min, max] -> %{min: min, max: max}
+      _ -> %{min: 0, max: 7}
+    end
   end
 end
