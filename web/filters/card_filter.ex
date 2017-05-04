@@ -3,23 +3,37 @@ defmodule HsTavern.CardFilter do
   alias HsTavern.Repo
   alias HsTavern.Card
 
+  # @standard_sets ["Basic", "Classic", "Whispers of the Old Gods", "One Night in Karazhan", "Mean Streets of Gadgetzan", "Journey to Un'Goro"]
   def filter(params) do
     {Card, %{}, params}
     |> order_filter
     |> collectible_filter
+    |> rarity_filter
     |> keyword_filter
     |> class_filter
+    |> set_filter
     |> cost_filter
     |> attack_filter
     |> health_filter
     |> page_filter
   end
 
+  defp rarity_filter({card, filters, params}) do
+    case params["rarity"] do
+      nil -> { card, filters, params }
+      rarity-> {
+        card |> where(rarity: ^rarity),
+        Map.put(filters, :rarity, rarity),
+        params
+      }
+    end
+  end
+
   defp keyword_filter({card, filters, params}) do
     case params["keyword"] do
       nil -> { card, Map.put(filters, :keyword, ""), params }
       keyword -> {
-        card |> where([c], like(fragment("lower(?)", c.title), ^"%#{String.downcase(keyword)}%")),
+        card |> where([c], ilike(c.title, ^"%#{keyword}%")),
         Map.put(filters, :keyword, keyword),
         params
       }
@@ -50,6 +64,19 @@ defmodule HsTavern.CardFilter do
         {
           where(card, player_class: ^class),
           Map.put(filters, :player_class, class),
+          params
+        }
+    end
+  end
+
+  defp set_filter({card, filters, params}) do
+    case params["set"] do
+      nil -> {card, filters, params}
+      "All" -> {card, filters, params}
+      set ->
+        {
+          where(card, card_set: ^set),
+          Map.put(filters, :set, set),
           params
         }
     end

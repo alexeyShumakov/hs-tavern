@@ -4,6 +4,8 @@ import Waypoint from "react-waypoint";
 import KeywordFilter from "./keywordFilter";
 import RangeFilter from "./rangeFilter";
 import ClassFilter from "./classFilter";
+import SetsFilter from "./setsFilter";
+import RarityFilter from "./rarityFilter";
 import CollectibleFilter from "./collectibleFilter";
 
 export default class ShowCard extends React.Component {
@@ -58,17 +60,39 @@ export default class ShowCard extends React.Component {
           </div>
         </div>
         <div className="column">
-          <div className="box">
+          <div className="box card-filters">
+            {store.cards.isDirtyFilters &&
+              <a className="delete"
+                onClick={()=>{
+                  actions.clearCards();
+                  actions.fetchCards(true);
+                }}
+              />
+            }
+            <RarityFilter
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+              setDirty={actions.setIsDirtyCardsFilters}
+            />
             <ClassFilter
               filters={store.cards.filters}
               fetchCards={actions.fetchCards}
               setFilters={actions.setCardsFilters}
+              setDirty={actions.setIsDirtyCardsFilters}
+            />
+            <SetsFilter
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+              setDirty={actions.setIsDirtyCardsFilters}
             />
             <RangeFilter
               classFilter="cost-filter"
               filters={store.cards.filters}
               fetchCards={actions.fetchCards}
               setFilters={actions.setCardsFilters}
+              setDirty={actions.setIsDirtyCardsFilters}
               field="cost"
             />
             <RangeFilter
@@ -76,6 +100,7 @@ export default class ShowCard extends React.Component {
               filters={store.cards.filters}
               fetchCards={actions.fetchCards}
               setFilters={actions.setCardsFilters}
+              setDirty={actions.setIsDirtyCardsFilters}
               field="attack"
             />
             <RangeFilter
@@ -83,12 +108,14 @@ export default class ShowCard extends React.Component {
               filters={store.cards.filters}
               fetchCards={actions.fetchCards}
               setFilters={actions.setCardsFilters}
+              setDirty={actions.setIsDirtyCardsFilters}
               field="health"
             />
             <CollectibleFilter
               filters={store.cards.filters}
               fetchCards={actions.fetchCards}
               setFilters={actions.setCardsFilters}
+              setDirty={actions.setIsDirtyCardsFilters}
             />
           </div>
         </div>

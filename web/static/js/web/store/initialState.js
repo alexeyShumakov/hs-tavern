@@ -6,6 +6,7 @@ const initialState = {
     name: "world"
   },
   cards: {
+    isDirtyFilters: false,
     filters: {
       keyword: "",
       pagination: {

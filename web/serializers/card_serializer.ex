@@ -20,7 +20,7 @@ defmodule HsTavern.Serializers.CardSerializer do
       collectible: card.collectible,
       elite: card.elite,
       race: card.race,
-      player_class: card.player_class
+      player_class: card.player_class,
     }
   end
 

@@ -12,6 +12,7 @@ export default (props) => {
     rangeFilter[field] = {min:e[0], max:e[1]}
     const newFilters = Object.assign({}, filters, pagination, rangeFilter);
     setFilters(newFilters);
+    props.setDirty(true);
     fetchCards(true);
   }
   return(

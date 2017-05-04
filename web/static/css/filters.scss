@@ -1,3 +1,11 @@
+.card-filters {
+  position: relative;
+}
+.card-filters > .delete {
+  position: absolute;
+  right: 0.3rem;
+  top: 0.3rem;
+}
 .slider-wrapper {
   padding-left: 8px;
   padding-right: 8px;
@@ -29,4 +37,36 @@
   .rc-slider-handle {
     border: solid 2px #f44336;
   }
+}
+
+.rarity-common, .rarity-common_is-selected {
+  color: #9e9e9e!important;
+}
+
+.rarity-common_is-selected {
+  border-color: #9e9e9e!important;
+}
+
+.rarity-rare, .rarity-rare_is-selected {
+  color: #3f51b5!important;
+}
+
+.rarity-rare_is-selected {
+  border-color: #3f51b5!important;
+}
+
+.rarity-epic, .rarity-epic_is-selected {
+  color: #9c27b0!important;
+}
+
+.rarity-epic_is-selected {
+  border-color: #9c27b0!important;
+}
+
+.rarity-legendary, .rarity-legendary_is-selected {
+  color: #ff9800!important;
+}
+
+.rarity-legendary_is-selected {
+  border-color: #ff9800!important;
 }

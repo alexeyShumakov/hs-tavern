@@ -3,6 +3,13 @@ import _ from "lodash";
 
 import actionTypes from "../constants";
 
+export function setIsDirtyCardsFilters(isDirty) {
+  return {
+    type: actionTypes.SET_IS_DIRTY_CARD_FILTERS,
+    isDirty
+  }
+
+}
 export function setCardsFilters(filters) {
   return {
     type: actionTypes.SET_CARDS_FILTERS,
@@ -75,8 +82,12 @@ function createParams(filters) {
   let f = {}
   f["page"] = filters.pagination.page;
   f["keyword"] = filters.keyword || ""
+  if(filters.rarity)
+    f["rarity"] = filters.rarity;
   if(filters.player_class)
     f["class"] = filters.player_class;
+  if(filters.set)
+    f["set"] = filters.set;
   if(filters.cost)
     f["cost"] = `${filters.cost.min};${filters.cost.max}`
   if(filters.health)
@@ -85,5 +96,7 @@ function createParams(filters) {
     f["attack"] = `${filters.attack.min};${filters.attack.max}`
   if(filters.collectible == false)
     f["collectible"] = filters.collectible
+  if(filters.standard == false)
+    f["standard"] = filters.standard
   return f;
 }

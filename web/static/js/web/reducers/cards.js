@@ -2,6 +2,7 @@ import actionTypes from '../constants';
 const defaultState = {
   show: {},
   index: [],
+  isDirtyFilters: false,
   filters: {
     keyword: "",
     pagination: {
@@ -24,6 +25,9 @@ export default (state = {}, action) => {
 
     case actionTypes.SET_CARDS:
       return Object.assign({}, state, {index: action.cards})
+
+    case actionTypes.SET_IS_DIRTY_CARD_FILTERS:
+      return Object.assign({}, state, {isDirtyFilters: action.isDirty})
 
     default:
       return state;

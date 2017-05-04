@@ -2,18 +2,19 @@ import React from "react";
 
 export default (props) => {
   const handleChange = (e) => {
-      const pagination = {pagination: {page: 1}}
-      const classFilter = {player_class: e.target.value}
-      const newFilters = Object.assign({}, props.filters, pagination, classFilter);
-      props.setFilters(newFilters)
-      props.fetchCards(true);
+    const pagination = {pagination: {page: 1}}
+    const classFilter = {player_class: e.target.value}
+    const newFilters = Object.assign({}, props.filters, pagination, classFilter);
+    props.setFilters(newFilters)
+    props.fetchCards(true);
+    props.setDirty(true);
   }
   return(
     <div className="field">
       <p className="control">
         <span className="select is-fullwidth">
-          <select name="country" onChange={handleChange}>
-            <option value="All">All</option>
+          <select onChange={handleChange}>
+            <option value="All">All Classes</option>
             <option value="Neutral">Neutral</option>
             <option value="Hunter">Hunter</option>
             <option value="Mage">Mage</option>
