@@ -5,26 +5,29 @@ const marks = {
   0: 0, 7: "7+"
 }
 export default (props) => {
+  const {field, setFilters, fetchCards, filters} = props;
   const handleChange = (e) => {
-    const {field, setFilters, fetchCards, filters} = props;
+    console.log(e);
     const pagination = {pagination: {page: 1}};
     let rangeFilter = {};
-    rangeFilter[field] = {min:e[0], max:e[1]}
+    rangeFilter[field] = e;
     const newFilters = Object.assign({}, filters, pagination, rangeFilter);
     setFilters(newFilters);
-    props.setDirty(true);
-    fetchCards(true);
   }
   return(
     <div className="slider-wrapper">
       <Range
         className={props.classFilter}
-        onAfterChange={handleChange}
+        onChange={handleChange}
+        onAfterChange={()=> {
+          fetchCards(true);
+          props.setDirty(true);
+        }}
         allowCross={false}
         marks={marks}
         min={0}
         max={7}
-        defaultValue={[0,7]}
+        value={filters[field]}
       />
     </div>
   )

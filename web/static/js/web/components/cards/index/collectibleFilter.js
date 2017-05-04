@@ -12,7 +12,7 @@ export default (props) => {
     <div className="field">
       <p className="control">
         <label className="checkbox">
-          <input type="checkbox" onChange={handleChange} defaultChecked={true}/>
+          <input type="checkbox" onChange={handleChange} checked={props.filters.collectible}/>
           Collectible
         </label>
       </p>

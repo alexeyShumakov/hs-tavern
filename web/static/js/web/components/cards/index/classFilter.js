@@ -13,7 +13,7 @@ export default (props) => {
     <div className="field">
       <p className="control">
         <span className="select is-fullwidth">
-          <select onChange={handleChange}>
+          <select value={props.filters.player_class} onChange={handleChange}>
             <option value="All">All Classes</option>
             <option value="Neutral">Neutral</option>
             <option value="Hunter">Hunter</option>

@@ -59,7 +59,10 @@ export function pushCards() {
     return axios.get('/api/cards', {params: createParams(filters)}).then((response) => {
       const cards = getState().cards.index.concat(response.data.index);
       dispatch(setCards(cards));
-      dispatch(setCardsFilters(response.data.filters));
+      const newFilters = Object.assign(
+        {}, filters,
+        {pagination: response.data.filters.pagination})
+      dispatch(setCardsFilters(newFilters));
     })
   }
 
@@ -70,7 +73,10 @@ export function fetchCards(force = false) {
     if(_.isEmpty(getState().cards.index) || force) {
       return axios.get('/api/cards', {params: createParams(filters)}).then((response) => {
         dispatch(setCards(response.data.index));
-        dispatch(setCardsFilters(response.data.filters));
+        const newFilters = Object.assign(
+          {}, filters,
+          {pagination: response.data.filters.pagination})
+        dispatch(setCardsFilters(newFilters));
       })
     } else {
       return Promise.resolve();
@@ -89,11 +95,11 @@ function createParams(filters) {
   if(filters.set)
     f["set"] = filters.set;
   if(filters.cost)
-    f["cost"] = `${filters.cost.min};${filters.cost.max}`
+    f["cost"] = filters.cost.join(";")
   if(filters.health)
-    f["health"] = `${filters.health.min};${filters.health.max}`
+    f["health"] = filters.health.join(";")
   if(filters.attack)
-    f["attack"] = `${filters.attack.min};${filters.attack.max}`
+    f["attack"] = filters.attack.join(";")
   if(filters.collectible == false)
     f["collectible"] = filters.collectible
   if(filters.standard == false)

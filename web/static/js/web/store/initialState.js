@@ -8,7 +8,14 @@ const initialState = {
   cards: {
     isDirtyFilters: false,
     filters: {
+      rarity: null,
+      player_class: "All",
+      set: "All",
       keyword: "",
+      cost: [0,7],
+      attack: [0,7],
+      health: [0,7],
+      collectible: true,
       pagination: {
         page: 1,
         total_pages: 2

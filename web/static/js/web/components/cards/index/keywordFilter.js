@@ -4,7 +4,6 @@ import _ from "lodash";
 export default class KeywordFilter extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {keyword: ""};
     this.setFilters = this.setFilters.bind(this);
     const fetchCards = () => { props.fetchCards(true) }
     this.fetchCards = _.debounce(fetchCards, 300);
@@ -19,7 +18,7 @@ export default class KeywordFilter extends React.Component {
     this.Input.focus();
   }
   render() {
-    const {keyword} = this.state;
+    const {keyword} = this.props.filters;
     return(
     <div className="field">
       <p className="control">
@@ -27,7 +26,6 @@ export default class KeywordFilter extends React.Component {
           ref={(input) => { this.Input = input; }}
           value={keyword}
           onChange={(e)=> {
-            this.setState({keyword: e.target.value});
             this.setFilters(e.target.value);
             this.fetchCards();
           }}
