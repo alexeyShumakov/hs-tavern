@@ -92,6 +92,8 @@ function createParams(filters) {
     f["rarity"] = filters.rarity;
   if(filters.player_class)
     f["class"] = filters.player_class;
+  if(filters.race)
+    f["race"] = filters.race;
   if(filters.set)
     f["set"] = filters.set;
   if(filters.cost)

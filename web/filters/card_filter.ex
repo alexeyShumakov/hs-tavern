@@ -11,6 +11,7 @@ defmodule HsTavern.CardFilter do
     |> rarity_filter
     |> keyword_filter
     |> class_filter
+    |> race_filter
     |> set_filter
     |> cost_filter
     |> attack_filter
@@ -55,6 +56,18 @@ defmodule HsTavern.CardFilter do
     { card |> order_by([:cost, :title]), filters, params }
   end
 
+  defp race_filter({card, filters, params}) do
+    case params["race"] do
+      nil -> {card, filters, params}
+      "All" -> {card, filters, params}
+      class ->
+        {
+          where(card, race: ^class),
+          Map.put(filters, :race, class),
+          params
+        }
+    end
+  end
 
   defp class_filter({card, filters, params}) do
     case params["class"] do

@@ -6,6 +6,7 @@ const defaultState = {
   filters: {
     rarity: null,
     player_class: "All",
+    race: "All",
     set: "All",
     keyword: "",
     cost: [0,7],

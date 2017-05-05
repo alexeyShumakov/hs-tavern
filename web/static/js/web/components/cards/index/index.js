@@ -6,6 +6,7 @@ import RangeFilter from "./rangeFilter";
 import ClassFilter from "./classFilter";
 import SetsFilter from "./setsFilter";
 import RarityFilter from "./rarityFilter";
+import RaceFilter from "./raceFilter";
 import CollectibleFilter from "./collectibleFilter";
 
 export default class ShowCard extends React.Component {
@@ -82,6 +83,12 @@ export default class ShowCard extends React.Component {
               setDirty={actions.setIsDirtyCardsFilters}
             />
             <SetsFilter
+              filters={store.cards.filters}
+              fetchCards={actions.fetchCards}
+              setFilters={actions.setCardsFilters}
+              setDirty={actions.setIsDirtyCardsFilters}
+            />
+            <RaceFilter
               filters={store.cards.filters}
               fetchCards={actions.fetchCards}
               setFilters={actions.setCardsFilters}
