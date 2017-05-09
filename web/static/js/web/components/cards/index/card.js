@@ -7,9 +7,12 @@ export default (props) => {
   }
   return(
     <div className="column is-one-third-tablet is-one-third-desktop">
-      <Link to={`/cards/${props.card.slug}`}>
-        <div style={style} className="hs-card"/>
-      </Link>
+      <div onClick={()=>{
+        window.history.pushState(null, null, `/cards/${props.card.slug}`);
+        props.actions.fetchCard(props.card.slug);
+        props.actions.setCardsModal(true)
+      }}
+        style={style} className="hs-card"/>
     </div>
   )
 }

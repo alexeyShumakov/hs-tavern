@@ -12,6 +12,7 @@ import CollectibleFilter from "./collectibleFilter";
 export default class ShowCard extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.state = {isLoading: true }
     props.actions.fetchCards().then(()=>{
       this.setState({isLoading: false})
@@ -38,10 +39,10 @@ export default class ShowCard extends React.Component {
 
   render() {
     const {filters} = this.props.store.cards;
-    const { store, actions } = this.props;
+    const { store, actions, route } = this.props;
     const cards = store.cards.index.map((card)=>{
       return(
-        <Card key={card.id} card={card}/>
+        <Card key={card.id} card={card} actions={actions} store={store} route={route}/>
       )
     })
     return(

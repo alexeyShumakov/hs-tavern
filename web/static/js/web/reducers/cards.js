@@ -1,5 +1,6 @@
 import actionTypes from '../constants';
 const defaultState = {
+  isOpenModal: false,
   show: {},
   index: [],
   isDirtyFilters: false,
@@ -21,10 +22,15 @@ const defaultState = {
 }
 export default (state = {}, action) => {
   switch (action.type) {
+    case actionTypes.SET_CARDS_MODAL:
+      return Object.assign({}, state, {isOpenModal: action.isOpenModal})
+
     case actionTypes.SET_CARDS_FILTERS:
       return Object.assign({}, state, {filters: action.filters})
 
     case actionTypes.CLEAR_CARD:
+      return Object.assign({}, state, {show: {}})
+
     case actionTypes.CLEAR_CARDS:
       return Object.assign({}, defaultState)
 

@@ -3,6 +3,13 @@ import _ from "lodash";
 
 import actionTypes from "../constants";
 
+export function setCardsModal(isOpenModal) {
+  return {
+    type: actionTypes.SET_CARDS_MODAL,
+    isOpenModal
+  }
+}
+
 export function setIsDirtyCardsFilters(isDirty) {
   return {
     type: actionTypes.SET_IS_DIRTY_CARD_FILTERS,

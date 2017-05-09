@@ -9,11 +9,18 @@ import Sidebar from "../components/sidebar/Sidebar";
 import Modal from "../components/modal/Modal";
 import Cards from "../components/cards/index/index";
 import Card from "../components/cards/show";
+import CardsModal from "../components/cards/modal/modal";
 
 const App = (props) => {
   const { store, actions, children } = props;
   return(
     <div>
+      <CardsModal
+        clear={actions.clearCard}
+        setModal={actions.setCardsModal}
+        isOpen={store.cards.isOpenModal}
+        card={store.cards.show}
+      />
       <Modal
         setModal={actions.setModal}
         isOpen={store.modal.isOpen}

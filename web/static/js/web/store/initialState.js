@@ -6,6 +6,7 @@ const initialState = {
     name: "world"
   },
   cards: {
+    isOpenModal: false,
     isDirtyFilters: false,
     filters: {
       rarity: null,
