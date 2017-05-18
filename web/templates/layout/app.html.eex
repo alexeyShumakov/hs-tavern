@@ -12,6 +12,9 @@
   </head>
 
   <body>
+    <script type="text/javascript" charset="utf-8">
+      var $shared = "<%= shared_json_data(@conn) %>"
+    </script>
     <%= render @view_module, @view_template, assigns %>
     <div id="app"/>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

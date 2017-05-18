@@ -12,7 +12,6 @@ import CollectibleFilter from "./collectibleFilter";
 export default class ShowCard extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.state = {isLoading: true }
     props.actions.fetchCards().then(()=>{
       this.setState({isLoading: false})

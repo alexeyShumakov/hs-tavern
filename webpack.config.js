@@ -19,6 +19,10 @@ module.exports = {
         }
       },
       {
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
+        loader: 'url-loader?name=../fonts/[name].[ext]&limit=10000'
+      },
+      {
         test: /\.scss$/,
         use:  ExtractText.extract({
           fallback: "style-loader",

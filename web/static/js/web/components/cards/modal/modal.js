@@ -3,7 +3,6 @@ import React from "react";
 export default class CardsModal extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.close = this.close.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
     document.addEventListener('keydown', this.handleKeydown);

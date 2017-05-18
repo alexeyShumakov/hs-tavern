@@ -22,7 +22,9 @@ defmodule HsTavern.Mixfile do
       applications: [
       :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy,
       :logger, :gettext, :phoenix_ecto, :postgrex,
-      :httpoison, :scrivener_ecto, :arc_ecto, :poolboy]
+      :httpoison, :scrivener_ecto, :arc_ecto, :poolboy,
+      :ueberauth, :ueberauth_facebook
+      ]
     ]
   end
 
@@ -46,6 +48,9 @@ defmodule HsTavern.Mixfile do
      {:arc, "~> 0.7.0"},
      {:arc_ecto, "~> 0.6.0"},
      {:ecto_autoslug_field, "~> 0.2"},
+     {:guardian, "~> 0.14"},
+     {:ueberauth, "~> 0.4.0"},
+     {:ueberauth_facebook, "~> 0.6"},
      {:cowboy, "~> 1.0"}]
   end
 

@@ -1,3 +1,3 @@
 <script type="text/javascript" charset="utf-8">
-  var $shared = "<%= card_json @card %>"
+  var $local = "<%= card_json @card %>"
 </script>

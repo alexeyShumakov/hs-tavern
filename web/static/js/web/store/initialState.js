@@ -1,10 +1,9 @@
 import _ from "lodash";
 const shared = (typeof $shared === 'undefined') ? {} : JSON.parse($shared);
+const local = (typeof $local === 'undefined') ? {} : JSON.parse($local);
 
 const initialState = {
-  header: {
-    name: "world"
-  },
+  user: {},
   cards: {
     isOpenModal: false,
     isDirtyFilters: false,
@@ -27,4 +26,4 @@ const initialState = {
     show: {}
   }
 }
-export default _.merge(initialState, shared)
+export default _.merge(initialState, shared, local)

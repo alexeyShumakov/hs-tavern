@@ -22,6 +22,26 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :ueberauth, Ueberauth,
+  providers: [
+    facebook: {Ueberauth.Strategy.Facebook, [
+      default_scope: "email,public_profile,user_friends",
+      display: "popup"
+    ]}
+  ]
+
+config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
+  client_id: System.get_env("FACEBOOK_CLIENT_ID"),
+  client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")
+
+config :guardian, Guardian,
+  issuer: "HsTavern",
+  ttl: { 30, :days },
+  allowed_drift: 2000,
+  secret_key: "key",
+  serializer: HsTavern.GuardianSerializer
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
+
+
 import_config "#{Mix.env}.exs"

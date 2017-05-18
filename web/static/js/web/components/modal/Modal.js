@@ -32,16 +32,17 @@ export default class Modal extends React.Component {
             <div className="modal-background" onClick={this.close}/>
             <div className="modal-content">
               <div className="box">
-                <div className="field">
-                  <p className="control">
-                    <input className="input is-primary" type="text" placeholder="Nickname"/>
-                  </p>
-                </div>
-                <div className="field">
-                  <p className="control">
-                    <input className="input is-primary" type="text" placeholder="Email"/>
-                  </p>
-                </div>
+                <h3 className="title is-4">Sign in with social network</h3>
+                <a className="button is-primary is-outlined"
+                  onClick={()=>{
+                    window.open('/auth/facebook', "auth", "width=600,height=600")
+                  }}
+                >
+                  <span className="icon">
+                    <i className="fa fa-facebook"
+                    ></i>
+                  </span>
+                </a>
               </div>
             </div>
             <button className="modal-close" onClick={this.close}/>

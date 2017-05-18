@@ -5,6 +5,7 @@ import {render} from "react-dom";
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
+import "font-awesome/scss/font-awesome.scss";
 import "../css/app.scss";
 import store from "./web/store/store";
 import App from "./web/containers/App";
