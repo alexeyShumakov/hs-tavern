@@ -23,7 +23,8 @@ defmodule HsTavern.Mixfile do
       :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy,
       :logger, :gettext, :phoenix_ecto, :postgrex,
       :httpoison, :scrivener_ecto, :arc_ecto, :poolboy,
-      :ueberauth, :ueberauth_facebook
+      :ueberauth, :ueberauth_facebook,
+      :ex_aws, :hackney, :poison
       ]
     ]
   end
@@ -47,13 +48,16 @@ defmodule HsTavern.Mixfile do
      {:scrivener_ecto, "~> 1.2"},
      {:arc, "~> 0.7.0"},
      {:arc_ecto, "~> 0.6.0"},
+     {:ex_aws, "~> 1.1"},
+     {:hackney, "~> 1.0", override: true},
+     {:poison, "~> 2.0"},
+     {:sweet_xml, "~> 0.6"},
      {:ecto_autoslug_field, "~> 0.2"},
      {:guardian, "~> 0.14"},
      {:ueberauth, "~> 0.4.0"},
      {:ueberauth_facebook, "~> 0.6"},
      {:cowboy, "~> 1.0"}]
   end
-
   # Aliases are shortcuts or tasks specific to the current project.
   # For example, to create, migrate and run the seeds file at once:
   #

@@ -6,7 +6,7 @@ defmodule HsTavern.CardImg do
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
 
   def acl(:thumb, _), do: :public_read
-  def __storage, do: Arc.Storage.Local
+  def __storage, do: Arc.Storage.S3
 
   def validate({file, _}) do
     file_extension = file.file_name |> Path.extname |> String.downcase
@@ -22,7 +22,7 @@ defmodule HsTavern.CardImg do
   end
 
   def storage_dir(_, {_file, card}) do
-    "uploads/cards/#{card.slug}"
+    "cards/#{card.slug}"
   end
 
   def default_url(:thumb) do

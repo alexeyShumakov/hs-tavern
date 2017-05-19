@@ -6,7 +6,7 @@ defmodule HsTavern.Serializers.CardSerializer do
       game_id: card.game_id,
       slug: card.slug,
       title: card.title,
-      img: HsTavern.CardImg.url({card.img, card}, :thumb),
+      img: img_path(card),
       card_set: card.card_set,
       type: card.type,
       faction: card.faction,
@@ -28,5 +28,11 @@ defmodule HsTavern.Serializers.CardSerializer do
     %{ cards: map }
     |> Poison.encode!
     |> escape_javascript
+  end
+
+  def img_path(card) do
+    {a, b} = HsTavern.CardImg.url({card.img, card}, :thumb)
+    |> String.split("/") |> Enum.split(3)
+    a ++ [Application.get_env(:arc, :bucket)] ++ b |> Enum.join("/")
   end
 end
