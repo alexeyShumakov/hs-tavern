@@ -7,6 +7,7 @@ const initialState = {
   cards: {
     isOpenModal: false,
     isDirtyFilters: false,
+    clickCount: 0,
     filters: {
       rarity: null,
       player_class: "All",
@@ -23,7 +24,9 @@ const initialState = {
       }
     },
     index: [],
-    show: {}
+    show: {
+      comments: []
+    }
   }
 }
 export default _.merge(initialState, shared, local)

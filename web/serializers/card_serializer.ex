@@ -21,7 +21,12 @@ defmodule HsTavern.Serializers.CardSerializer do
       elite: card.elite,
       race: card.race,
       player_class: card.player_class,
+      comments: comments(card.comments)
     }
+  end
+
+  def comments(comments) do
+    comments |> Enum.map( fn c -> %{id: c.id, body: c.body} end )
   end
 
   def serialize(map) do

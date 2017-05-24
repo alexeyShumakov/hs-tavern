@@ -10,7 +10,7 @@ export default (props) => {
       <div onClick={()=>{
         window.history.pushState(null, null, `/cards/${props.card.slug}`);
         props.actions.fetchCard(props.card.slug);
-        props.actions.setCardsModal(true)
+        props.actions.openCardsModal(props.card);
       }}
         style={style} className="hs-card"/>
     </div>

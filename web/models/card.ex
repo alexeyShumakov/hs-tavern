@@ -22,6 +22,8 @@ defmodule HsTavern.Card do
     field :race, :string
     field :player_class, :string
 
+    has_many :comments, HsTavern.Comment
+
     timestamps()
   end
 

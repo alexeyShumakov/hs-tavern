@@ -1,7 +1,11 @@
+import _ from "lodash";
+import socket from "../../socket";
 import actionTypes from '../constants';
 const defaultState = {
   isOpenModal: false,
-  show: {},
+  show: {
+    comments:[]
+  },
   index: [],
   isDirtyFilters: false,
   filters: {
@@ -20,8 +24,26 @@ const defaultState = {
     }
   }
 }
+
+let channel, comments, newState;
 export default (state = {}, action) => {
   switch (action.type) {
+    case "PUSH_CARDS_COMMENT":
+      comments = state.show.comments;
+      let newShow = Object.assign({}, state.show, {comments: [...comments, action.comment]})
+      console.log(newShow)
+      return Object.assign({}, state, {show: newShow});
+
+    case "OPEN_CARD_CHANNEL":
+      channel = socket.channel(`card:${action.id}`)
+      channel.join()
+      return Object.assign({}, state, {channel})
+
+    case "CLOSE_CARD_CHANNEL":
+      channel = socket.channel(`card:${action.id}`)
+      channel.leave()
+      return Object.assign({}, state, {channel})
+
     case actionTypes.SET_CARDS_MODAL:
       return Object.assign({}, state, {isOpenModal: action.isOpenModal})
 

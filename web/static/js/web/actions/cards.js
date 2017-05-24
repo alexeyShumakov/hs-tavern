@@ -3,6 +3,34 @@ import _ from "lodash";
 
 import actionTypes from "../constants";
 
+export function openCardsModal(card) {
+  return(dispatch, getState) => {
+    dispatch(setCardsModal(true));
+    dispatch(openCardChannel(card.id));
+  }
+}
+
+export function closeCardsModal(card) {
+  return(dispatch, getState) => {
+    dispatch(setCardsModal(false));
+    dispatch(closeCardChannel(card.id));
+  }
+}
+
+export function openCardChannel(id) {
+  return{
+    type: "OPEN_CARD_CHANNEL",
+    id
+  }
+}
+
+export function closeCardChannel(id) {
+  return{
+    type: "CLOSE_CARD_CHANNEL",
+    id
+  }
+}
+
 export function setCardsModal(isOpenModal) {
   return {
     type: actionTypes.SET_CARDS_MODAL,
@@ -50,8 +78,19 @@ export function clearCards() {
   }
 }
 
+export function pushCardsComment(comment) {
+  return {
+    type: "PUSH_CARDS_COMMENT",
+    comment
+  }
+}
+
 export function fetchCard(id) {
   return(dispatch, getState) => {
+    dispatch(openCardChannel(id));
+    getState().cards.channel.on("create_comment", payload => {
+      dispatch(pushCardsComment(payload))
+    })
     if(_.isEmpty(getState().cards.show)) {
       return axios.get(`/api/cards/${id}`).then((response) => {
         dispatch(setCard(response.data));

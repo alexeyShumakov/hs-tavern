@@ -5,6 +5,7 @@ defmodule HsTavern.User do
     field :name, :string
     field :email, :string
     has_many :authorizations, HsTavern.Authorization
+    has_many :comments, HsTavern.Comment
 
     timestamps()
   end

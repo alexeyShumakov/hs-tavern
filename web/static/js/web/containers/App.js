@@ -15,12 +15,15 @@ const App = (props) => {
   const { store, actions, children } = props;
   return(
     <div>
-      <CardsModal
-        clear={actions.clearCard}
-        setModal={actions.setCardsModal}
-        isOpen={store.cards.isOpenModal}
-        card={store.cards.show}
-      />
+      { store.cards.isOpenModal &&
+        <CardsModal
+          channel={store.cards.channel}
+          clear={actions.clearCard}
+          closeCardsModal={actions.closeCardsModal}
+          isOpen={store.cards.isOpenModal}
+          card={store.cards.show}
+        />
+      }
       <Modal
         setModal={actions.setModal}
         isOpen={store.modal.isOpen}

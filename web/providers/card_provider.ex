@@ -6,10 +6,12 @@ defmodule HsTavern.CardProvider do
     case Integer.parse(id) do
       :error ->
         query = from p in Card,
+          preload: [:comments],
           where: p.slug == ^id
 
       {value, "" } ->
         query = from p in Card,
+          preload: [:comments],
           where: p.slug == ^id,
           or_where: p.id == ^id
     end

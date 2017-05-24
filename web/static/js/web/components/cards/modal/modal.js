@@ -6,13 +6,16 @@ export default class CardsModal extends React.Component {
     this.close = this.close.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
     document.addEventListener('keydown', this.handleKeydown);
+    props.channel.on("card_click", payload => {
+    })
   }
 
 
   close() {
-    this.props.setModal(false);
+    let { card, closeCardsModal, clear } = this.props;
+    closeCardsModal(card);
     window.history.pushState(null, null, "/cards");
-    this.props.clear();
+    clear();
   }
 
   handleKeydown(e) {
@@ -26,15 +29,19 @@ export default class CardsModal extends React.Component {
   }
 
   render() {
-    const { isOpen } = this.props;
+    const { cc, isOpen, card, channel } = this.props;
     return(
       <div>
         { isOpen &&
           <div className="modal is-active" onKeyDown={this.handleKeydown}>
             <div className="modal-background" onClick={this.close}/>
             <div className="modal-content">
-              <div className="box">
-                {this.props.card.title}
+              <div className="box"
+                onClick={()=> {
+                  channel.push("card_click", {card_id: card.id})
+                }}
+              >
+                {card.title}
               </div>
             </div>
             <button className="modal-close" onClick={this.close}/>
