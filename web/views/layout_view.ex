@@ -5,6 +5,7 @@ defmodule HsTavern.LayoutView do
     get_user_data(conn)
     |> Map.put(:is_authenticated, Guardian.Plug.authenticated?(conn))
     |> Map.put(:csrf_token, get_csrf_token)
+    |> Map.put(:token, Guardian.Plug.current_token(conn))
     |> (fn map -> %{user: map} end).()
     |> Poison.encode!
     |> escape_javascript
@@ -15,11 +16,7 @@ defmodule HsTavern.LayoutView do
     case Guardian.Plug.authenticated?(conn) do
       true ->
         user = Guardian.Plug.current_resource(conn)
-        %{
-          token: Guardian.Plug.current_token(conn),
-          email: user.email,
-          name: user.name
-        }
+        HsTavern.Serializers.UserSerializer.to_map(user)
       false -> %{}
     end
   end

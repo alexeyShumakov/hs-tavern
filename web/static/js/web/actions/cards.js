@@ -12,7 +12,6 @@ export function openCardsModal(card) {
 export function closeCardsModal(card) {
   return(dispatch, getState) => {
     dispatch(setCardsModal(false));
-    dispatch(closeCardChannel(card.slug));
   }
 }
 
@@ -84,19 +83,24 @@ export function pushCardsComment(comment) {
   }
 }
 
+export function cardsExecChannel(id) {
+  return(dispatch, getState) => {
+    dispatch(openCardChannel(id));
+    getState().cards.channel.on("create_comment", payload => {
+      dispatch(pushCardsComment(payload))
+    })
+  }
+}
+
 export function fetchCard(id) {
   return(dispatch, getState) => {
     dispatch(openCardChannel(id));
     getState().cards.channel.on("create_comment", payload => {
       dispatch(pushCardsComment(payload))
     })
-    if(_.isEmpty(getState().cards.show.slig)) {
-      return axios.get(`/api/cards/${id}`).then((response) => {
-        dispatch(setCard(response.data));
-      })
-    } else {
-      return new Promise.resolve();
-    }
+    return axios.get(`/api/cards/${id}`).then((response) => {
+      dispatch(setCard(response.data));
+    })
   }
 }
 

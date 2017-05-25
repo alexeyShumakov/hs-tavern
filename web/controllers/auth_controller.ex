@@ -19,6 +19,7 @@ defmodule HsTavern.AuthController do
       nil ->
         email = get_email(%{provider: "facebook", email: user_data["email"], id: user_data["id"]})
         user = create_user(%{email: email, name: user_data["name"]})
+        add_user_avatar(user, user_data["picture"]["data"]["url"])
         auth = create_auth(%{provider: "facebook", user_id: user.id, uid: user_data["id"]})
       auth-> user = auth.user
     end
@@ -33,6 +34,11 @@ defmodule HsTavern.AuthController do
       where: auth.uid == ^uid,
       where: auth.provider == ^provider
     Repo.one query
+  end
+
+  def add_user_avatar(user, url) do
+    changeset = User.changeset(user, %{avatar: url})
+    Repo.update!(changeset)
   end
 
   def create_user(data) do

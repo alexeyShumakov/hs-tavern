@@ -3,6 +3,7 @@ defmodule HsTavern.CardChannel do
   import Guardian.Phoenix.Socket
   alias HsTavern.Comment
   alias HsTavern.Repo
+  alias HsTavern.Serializers.CommentSerializer
 
   def join("card:" <> id, _params, socket) do
     {:ok, socket}
@@ -14,7 +15,7 @@ defmodule HsTavern.CardChannel do
     case Repo.insert(changeset) do
       {:ok, c} ->
         comment = c |> Repo.preload([:user])
-        comment_map = %{ id: comment.id, body: comment.body, user: %{ id: comment.user.id, name: comment.user.name } }
+        comment_map = CommentSerializer.to_map(comment)
         broadcast! socket, "create_comment", comment_map
       {:error, reason} -> nil
     end
