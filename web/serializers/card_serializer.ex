@@ -21,14 +21,28 @@ defmodule HsTavern.Serializers.CardSerializer do
       elite: card.elite,
       race: card.race,
       player_class: card.player_class,
-      comments: comments(card.comments)
+      comments: comments(card.comments),
     }
   end
 
-  def comments(comments) do
-    comments |> Enum.map( fn c -> %{id: c.id, body: c.body} end )
+  def short_to_map(card) do
+    %{
+      id: card.id,
+      game_id: card.game_id,
+      slug: card.slug,
+      title: card.title,
+      img: img_path(card)
+    }
   end
 
+
+  def comments(comments) do
+    comments |> Enum.map( fn c -> %{id: c.id, body: c.body, user: user_to_map(c.user)} end )
+  end
+
+  def user_to_map(user) do
+    %{ name: user.name }
+  end
   def serialize(map) do
     %{ cards: map }
     |> Poison.encode!

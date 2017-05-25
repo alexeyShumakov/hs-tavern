@@ -9,8 +9,9 @@ export default (props) => {
     <div className="column is-one-third-tablet is-one-third-desktop">
       <div onClick={()=>{
         window.history.pushState(null, null, `/cards/${props.card.slug}`);
-        props.actions.fetchCard(props.card.slug);
-        props.actions.openCardsModal(props.card);
+        props.actions.fetchCard(props.card.slug).then(()=> {
+          props.actions.openCardsModal(props.card);
+        })
       }}
         style={style} className="hs-card"/>
     </div>

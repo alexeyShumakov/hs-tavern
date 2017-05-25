@@ -5,7 +5,7 @@ defmodule HsTavern.CardView do
   def cards_json(cards, filters \\%{}) do
     %{
       filters: filters,
-      index: Enum.map(cards, &CardSerializer.to_map&1)
+      index: Enum.map(cards, &CardSerializer.short_to_map&1)
     }
     |> CardSerializer.serialize |> raw
   end

@@ -6,14 +6,13 @@ import actionTypes from "../constants";
 export function openCardsModal(card) {
   return(dispatch, getState) => {
     dispatch(setCardsModal(true));
-    dispatch(openCardChannel(card.id));
   }
 }
 
 export function closeCardsModal(card) {
   return(dispatch, getState) => {
     dispatch(setCardsModal(false));
-    dispatch(closeCardChannel(card.id));
+    dispatch(closeCardChannel(card.slug));
   }
 }
 
@@ -91,10 +90,12 @@ export function fetchCard(id) {
     getState().cards.channel.on("create_comment", payload => {
       dispatch(pushCardsComment(payload))
     })
-    if(_.isEmpty(getState().cards.show)) {
+    if(_.isEmpty(getState().cards.show.slig)) {
       return axios.get(`/api/cards/${id}`).then((response) => {
         dispatch(setCard(response.data));
       })
+    } else {
+      return new Promise.resolve();
     }
   }
 }

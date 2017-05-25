@@ -17,6 +17,8 @@ const App = (props) => {
     <div>
       { store.cards.isOpenModal &&
         <CardsModal
+          store={store}
+          actions={actions}
           channel={store.cards.channel}
           clear={actions.clearCard}
           closeCardsModal={actions.closeCardsModal}

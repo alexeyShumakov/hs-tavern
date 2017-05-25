@@ -12,8 +12,9 @@ defmodule HsTavern.CardChannel do
     %{ id: user_id } = current_resource(socket)
     changeset = Comment.changeset(%Comment{}, %{card_id: card_id, body: body, user_id: user_id})
     case Repo.insert(changeset) do
-      {:ok, comment} ->
-        comment_map = %{ id: comment.id, body: comment.body }
+      {:ok, c} ->
+        comment = c |> Repo.preload([:user])
+        comment_map = %{ id: comment.id, body: comment.body, user: %{ id: comment.user.id, name: comment.user.name } }
         broadcast! socket, "create_comment", comment_map
       {:error, reason} -> nil
     end

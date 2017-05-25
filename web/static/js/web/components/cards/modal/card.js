@@ -1,23 +1,21 @@
 import React from "react";
 
-export default class CardsShow extends React.Component {
+export default class CardModal extends React.Component {
   constructor(props) {
     super(props);
-    const { cardId } = props.route.match.params;
-    const { fetchCard } = props.actions;
     this.state = {comment: ""};
-    fetchCard(cardId);
   }
 
   componentWillUnmount() {
     let {clearCard, closeCardChannel} = this.props.actions;
-    closeCardChannel(this.props.route.match.params);
+    closeCardChannel(this.props.store.cards.show.slug);
     clearCard();
   }
 
   render() {
     const isLogin =  this.props.store.user.is_authenticated;
     const card = this.props.store.cards.show;
+    console.log(card.comments);
     const comments = card.comments.map((c)=> {
       return(
         <div key={c.id} className="media">
@@ -39,8 +37,8 @@ export default class CardsShow extends React.Component {
       )
     })
     return(
-      <div className="columns">
-        <div className="column is-three-quarters">
+      <div>
+        <div>
           <div className="box">
             <h2 className="title is-3">{card.title}</h2>
             <div className="media">

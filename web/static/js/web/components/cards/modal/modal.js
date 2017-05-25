@@ -1,4 +1,5 @@
 import React from "react";
+import Card from "./card";
 
 export default class CardsModal extends React.Component {
   constructor(props) {
@@ -6,10 +7,7 @@ export default class CardsModal extends React.Component {
     this.close = this.close.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
     document.addEventListener('keydown', this.handleKeydown);
-    props.channel.on("card_click", payload => {
-    })
   }
-
 
   close() {
     let { card, closeCardsModal, clear } = this.props;
@@ -29,20 +27,14 @@ export default class CardsModal extends React.Component {
   }
 
   render() {
-    const { cc, isOpen, card, channel } = this.props;
+    const { cc, isOpen, card, channel, store, actions } = this.props;
     return(
       <div>
         { isOpen &&
           <div className="modal is-active" onKeyDown={this.handleKeydown}>
             <div className="modal-background" onClick={this.close}/>
             <div className="modal-content">
-              <div className="box"
-                onClick={()=> {
-                  channel.push("card_click", {card_id: card.id})
-                }}
-              >
-                {card.title}
-              </div>
+              <Card actions={actions} store={store}/>
             </div>
             <button className="modal-close" onClick={this.close}/>
           </div>

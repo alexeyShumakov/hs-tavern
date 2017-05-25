@@ -5,15 +5,19 @@ defmodule HsTavern.CardProvider do
   def one_card!(id) do
     case Integer.parse(id) do
       :error ->
-        query = from p in Card,
-          preload: [:comments],
-          where: p.slug == ^id
+        query = from card in Card,
+          left_join: c in assoc(card, :comments),
+          left_join: u in assoc(c, :user),
+          where: card.slug == ^id,
+          preload: [comments: {c, user: u}]
 
       {value, "" } ->
-        query = from p in Card,
-          preload: [:comments],
-          where: p.slug == ^id,
-          or_where: p.id == ^id
+        query = from card in Card,
+          left_join: c in assoc(card, :comments),
+          left_join: u in assoc(c, :user),
+          where: card.slug == ^id,
+          or_where: card.id == ^id,
+          preload: [comments: {c, user: u}]
     end
 
     HsTavern.Repo.one!(query)
