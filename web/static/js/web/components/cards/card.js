@@ -1,5 +1,9 @@
 import React from "react";
+import Time from "../../utils/time";
 
+function convert(t) {
+  time(t);
+}
 export default class CardContent extends React.Component {
   constructor(props) {
     super(props);
@@ -25,12 +29,8 @@ export default class CardContent extends React.Component {
           </div>
 
           <div className="media-content">
-            <div className="content">
-              <p>
-                <b>{c.user.name}</b>
-                <br/> {c.body}
-              </p>
-            </div>
+            <strong>{c.user.name}</strong> <small><Time time={c.inserted_at}/></small>
+            <div className="content"> {c.body} </div>
           </div>
         </div>
       )

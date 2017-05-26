@@ -5,7 +5,8 @@ defmodule HsTavern.Serializers.CommentSerializer do
     %{
       id: comment.id,
       body: comment.body,
-      user: UserSerializer.to_map(comment.user)
+      user: UserSerializer.to_map(comment.user),
+      inserted_at: comment.inserted_at
     }
   end
 end
