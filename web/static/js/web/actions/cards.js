@@ -1,8 +1,30 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import _ from "lodash";
 
 import actionTypes from "../constants";
 
+export function likeCardComment(commentId) {
+  return(dispatch, getState) => {
+    return axios.post("/likes", {
+      like: {
+        entity_type: "comment",
+        entity_id: commentId
+      }
+    }).then((resp)=>{
+      dispatch(setCardComment(resp.data));
+    }, ()=> {
+      console.log("err")
+    })
+
+  }
+}
+
+export function setCardComment(comment) {
+  return {
+    type: "SET_CARD_COMMENT",
+    comment
+  }
+}
 export function openCardsModal(card) {
   return(dispatch, getState) => {
     dispatch(setCardsModal(true));

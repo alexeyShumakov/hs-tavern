@@ -25,9 +25,20 @@ const defaultState = {
   }
 }
 
-let channel, comments, newState;
+let channel, comments, newState, arrId, show;
 export default (state = {}, action) => {
   switch (action.type) {
+    case "SET_CARD_COMMENT":
+      let newComments = state.show.comments.slice();
+      state.show.comments.find((element, id)=> {
+        if(action.comment.id == element.id) {
+          let newComment = Object.assign({}, element, action.comment)
+          newComments[id] = newComment;
+          show = Object.assign({}, state.show, {comments: newComments})
+        }
+      })
+      return Object.assign({}, state, {show: show})
+
     case "PUSH_CARDS_COMMENT":
       comments = state.show.comments;
       let newShow = Object.assign({}, state.show, {comments: [...comments, action.comment]})

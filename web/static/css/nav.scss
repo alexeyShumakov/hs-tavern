@@ -11,6 +11,14 @@
     }
   }
 }
+
+.nav-avatar {
+  img {
+    border-radius: 3px;
+  }
+  margin-right: 12px;
+}
+
 .nav-toggle, .nav-toggle.is-active {
   &:hover {
     background-color: lighten($primary, 5%);

@@ -27,6 +27,9 @@ export default (props) => {
         { props.store.user.is_authenticated ?
           <div  className="nav-right nav-menu">
             <a className="nav-item">
+              <figure className="image is-24x24 nav-avatar">
+                <img src={props.store.user.avatar} alt="avatar" />
+              </figure>
               {props.store.user.name}
             </a>
             <div className="nav-item">

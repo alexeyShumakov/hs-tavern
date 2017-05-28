@@ -6,7 +6,8 @@ defmodule HsTavern.Serializers.CommentSerializer do
       id: comment.id,
       body: comment.body,
       user: UserSerializer.to_map(comment.user),
-      inserted_at: comment.inserted_at
+      inserted_at: comment.inserted_at,
+      likes_count: comment.likes_count
     }
   end
 end

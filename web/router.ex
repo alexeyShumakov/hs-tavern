@@ -22,6 +22,8 @@ defmodule HsTavern.Router do
     pipe_through [:browser, :browser_auth]
 
     get "/", PageController, :index
+    get "/x", PageController, :x
+    resources "/likes", LikeController, only: [:create, :delete]
     resources "/cards", CardController
   end
 

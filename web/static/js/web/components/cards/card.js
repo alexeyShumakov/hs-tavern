@@ -1,9 +1,6 @@
 import React from "react";
-import Time from "../../utils/time";
+import Comment from "../comment/comment";
 
-function convert(t) {
-  time(t);
-}
 export default class CardContent extends React.Component {
   constructor(props) {
     super(props);
@@ -20,20 +17,12 @@ export default class CardContent extends React.Component {
     const isLogin =  this.props.store.user.is_authenticated;
     const card = this.props.store.cards.show;
     const comments = card.comments.map((c)=> {
-      return(
-        <div key={c.id} className="media">
-          <div className="media-left">
-            <p className="image is-48x48">
-              <img src={c.user.avatar}/>
-            </p>
-          </div>
-
-          <div className="media-content">
-            <strong>{c.user.name}</strong> <small><Time time={c.inserted_at}/></small>
-            <div className="content"> {c.body} </div>
-          </div>
-        </div>
-      )
+      return(<Comment
+        key={c.id}
+        comment={c}
+        store={this.props.store}
+        actions={this.props.actions}
+        />)
     })
     return(
       <div className="box">
@@ -68,6 +57,7 @@ export default class CardContent extends React.Component {
             </div>
           </div>
         </div>
+        {comments}
         {isLogin ?
           <div className="media">
             <div className="media-left">
@@ -109,7 +99,6 @@ export default class CardContent extends React.Component {
               </div>
             </article>
         }
-        {comments}
       </div>
     )
   }
