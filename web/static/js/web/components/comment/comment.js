@@ -25,7 +25,7 @@ export default (props) => {
                 onClick={()=>{
                   props.actions.likeCardComment(props.comment.id)
                 }}
-              ><i className="fa fa-heart"></i></span>
+              ><i className={`fa fa-heart${props.comment.like_me ? "" : "-o"}`}></i></span>
             </a>
           </div>
         </nav>

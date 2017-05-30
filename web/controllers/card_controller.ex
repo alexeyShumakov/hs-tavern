@@ -1,20 +1,21 @@
 defmodule HsTavern.CardController do
   use HsTavern.Web, :controller
+  use Guardian.Phoenix.Controller
 
   alias HsTavern.Card
   alias HsTavern.CardProvider
 
-  def index(conn, params) do
+  def index(conn, params, user, _) do
     {cards, filters} = HsTavern.CardFilter.filter(params)
     render(conn, "index.html", cards: cards, filters: filters)
   end
 
-  def new(conn, _params) do
+  def new(conn, _params, user, _) do
     changeset = Card.changeset(%Card{})
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"card" => card_params}) do
+  def create(conn, %{"card" => card_params}, user, _) do
     changeset = Card.changeset(%Card{}, card_params)
 
     case Repo.insert(changeset) do
@@ -27,18 +28,18 @@ defmodule HsTavern.CardController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    card = CardProvider.one_card!(id)
-    render(conn, "show.html", card: card)
+  def show(conn, %{"id" => id}, user, _) do
+    card = CardProvider.one_card!(id, user)
+    render(conn, "show.html", card: card, user: user)
   end
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, %{"id" => id}, user, _) do
     card = Repo.get!(Card, id)
     changeset = Card.changeset(card)
     render(conn, "edit.html", card: card, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "card" => card_params}) do
+  def update(conn, %{"id" => id, "card" => card_params}, user, _) do
     card = Repo.get!(Card, id)
     changeset = Card.changeset(card, card_params)
 
@@ -52,7 +53,7 @@ defmodule HsTavern.CardController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}, user, _) do
     card = Repo.get!(Card, id)
 
     # Here we use delete! (with a bang) because we expect

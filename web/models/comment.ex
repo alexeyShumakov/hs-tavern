@@ -8,6 +8,7 @@ defmodule HsTavern.Comment do
   schema "comments" do
     field :body, :string
     field :likes_count, :integer, default: 0
+    field :like_me, :boolean, virtual: true, default: false
     belongs_to :user, HsTavern.User
     belongs_to :card, HsTavern.Card
 

@@ -1,7 +1,7 @@
 defmodule HsTavern.Serializers.CardSerializer do
   use HsTavern.Web, :view
   alias HsTavern.Serializers.CommentSerializer
-  def to_map(card) do
+  def to_map(card, user \\ nil) do
     %{
       id: card.id,
       game_id: card.game_id,
@@ -22,7 +22,7 @@ defmodule HsTavern.Serializers.CardSerializer do
       elite: card.elite,
       race: card.race,
       player_class: card.player_class,
-      comments: card.comments |> Enum.map( fn c -> CommentSerializer.to_map(c) end )
+      comments: card.comments |> Enum.map( fn c -> CommentSerializer.to_map(c, user) end )
     }
   end
 

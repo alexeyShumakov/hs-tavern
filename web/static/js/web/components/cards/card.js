@@ -1,5 +1,6 @@
 import React from "react";
 import Comment from "../comment/comment";
+import _ from "lodash";
 
 export default class CardContent extends React.Component {
   constructor(props) {
@@ -41,18 +42,27 @@ export default class CardContent extends React.Component {
               <p>{card.flavor}</p>
               <hr/>
               <ul>
-                <li>{card.card_set}</li>
-                <li>{card.type}</li>
-                <li>{card.faction}</li>
-                <li>{card.rarity}</li>
-                <li>cost: {card.cost}</li>
-                <li>attack: {card.attack}</li>
-                <li>health: {card.health}</li>
-                <li>{card.artist}</li>
+                <li><b>Set: </b> {card.card_set}</li>
+                <li><b>Type: </b> {card.type}</li>
+                <li><b>Faction: </b> {card.faction}</li>
+                <li><b>Rarity: </b>{card.rarity}</li>
+                <li><b>Cost:</b> {card.cost}</li>
+                {_.isInteger(card.attack) &&
+                  <li><b>Attack: </b> {card.attack}</li>
+                }
+                {card.health &&
+                  <li><b>Health: </b> {card.health}</li>
+                }
+                <li><b>Artist: </b>{card.artist}</li>
+                {card.race &&
+                  <li><b>Race: </b> {card.race}</li>
+                }
+
+                {card.player_class &&
+                  <li><b>Class: </b> {card.player_class}</li>
+                }
                 <li>{card.collectible ? "collectible" : "not collectible"}</li>
                 <li>{card.elite ? "elite" : "not elite"}</li>
-                <li>{card.race}</li>
-                <li>{card.player_class}</li>
               </ul>
             </div>
           </div>
