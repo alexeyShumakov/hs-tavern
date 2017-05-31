@@ -3,6 +3,22 @@ import _ from "lodash";
 
 import actionTypes from "../constants";
 
+export function likeCard(cardId) {
+  return(dispatch, getState) => {
+    return axios.post("/likes", {
+      like: {
+        entity_type: "card",
+        entity_id: cardId
+      }
+    }).then((resp)=>{
+      const card = getState().cards.show
+      const newCard = Object.assign({}, card, resp.data)
+      dispatch(setCard(newCard));
+    }, ()=> {
+      console.log("err")
+    })
+  }
+}
 export function likeCardComment(commentId) {
   return(dispatch, getState) => {
     return axios.post("/likes", {
@@ -111,6 +127,11 @@ export function cardsExecChannel(id) {
     getState().cards.channel.on("create_comment", payload => {
       dispatch(pushCardsComment(payload))
     })
+    getState().cards.channel.on("like", payload => {
+      const card = getState().cards.show
+      const newCard = Object.assign({}, card, payload)
+      dispatch(setCard(newCard));
+    })
   }
 }
 
@@ -119,6 +140,11 @@ export function fetchCard(id) {
     dispatch(openCardChannel(id));
     getState().cards.channel.on("create_comment", payload => {
       dispatch(pushCardsComment(payload))
+    })
+    getState().cards.channel.on("like", payload => {
+      const card = getState().cards.show
+      const newCard = Object.assign({}, card, payload)
+      dispatch(setCard(newCard));
     })
     return axios.get(`/api/cards/${id}`).then((response) => {
       dispatch(setCard(response.data));

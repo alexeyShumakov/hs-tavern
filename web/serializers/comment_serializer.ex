@@ -1,7 +1,11 @@
 defmodule HsTavern.Serializers.CommentSerializer do
   use HsTavern.Web, :view
   alias HsTavern.Serializers.UserSerializer
-  def to_map(comment, user \\ nil) do
+  def to_map(comments) when is_list(comments) do
+    comments |> Enum.map(&to_map&1)
+  end
+
+  def to_map(comment) do
     %{
       id: comment.id,
       body: comment.body,
@@ -11,4 +15,5 @@ defmodule HsTavern.Serializers.CommentSerializer do
       like_me: comment.like_me
     }
   end
+
 end

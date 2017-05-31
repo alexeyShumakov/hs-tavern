@@ -22,7 +22,9 @@ defmodule HsTavern.Serializers.CardSerializer do
       elite: card.elite,
       race: card.race,
       player_class: card.player_class,
-      comments: card.comments |> Enum.map( fn c -> CommentSerializer.to_map(c, user) end )
+      comments: card.comments |> CommentSerializer.to_map,
+      likes_count: card.likes_count,
+      like_me: card.like_me
     }
   end
 

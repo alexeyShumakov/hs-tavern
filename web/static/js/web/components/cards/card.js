@@ -27,7 +27,23 @@ export default class CardContent extends React.Component {
     })
     return(
       <div className="box">
-        <h2 className="title is-3">{card.title}</h2>
+        <nav className="level">
+          <div className="level-left">
+            <div className="level-item">
+              <h2 className="title is-3">{card.title}</h2>
+            </div>
+          </div>
+          <div className="level-right">
+            <a className="level-item">
+              {card.likes_count}
+              <span className="icon"
+                onClick={()=>{
+                  this.props.actions.likeCard(card.id);
+                }}
+              ><i className={`fa fa-heart${card.like_me ? "" : "-o"}`}></i></span>
+            </a>
+          </div>
+        </nav>
         <div className="media">
           <div className="media-left">
             <p className="image">
@@ -37,6 +53,7 @@ export default class CardContent extends React.Component {
           <div className="media-content">
             <div className="content">
               <h4>Card text</h4>
+
               <p> {card.text} </p>
               <h4>Flavor</h4>
               <p>{card.flavor}</p>

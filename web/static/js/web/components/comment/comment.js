@@ -1,7 +1,5 @@
 import React from "react";
 import Time from "../../utils/time";
-import axios from "../../utils/axios";
-
 
 export default (props) => {
   return(

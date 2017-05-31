@@ -23,6 +23,11 @@ defmodule HsTavern.Card do
     field :player_class, :string
 
     has_many :comments, HsTavern.Comment
+    many_to_many :likes, HsTavern.Like, join_through: "cards_likes", on_delete: :delete_all
+    has_many :likes_users, through: [:likes, :user]
+
+    field :likes_count, :integer, default: 0
+    field :like_me, :boolean, virtual: true, default: false
 
     timestamps()
   end

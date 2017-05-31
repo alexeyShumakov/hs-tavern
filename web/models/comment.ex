@@ -11,6 +11,8 @@ defmodule HsTavern.Comment do
     field :like_me, :boolean, virtual: true, default: false
     belongs_to :user, HsTavern.User
     belongs_to :card, HsTavern.Card
+    many_to_many :likes, HsTavern.Like, join_through: "comments_likes", on_delete: :delete_all
+    has_many :likes_users, through: [:likes, :user]
 
     timestamps()
   end

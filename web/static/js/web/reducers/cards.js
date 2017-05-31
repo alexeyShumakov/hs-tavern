@@ -42,7 +42,6 @@ export default (state = {}, action) => {
     case "PUSH_CARDS_COMMENT":
       comments = state.show.comments;
       let newShow = Object.assign({}, state.show, {comments: [...comments, action.comment]})
-      console.log(newShow)
       return Object.assign({}, state, {show: newShow});
 
     case "OPEN_CARD_CHANNEL":
