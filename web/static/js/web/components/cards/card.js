@@ -68,7 +68,11 @@ export default class CardContent extends React.Component {
               {card.likes_count}
               <span className="icon"
                 onClick={()=>{
-                  this.props.actions.likeCard(card.id);
+                  if(this.props.store.user.is_authenticated) {
+                    this.props.actions.likeCard(card.id);
+                  } else {
+                    this.props.actions.setModal(true);
+                  }
                 }}
               ><i className={`fa fa-heart${card.like_me ? "" : "-o"}`}></i></span>
             </a>
@@ -120,8 +124,10 @@ export default class CardContent extends React.Component {
             </div>
           </div>
           :
-            <article className="message">
-              <div className="message-body">
+            <article
+              onClick={()=> this.props.actions.setModal(true) }
+              className="notification is-pointer has-text-centered">
+              <div>
                 Please, Sing in to comment
               </div>
             </article>

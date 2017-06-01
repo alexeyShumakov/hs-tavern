@@ -21,7 +21,11 @@ export default (props) => {
               {props.comment.likes_count}
               <span className="icon is-small"
                 onClick={()=>{
-                  props.actions.likeCardComment(props.comment.id)
+                  if(props.store.user.is_authenticated) {
+                    props.actions.likeCardComment(props.comment.id)
+                  } else {
+                    props.actions.setModal(true);
+                  }
                 }}
               ><i className={`fa fa-heart${props.comment.like_me ? "" : "-o"}`}></i></span>
             </a>
