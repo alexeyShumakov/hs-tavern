@@ -1,5 +1,5 @@
 import React from "react";
-import Comment from "../comment/comment";
+import CommentsList from "../comment/commentsList";
 import _ from "lodash";
 
 export default class CardContent extends React.Component {
@@ -17,33 +17,10 @@ export default class CardContent extends React.Component {
   render() {
     const isLogin =  this.props.store.user.is_authenticated;
     const card = this.props.store.cards.show;
-    const comments = card.comments.map((c)=> {
-      return(<Comment
-        key={c.id}
-        comment={c}
-        store={this.props.store}
-        actions={this.props.actions}
-        />)
-    })
+
     return(
       <div className="box">
-        <nav className="level">
-          <div className="level-left">
-            <div className="level-item">
-              <h2 className="title is-3">{card.title}</h2>
-            </div>
-          </div>
-          <div className="level-right">
-            <a className="level-item">
-              {card.likes_count}
-              <span className="icon"
-                onClick={()=>{
-                  this.props.actions.likeCard(card.id);
-                }}
-              ><i className={`fa fa-heart${card.like_me ? "" : "-o"}`}></i></span>
-            </a>
-          </div>
-        </nav>
+        <h2 className="title is-3">{card.title}</h2>
         <div className="media">
           <div className="media-left">
             <p className="image">
@@ -84,7 +61,30 @@ export default class CardContent extends React.Component {
             </div>
           </div>
         </div>
-        {comments}
+
+        <nav className="level">
+          <div className="level-left">
+            <a className="level-item">
+              {card.likes_count}
+              <span className="icon"
+                onClick={()=>{
+                  this.props.actions.likeCard(card.id);
+                }}
+              ><i className={`fa fa-heart${card.like_me ? "" : "-o"}`}></i></span>
+            </a>
+            <a className="level-item">
+              {card.comments_count}
+              <span className="icon"><i className="fa fa-comment-o"></i></span>
+            </a>
+          </div>
+        </nav>
+        <hr/>
+        <CommentsList
+          parent={card}
+          totalCount={card.comments_count}
+          actions={this.props.actions}
+          comments={card.comments}
+          store={this.props.store}/>
         {isLogin ?
           <div className="media">
             <div className="media-left">

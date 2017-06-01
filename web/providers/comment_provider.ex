@@ -17,7 +17,15 @@ defmodule HsTavern.CommentProvider do
 
   end
   def comments(entity_id) do
-    HsTavern.Repo.all(comments_query)
+    comments_query |> where(card_id: ^entity_id) |> HsTavern.Repo.all
+  end
+
+  def calc_offset(total_count) do
+    offset = total_count - 3;
+    cond do
+      offset < 0 -> 0
+      offset >= 0 -> offset
+    end
   end
 
   def comments_query() do
@@ -27,6 +35,5 @@ defmodule HsTavern.CommentProvider do
       left_join: like_u in assoc(l, :user),
       order_by: :inserted_at,
       preload: [:likes_users, user: u, likes: {l, user: like_u}]
-
   end
 end

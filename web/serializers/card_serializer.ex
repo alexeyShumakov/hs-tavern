@@ -23,6 +23,7 @@ defmodule HsTavern.Serializers.CardSerializer do
       race: card.race,
       player_class: card.player_class,
       comments: card.comments |> CommentSerializer.to_map,
+      comments_count: card.comments_count,
       likes_count: card.likes_count,
       like_me: card.like_me
     }

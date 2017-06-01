@@ -19,6 +19,20 @@ export function likeCard(cardId) {
     })
   }
 }
+
+export function fetchAllCardComments(cardId) {
+  return(dispatch, getState) => {
+    return axios.get("/comments", {params: {entity_id: cardId}})
+      .then((resp)=>{
+      const card = getState().cards.show;
+      const newCard = Object.assign({}, card, {comments: resp.data});
+      dispatch(setCard(newCard));
+    }, ()=> {
+      console.log("err")
+    })
+  }
+}
+
 export function likeCardComment(commentId) {
   return(dispatch, getState) => {
     return axios.post("/likes", {
@@ -125,7 +139,10 @@ export function cardsExecChannel(id) {
   return(dispatch, getState) => {
     dispatch(openCardChannel(id));
     getState().cards.channel.on("create_comment", payload => {
-      dispatch(pushCardsComment(payload))
+      dispatch(pushCardsComment(payload["comment"]))
+      const card = getState().cards.show;
+      const newCard = Object.assign({}, card, {comments_count: payload["comments_count"]})
+      dispatch(setCard(newCard))
     })
     getState().cards.channel.on("like", payload => {
       const card = getState().cards.show
@@ -139,7 +156,10 @@ export function fetchCard(id) {
   return(dispatch, getState) => {
     dispatch(openCardChannel(id));
     getState().cards.channel.on("create_comment", payload => {
-      dispatch(pushCardsComment(payload))
+      dispatch(pushCardsComment(payload["comment"]))
+      const card = getState().cards.show;
+      const newCard = Object.assign({}, card, {comments_count: payload["comments_count"]})
+      dispatch(setCard(newCard))
     })
     getState().cards.channel.on("like", payload => {
       const card = getState().cards.show

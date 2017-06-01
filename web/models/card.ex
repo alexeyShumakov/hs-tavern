@@ -26,6 +26,7 @@ defmodule HsTavern.Card do
     many_to_many :likes, HsTavern.Like, join_through: "cards_likes", on_delete: :delete_all
     has_many :likes_users, through: [:likes, :user]
 
+    field :comments_count, :integer, default: 0
     field :likes_count, :integer, default: 0
     field :like_me, :boolean, virtual: true, default: false
 

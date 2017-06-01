@@ -1,6 +1,7 @@
 defmodule HsTavern.CardChannel do
-  use Phoenix.Channel
+  import Ecto.Query
   import Guardian.Phoenix.Socket
+  use Phoenix.Channel
   alias HsTavern.Comment
   alias HsTavern.Repo
   alias HsTavern.Serializers.CommentSerializer
@@ -17,8 +18,10 @@ defmodule HsTavern.CardChannel do
     case Repo.insert(changeset) do
       {:ok, c} ->
         comment = c |> Repo.preload([:user])
+        HsTavern.Card |> where(id: ^card_id) |> Repo.update_all(inc: [comments_count: 1])
+        card = Repo.get HsTavern.Card, card_id
         comment_map = CommentSerializer.to_map(comment)
-        broadcast! socket, "create_comment", comment_map
+        broadcast! socket, "create_comment", %{comment: comment_map, comments_count: card.comments_count}
       {:error, _reason} -> nil
     end
     {:noreply, socket}

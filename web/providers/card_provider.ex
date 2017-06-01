@@ -21,13 +21,19 @@ defmodule HsTavern.CardProvider do
   end
 
   def get_card(slug) do
-    sub = CommentProvider.comments_query
     query = from card in Card,
       left_join: l in assoc(card, :likes),
       left_join: u in assoc(l, :user),
       where: [slug: ^slug],
-      preload: [:likes_users, comments: ^sub, likes: {l, user: u}]
+      preload: [:likes_users, likes: {l, user: u}]
 
-    HsTavern.Repo.one!(query)
+    card = HsTavern.Repo.one!(query)
+    offset = CommentProvider.calc_offset(card.comments_count)
+    comments = CommentProvider.comments_query
+    |> where(card_id: ^card.id)
+    |> offset(^offset)
+    |> limit(3)
+    |> HsTavern.Repo.all
+    card |> Map.put(:comments, comments)
   end
 end
