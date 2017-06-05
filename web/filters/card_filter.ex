@@ -97,7 +97,7 @@ defmodule HsTavern.CardFilter do
 
   defp page_filter({card, filters, params}) do
     page = card |> Repo.paginate(params)
-    pag_params = %{ page: page.page_number, total_pages: page.total_pages }
+    pag_params = %{ page: page.page_number, total_pages: page.total_pages, page_size: page.page_size }
     { page.entries, Map.put(filters, :pagination, pag_params) }
   end
 

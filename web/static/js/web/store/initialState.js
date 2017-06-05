@@ -3,6 +3,22 @@ const shared = (typeof $shared === 'undefined') ? {} : JSON.parse($shared);
 const local = (typeof $local === 'undefined') ? {} : JSON.parse($local);
 
 const initialState = {
+  builder: {
+    desk: {},
+    cards: [],
+    filters: {
+      player_class: "",
+      set: "All",
+      keyword: "",
+      cost: {min: 0, max: 7},
+      collectible: true,
+      pagination: {
+        page: 1,
+        total_pages: 2,
+        page_size: 6
+      }
+    },
+  },
   user: {},
   cards: {
     isOpenModal: false,

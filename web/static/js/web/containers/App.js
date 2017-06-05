@@ -10,6 +10,8 @@ import Modal from "../components/modal/Modal";
 import Cards from "../components/cards/index/index";
 import Card from "../components/cards/show";
 import CardsModal from "../components/cards/modal/modal";
+import Builder from "../components/builder/builder";
+import ClassBuilder from "../components/builder/classBuilder";
 
 const App = (props) => {
   const { store, actions, children } = props;
@@ -40,6 +42,12 @@ const App = (props) => {
             <div className="column">
               <Route exact path="/cards/:cardId"
                 render={route => (<Card {...{route, store, actions}}/>)}
+              />
+              <Route exact path="/builder"
+                render={route => (<Builder {...{route, store, actions}}/>)}
+              />
+              <Route exact path="/builder/:heroClass"
+                render={route => (<ClassBuilder {...{route, store, actions}}/>)}
               />
               <Route exact path="/cards"
                 render={route => (<Cards {...{route, store, actions}}/>)}
