@@ -12,7 +12,7 @@ export default class CardsModal extends React.Component {
   close() {
     let { card, closeCardsModal, clear } = this.props;
     closeCardsModal(card);
-    window.history.pushState(null, null, "/cards");
+    window.history.back()
     clear();
   }
 

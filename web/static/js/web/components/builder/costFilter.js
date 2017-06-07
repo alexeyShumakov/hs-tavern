@@ -16,7 +16,7 @@ export default (props) => {
   return(
     <div className="slider-wrapper">
       <Range
-        className={props.classFilter}
+        className="cost-filter"
         onChange={handleChange}
         onAfterChange={()=> {
           const pagination = _.merge(filters.pagination, {page: 1});

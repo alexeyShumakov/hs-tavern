@@ -1,6 +1,10 @@
 const init = {
   desk: {
-    player_class: ""
+    player_class: "",
+    title: "",
+    description: "",
+    standard: true,
+    cards: []
   },
   cards: [],
   filters: {
@@ -17,8 +21,32 @@ const init = {
   }
 }
 
+let newDesk, cards, newCards, newState, card, newCard, index;
+let removeCard = (cards, card) => {
+  return cards.filter((desk_card) => {return desk_card.id !== card.id })
+}
 export default (state = init, action) => {
   switch (action.type) {
+    case "BUILDER_UPDATE_DESK":
+      return Object.assign({}, state, {desk: action.desk})
+
+    case "BUILDER_REMOVE_CARD":
+      newDesk = Object.assign({}, state.desk,
+        {cards: removeCard(state.desk.cards, action.card)})
+      return Object.assign({}, state, {desk: newDesk})
+
+    case "BUILDER_UPDATE_DESK_CARD":
+      cards  = state.desk.cards.map((desk_card) => {
+        return desk_card.id == action.card.id ? action.card : desk_card
+      })
+      newDesk = Object.assign({}, state.desk, {cards: cards})
+      return Object.assign({}, state, {desk: newDesk})
+
+    case "BUILDER_ADD_CARD_TO_DESK":
+      cards = [...state.desk.cards, action.card]
+      newDesk = Object.assign({}, state.desk, {cards: cards})
+      return Object.assign({}, state, {desk: newDesk})
+
     case "BUILDER_CLEAR":
       return Object.assign({}, init);
 

@@ -35,7 +35,11 @@ defmodule HsTavern.Serializers.CardSerializer do
       game_id: card.game_id,
       slug: card.slug,
       title: card.title,
-      img: img_path(card)
+      img: img_path(card),
+      comments_count: card.comments_count,
+      likes_count: card.likes_count,
+      rarity: card.rarity,
+      cost: card.cost
     }
   end
 

@@ -1,0 +1,36 @@
+.builder__curve-item-wrapper {
+  width: 12.5%;
+
+}
+.builder__curve-item-box {
+  position: relative;
+  height: 120px;
+  margin-right: 5px;
+  margin-left: 5px;
+  background-color: $white-bis;
+
+  .builder__curve-item {
+    background-color: $blue;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: height 0.3s;
+  }
+}
+
+.builder__desk-card {
+  position: relative;
+  &:hover {
+    cursor: pointer;
+  }
+  .builder__desk-card-img {
+    position: absolute;
+    left: -320px;
+    bottom: -25px;
+    z-index: 10;
+  }
+}
+.builder__desk-card-cost {
+  color: $blue;
+}

@@ -1,6 +1,33 @@
 import axios from "../utils/axios";
 import _ from "lodash";
 
+export function builderRemoveCard(card) {
+  return {
+    type: "BUILDER_REMOVE_CARD",
+    card
+  }
+}
+export function builderAddCardToDesk(card) {
+  return {
+    type: "BUILDER_ADD_CARD_TO_DESK",
+    card
+  }
+}
+
+export function builderUpdateDeskCard(card) {
+  return {
+    type: "BUILDER_UPDATE_DESK_CARD",
+    card
+  }
+}
+
+export function builderUpdateDesk(desk) {
+  return {
+    type: "BUILDER_UPDATE_DESK",
+    desk
+  }
+}
+
 export function builderFetchCards() {
   return(dispatch, getState) => {
     let params = createParams(getState().builder.filters);

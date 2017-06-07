@@ -6,11 +6,14 @@ import KeywordFilter from "./keywordFilter";
 import SetsFilter from "./setsFilter";
 import axios from "../../utils/axios";
 import _ from "lodash";
+import SearchCard from "./searchCard";
+import DeskCard from "./deskCard";
+import Curve from "./costCurve";
 
 export default class Builder extends React.Component {
   componentWillMount() {
     const player_class = _.capitalize(this.props.route.match.params.heroClass);
-    const desk = { player_class }
+    const desk = _.merge({}, this.props.store.builder.desk, { player_class });
     this.props.actions.builderSetDesk(desk);
     if(_.isEmpty(this.props.store.builder.cards)) {
       const newFilters = Object.assign({}, this.props.store.builder.filters, {player_class})
@@ -24,6 +27,9 @@ export default class Builder extends React.Component {
   }
 
   render() {
+    let { desk } = this.props.store.builder;
+    let { cards } = desk;
+    let deskCards = _.sortBy(cards, ["cost", "title"])
     return(
       <div className="columns">
         <div className="column is-three-quarters">
@@ -113,19 +119,30 @@ export default class Builder extends React.Component {
             <div className="columns is-multiline">
               { this.props.store.builder.cards.map((card)=>{
                 return(
-                  <div key={card.id} className="column is-one-third-tablet is-one-third-desktop">
-                    <img src={card.img} alt=""/>
-                  </div>
-                )
-              })
-              }
-
+                  <SearchCard
+                    desk={desk}
+                    key={card.id}
+                    card={card}
+                    actions={this.props.actions}
+                  />)
+              })}
             </div>
-            <div className="columns">
-              <div className="column">
-                <nav className="pagination">
-                </nav>
-              </div>
+
+          </div>
+          <div className="box">
+            <h2 className="title is-4">Description</h2>
+            <div className="field">
+              <p className="control">
+                <textarea
+                  value={desk.description}
+                  onChange={(e)=> {
+                    let newDesk =Object.assign({}, desk, {description: e.target.value})
+                    this.props.actions.builderSetDesk(newDesk)
+                  }}
+                  className="textarea"
+                  placeholder="Textarea">
+                </textarea>
+              </p>
             </div>
           </div>
         </div>
@@ -133,23 +150,44 @@ export default class Builder extends React.Component {
           <div className="box">
             <div className="field">
               <p className="control">
-                <input className="input" type="text" placeholder="Desk title"/>
+                <input
+                  value={desk.title}
+                  onChange={(e)=> {
+                    let newDesk =Object.assign({}, desk, {title: e.target.value})
+                    this.props.actions.builderSetDesk(newDesk)
+                  }}
+                  className="input"
+                  type="text"
+                  placeholder="Desk title"/>
               </p>
             </div>
-          </div>
-          <div className="box">
-            <aside className="menu">
-              <ul className="menu-list">
-                <li><a>Card 1</a></li>
-                <li><a>Card 2</a></li>
-                <li><a>Card 1</a></li>
-                <li><a>Card 1</a></li>
-                <li><a>Card 1</a></li>
-                <li><a>Card 2</a></li>
-                <li><a>Card 2</a></li>
-                <li><a>Card 2</a></li>
-              </ul>
-            </aside>
+
+            <div className="field">
+              <p className="control">
+                <label className="checkbox">
+                  <input type="checkbox"
+                    checked={desk.standard}
+                    onChange={(e)=>{
+                      let newDesk =Object.assign({}, desk, {standard: e.target.checked})
+                      this.props.actions.builderSetDesk(newDesk)
+                    }}
+                  /> Standard
+                </label>
+              </p>
+            </div>
+
+            <Curve cards={cards} />
+            <hr/>
+            <div className="field">
+              <button className="button is-primary is-fullwidth">
+                <span>Save</span>
+              </button>
+            </div>
+            <h3 className="title is-4">{desk.player_class}</h3>
+            <h5 className="subtitle" href="">{_.sumBy(deskCards, 'count')}/30</h5>
+            {deskCards.map((card)=>{
+              return <DeskCard key={card.id} card={card} actions={this.props.actions} />
+            })}
           </div>
         </div>
       </div>

@@ -4,7 +4,13 @@ const local = (typeof $local === 'undefined') ? {} : JSON.parse($local);
 
 const initialState = {
   builder: {
-    desk: {},
+    desk: {
+      player_class: "",
+      title: "",
+      description: "",
+      standard: true,
+      cards: []
+    },
     cards: [],
     filters: {
       player_class: "",
