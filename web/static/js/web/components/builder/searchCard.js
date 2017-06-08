@@ -14,26 +14,28 @@ export default class SearchCard extends React.Component {
       backgroundImage: `url(${card.img})`
     }
     return(
-      <div className="hs-card__wrapper column is-one-third-tablet is-one-third-desktop">
-        <div className="hs-card__panel"
-            onClick={()=>{
-            window.history.pushState(null, null, `/cards/${card.slug}`);
-            fetchCard(card.slug).then(()=> {
-              this.props.actions.openCardsModal(card);
-            })
-        }}>
+      <div className="column is-one-third-tablet is-one-third-desktop">
+        <div className="hs-card__wrapper">
+          <div className="hs-card__panel"
+              onClick={()=>{
+              window.history.pushState(null, null, `/cards/${card.slug}`);
+              fetchCard(card.slug).then(()=> {
+                this.props.actions.openCardsModal(card);
+              })
+          }}>
 
-          <a className="icon box is-marginless">
-            <i className="fa fa-search"></i>
-          </a>
-        </div>
-        <div className="hs-card" style={style}
-          onClick={()=>{
-            !ifFullDesk(desk) &&
-              (desk_card && builderUpdateDeskCard(getCard(desk_card))
-                || builderAddCardToDesk(Object.assign({}, card, {count: 1})))
-          }}/>
-        {isFull(desk_card) && <div className="hs-card__overlay is-overlay"/> }
+            <a className="icon box is-marginless">
+              <i className="fa fa-search"></i>
+            </a>
+          </div>
+          <div className="hs-card" style={style}
+            onClick={()=>{
+              !ifFullDesk(desk) &&
+                (desk_card && builderUpdateDeskCard(getCard(desk_card))
+                  || builderAddCardToDesk(Object.assign({}, card, {count: 1})))
+            }}/>
+          {isFull(desk_card) && <div className="hs-card__overlay is-overlay"/> }
+          </div>
       </div>
     )
   }

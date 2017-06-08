@@ -1,6 +1,18 @@
 import axios from "../utils/axios";
 import _ from "lodash";
 
+export function builderSaveDesk() {
+  return(dispatch, getState) => {
+    dispatch(builderValidateDesk());
+  }
+}
+
+export function builderValidateDesk() {
+  return {
+    type: "BUILDER_VALIDATE_DESK"
+  }
+}
+
 export function builderRemoveCard(card) {
   return {
     type: "BUILDER_REMOVE_CARD",

@@ -9,6 +9,7 @@ import _ from "lodash";
 import SearchCard from "./searchCard";
 import DeskCard from "./deskCard";
 import Curve from "./costCurve";
+import Errors from "./errorsNotification";
 
 export default class Builder extends React.Component {
   componentWillMount() {
@@ -27,13 +28,13 @@ export default class Builder extends React.Component {
   }
 
   render() {
-    let { desk } = this.props.store.builder;
+    let { desk, errors, isValid } = this.props.store.builder;
     let { cards } = desk;
     let deskCards = _.sortBy(cards, ["cost", "title"])
     return(
       <div className="columns">
         <div className="column is-three-quarters">
-          <div className="box">
+          <div className="box builder__search-cards">
             <div className="columns">
 
               <div className="column is-half">
@@ -146,7 +147,9 @@ export default class Builder extends React.Component {
             </div>
           </div>
         </div>
+
         <div className="column">
+          {!isValid && <Errors errors={errors} isValid={isValid} />}
           <div className="box">
             <div className="field">
               <p className="control">
@@ -179,7 +182,8 @@ export default class Builder extends React.Component {
             <Curve cards={cards} />
             <hr/>
             <div className="field">
-              <button className="button is-primary is-fullwidth">
+              <button onClick={this.props.actions.builderSaveDesk}
+                className="button is-primary is-fullwidth">
                 <span>Save</span>
               </button>
             </div>

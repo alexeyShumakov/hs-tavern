@@ -1,4 +1,8 @@
+import _ from "lodash";
+
 const init = {
+  errors: {},
+  isValid: true,
   desk: {
     player_class: "",
     title: "",
@@ -27,6 +31,16 @@ let removeCard = (cards, card) => {
 }
 export default (state = init, action) => {
   switch (action.type) {
+    case "BUILDER_VALIDATE_DESK":
+      let errors = {}
+      if(_.isEmpty(state.desk.description))
+        errors["description"] = "Description is required."
+      if(_.isEmpty(state.desk.title))
+        errors["title"] = "Title is required."
+      if (_.sumBy(state.desk.cards, 'count') < 30)
+        errors["count"] = "We need more cards!"
+      return Object.assign({}, state, {errors, isValid: _.isEmpty(errors)})
+
     case "BUILDER_UPDATE_DESK":
       return Object.assign({}, state, {desk: action.desk})
 

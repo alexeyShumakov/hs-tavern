@@ -1,6 +1,6 @@
 .hs-card {
   cursor: pointer;
-  height: 350px;
+  height: 300px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -18,7 +18,7 @@
 .hs-card__panel {
   position: absolute;
   right: 40px;
-  top: 60px;
+  top: 40px;
   display: none;
   z-index: 2;
   .icon {

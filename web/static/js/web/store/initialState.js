@@ -4,6 +4,8 @@ const local = (typeof $local === 'undefined') ? {} : JSON.parse($local);
 
 const initialState = {
   builder: {
+    errors: {},
+    isValid: true,
     desk: {
       player_class: "",
       title: "",
