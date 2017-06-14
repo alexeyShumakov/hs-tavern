@@ -12,6 +12,7 @@ import Card from "../components/cards/show";
 import CardsModal from "../components/cards/modal/modal";
 import Builder from "../components/builder/builder";
 import ClassBuilder from "../components/builder/classBuilder";
+import DeskIndex from "../components/desk/index";
 
 const App = (props) => {
   const { store, actions, children } = props;
@@ -40,6 +41,9 @@ const App = (props) => {
               <Sidebar {...{store, actions}}/>
             </div>
             <div className="column">
+              <Route exact path="/desks"
+                render={route => (<DeskIndex {...{route, store, actions}}/>)}
+              />
               <Route exact path="/cards/:cardId"
                 render={route => (<Card {...{route, store, actions}}/>)}
               />

@@ -8,6 +8,7 @@ defmodule HsTavern.User do
     field :avatar, HsTavern.UserAvatar.Type
     has_many :authorizations, HsTavern.Authorization
     has_many :comments, HsTavern.Comment
+    has_many :desks, HsTavern.Desk
 
     timestamps()
   end

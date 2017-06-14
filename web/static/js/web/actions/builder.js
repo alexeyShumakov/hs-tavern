@@ -3,7 +3,15 @@ import _ from "lodash";
 
 export function builderSaveDesk() {
   return(dispatch, getState) => {
-    dispatch(builderValidateDesk());
+    const store_desk = getState().builder.desk
+    let desk = {
+      player_class: store_desk.player_class,
+      description: store_desk.description,
+      title: store_desk.title,
+      cards: store_desk.cards.map((card)=> {return {id: card.id, count: card.count}})
+    };
+    axios.post("/desks", {desk});
+    //dispatch(builderValidateDesk());
   }
 }
 

@@ -4,7 +4,8 @@ import modal from "./modal";
 import cards from "./cards";
 import user from "./user";
 import builder from "./builder";
+import desks from "./desks";
 
 export default combineReducers({
-  header, modal, cards, user, builder
+  header, modal, cards, user, builder, desks
 })

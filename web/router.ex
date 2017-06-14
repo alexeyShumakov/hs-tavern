@@ -28,6 +28,7 @@ defmodule HsTavern.Router do
     resources "/comments", CommentController, only: [:index]
     resources "/cards", CardController
     resources "/builder", BuilderController, only: [:index, :show]
+    resources "/desks", DeskController, only: [:index, :create]
   end
 
   scope "/auth", HsTavern do
@@ -41,5 +42,6 @@ defmodule HsTavern.Router do
    scope "/api", HsTavern do
     pipe_through :api
     resources "/cards", Api.CardController, only: [:show, :index]
+    resources "/desks", Api.DeskController, only: [:index]
    end
 end

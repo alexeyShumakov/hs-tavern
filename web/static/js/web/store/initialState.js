@@ -3,6 +3,9 @@ const shared = (typeof $shared === 'undefined') ? {} : JSON.parse($shared);
 const local = (typeof $local === 'undefined') ? {} : JSON.parse($local);
 
 const initialState = {
+  desks: {
+    index: []
+  },
   builder: {
     errors: {},
     isValid: true,
