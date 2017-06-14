@@ -50,6 +50,6 @@ defmodule HsTavern.Card do
     |> HsTavern.CardSlug.maybe_generate_slug
     |> HsTavern.CardSlug.unique_constraint
     |> cast_attachments(params, [:img])
-    |> validate_required([:title, :img])
+    |> validate_required([:title])
   end
 end

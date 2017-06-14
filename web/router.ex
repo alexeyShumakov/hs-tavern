@@ -23,10 +23,10 @@ defmodule HsTavern.Router do
   scope "/", HsTavern do
     pipe_through [:browser, :browser_auth]
 
-    get "/", PageController, :index
+    get "/", DeskController, :index
     resources "/likes", LikeController, only: [:create]
     resources "/comments", CommentController, only: [:index]
-    resources "/cards", CardController
+    resources "/cards", CardController, only: [:index, :show]
     resources "/builder", BuilderController, only: [:index, :show]
     resources "/desks", DeskController, only: [:index, :create]
   end

@@ -2,66 +2,15 @@ defmodule HsTavern.CardController do
   use HsTavern.Web, :controller
   use Guardian.Phoenix.Controller
 
-  alias HsTavern.Card
-  alias HsTavern.CardProvider
+  alias HsTavern.{Card, CardProvider}
 
   def index(conn, params, user, _) do
     {cards, filters} = HsTavern.CardFilter.filter(params)
     render(conn, "index.html", cards: cards, filters: filters)
   end
 
-  def new(conn, _params, user, _) do
-    changeset = Card.changeset(%Card{})
-    render(conn, "new.html", changeset: changeset)
-  end
-
-  def create(conn, %{"card" => card_params}, user, _) do
-    changeset = Card.changeset(%Card{}, card_params)
-
-    case Repo.insert(changeset) do
-      {:ok, _card} ->
-        conn
-        |> put_flash(:info, "Card created successfully.")
-        |> redirect(to: card_path(conn, :index))
-      {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
-  end
-
   def show(conn, %{"id" => id}, user, _) do
     card = CardProvider.one_card!(id, user)
     render(conn, "show.html", card: card, user: user)
-  end
-
-  def edit(conn, %{"id" => id}, user, _) do
-    card = Repo.get!(Card, id)
-    changeset = Card.changeset(card)
-    render(conn, "edit.html", card: card, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "card" => card_params}, user, _) do
-    card = Repo.get!(Card, id)
-    changeset = Card.changeset(card, card_params)
-
-    case Repo.update(changeset) do
-      {:ok, card} ->
-        conn
-        |> put_flash(:info, "Card updated successfully.")
-        |> redirect(to: card_path(conn, :show, card))
-      {:error, changeset} ->
-        render(conn, "edit.html", card: card, changeset: changeset)
-    end
-  end
-
-  def delete(conn, %{"id" => id}, user, _) do
-    card = Repo.get!(Card, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(card)
-
-    conn
-    |> put_flash(:info, "Card deleted successfully.")
-    |> redirect(to: card_path(conn, :index))
   end
 end
