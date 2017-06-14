@@ -10,8 +10,8 @@ defmodule HsTavern.CardView do
     |> CardSerializer.serialize |> raw
   end
 
-  def card_json(card, user) do
-    %{show: CardSerializer.to_map(card, user)}
+  def card_json(card) do
+    %{show: CardSerializer.to_map(card)}
     |> CardSerializer.serialize |> raw
   end
 end

@@ -1,7 +1,6 @@
 defmodule HsTavern.CardFilter do
   import Ecto.Query
-  alias HsTavern.Repo
-  alias HsTavern.Card
+  alias HsTavern.{Repo, Card}
 
   # @standard_sets ["Basic", "Classic", "Whispers of the Old Gods", "One Night in Karazhan", "Mean Streets of Gadgetzan", "Journey to Un'Goro"]
   def filter(params) do

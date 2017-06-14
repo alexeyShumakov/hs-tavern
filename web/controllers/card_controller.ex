@@ -11,6 +11,6 @@ defmodule HsTavern.CardController do
 
   def show(conn, %{"id" => id}, user, _) do
     card = CardProvider.one_card!(id, user)
-    render(conn, "show.html", card: card, user: user)
+    render(conn, "show.html", card: card)
   end
 end

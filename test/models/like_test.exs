@@ -3,7 +3,7 @@ defmodule HsTavern.LikeTest do
 
   alias HsTavern.Like
 
-  @valid_attrs %{}
+  @valid_attrs %{user_id: 1, entity_id: 1, entity_type: "comment"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

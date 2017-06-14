@@ -3,7 +3,7 @@ defmodule HsTavern.UserTest do
 
   alias HsTavern.User
 
-  @valid_attrs %{email: "some content", password: "some content"}
+  @valid_attrs %{email: "some@content.com", name: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

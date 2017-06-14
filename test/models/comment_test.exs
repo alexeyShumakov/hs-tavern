@@ -3,7 +3,7 @@ defmodule HsTavern.CommentTest do
 
   alias HsTavern.Comment
 
-  @valid_attrs %{body: "some content"}
+  @valid_attrs %{body: "some content", user_id: 1, card_id: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

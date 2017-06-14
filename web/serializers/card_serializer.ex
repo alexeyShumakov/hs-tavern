@@ -1,7 +1,7 @@
 defmodule HsTavern.Serializers.CardSerializer do
   use HsTavern.Web, :view
   alias HsTavern.Serializers.CommentSerializer
-  def to_map(card, user \\ nil) do
+  def to_map(card) do
     %{
       id: card.id,
       game_id: card.game_id,
