@@ -28,6 +28,7 @@ export default class Builder extends React.Component {
   }
 
   render() {
+    let { builderSaveDesk, builderValidateDesk } = this.props.actions;
     let { desk, errors, isValid } = this.props.store.builder;
     let { cards } = desk;
     let deskCards = _.sortBy(cards, ["cost", "title"])
@@ -182,7 +183,10 @@ export default class Builder extends React.Component {
             <Curve cards={cards} />
             <hr/>
             <div className="field">
-              <button onClick={this.props.actions.builderSaveDesk}
+              <button onClick={()=> {
+                builderValidateDesk()
+                builderSaveDesk()
+              }}
                 className="button is-primary is-fullwidth">
                 <span>Save</span>
               </button>
