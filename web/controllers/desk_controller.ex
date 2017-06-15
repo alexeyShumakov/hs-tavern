@@ -15,12 +15,8 @@ defmodule HsTavern.DeskController do
 
   def create(conn, %{"desk" => params}, user, _) do
     check_user(conn)
-    desk = Desk.changeset(%Desk{}, Map.put(params, "user_id", user.id))
-    cards = Enum.map(params["cards"], fn(card)->
-      DeskCard.changeset(%DeskCard{},%{count: card["count"], card_id: card["id"]})
-    end)
-    desk_with_cards = Ecto.Changeset.put_assoc(desk, :cards, cards)
-    case Repo.insert(desk_with_cards) do
+    desk = Desk.changeset(%Desk{}, params |> Map.put("user_id", user.id))
+    case Repo.insert(desk) do
       {:ok, desk} ->
         conn |> json(%{status: :ok})
       {:error, changeset} ->

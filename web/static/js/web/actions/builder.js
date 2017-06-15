@@ -8,10 +8,10 @@ export function builderSaveDesk() {
       player_class: store_desk.player_class,
       description: store_desk.description,
       title: store_desk.title,
-      cards: store_desk.cards.map((card)=> {return {id: card.id, count: card.count}})
+      cards: store_desk.cards.map((card)=> {return {card_id: card.id, count: card.count}})
     };
     axios.post("/desks", {desk});
-    //dispatch(builderValidateDesk());
+    dispatch(builderValidateDesk());
   }
 }
 
