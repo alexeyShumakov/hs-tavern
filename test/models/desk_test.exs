@@ -20,6 +20,10 @@ defmodule HsTavern.DeskTest do
     1..15 |> Enum.map( fn(id) -> %{"card_id" => id, "count" => count} end )
   end
 
+  def invalid_cards() do
+    1..10 |> Enum.map( fn(id) -> %{"card_id" => id, "count" => 3} end )
+  end
+
   test "changeset with valid attributes" do
     desk = Desk.changeset(%Desk{}, %{@valid_attrs | "cards" => cards()})
     assert desk.valid?
@@ -33,5 +37,10 @@ defmodule HsTavern.DeskTest do
   test "cards count invalid" do
     attrs = %{@invalid_attrs | "cards" => cards(1)}
     assert {:cards_count, "cards count error"} in errors_on(%Desk{}, attrs)
+  end
+
+  test "desk cards is invalid" do
+    desk = Desk.changeset(%Desk{}, %{@valid_attrs | "cards" => invalid_cards()})
+    refute desk.valid?
   end
 end

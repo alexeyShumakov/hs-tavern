@@ -3,7 +3,7 @@ defmodule HsTavern.DeskCardTest do
 
   alias HsTavern.DeskCard
 
-  @valid_attrs %{count: 42, card_id: 1}
+  @valid_attrs %{count: 1, card_id: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

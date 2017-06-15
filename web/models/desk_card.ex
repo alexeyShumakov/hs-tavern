@@ -17,6 +17,7 @@ defmodule HsTavern.DeskCard do
     |> cast(params, [:count, :card_id, :desk_id])
     |> foreign_key_constraint(:card_id)
     |> foreign_key_constraint(:desk_id)
+    |> validate_number(:count, less_than: 3, greater_than: 0)
     |> validate_required([:count, :card_id])
   end
 end

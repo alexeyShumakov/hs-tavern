@@ -1,13 +1,14 @@
 defmodule HsTavern.Desk do
   use HsTavern.Web, :model
+  alias HsTavern.{DeskCard, User}
 
   schema "desks" do
     field :player_class, :string
     field :standard, :boolean, default: false
     field :description, :string
     field :title, :string
-    has_many :cards, HsTavern.DeskCard
-    belongs_to :user, HsTavern.User
+    has_many :cards, DeskCard
+    belongs_to :user, User
 
     timestamps()
   end
@@ -18,7 +19,7 @@ defmodule HsTavern.Desk do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:user_id, :player_class, :standard, :description, :title])
-    |> cast_assoc(:cards)
+    |> put_assoc(:cards, get_cards(params["cards"]))
     |> foreign_key_constraint(:user_id)
     |> check_cards_count(params)
     |> validate_required([:user_id, :player_class, :standard, :description, :title])
@@ -32,5 +33,9 @@ defmodule HsTavern.Desk do
     else
       changeset
     end
+  end
+
+  defp get_cards(cards) do
+    Enum.map(cards, fn(card) -> DeskCard.changeset(%DeskCard{}, card) end)
   end
 end
