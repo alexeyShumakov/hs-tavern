@@ -1,14 +1,18 @@
 defmodule HsTavern.Desk do
   use HsTavern.Web, :model
-  alias HsTavern.{DeskCard, User}
+  alias HsTavern.{DeskCard, User, Like}
 
   schema "desks" do
     field :player_class, :string
     field :standard, :boolean, default: false
     field :description, :string
     field :title, :string
+    field :likes_count, :integer, default: 0
+    field :comments_count, :integer, default: 0
     has_many :cards, DeskCard
     belongs_to :user, User
+    many_to_many :likes, Like, join_through: "desks_likes", on_delete: :delete_all
+    has_many :likes_users, through: [:likes, :user]
 
     timestamps()
   end
@@ -27,7 +31,6 @@ defmodule HsTavern.Desk do
 
   defp check_cards_count(changeset, params) do
     count = params["cards"] |> Enum.map(fn(card)-> card["count"] end) |> Enum.sum
-
     if count != 30 do
       add_error(changeset, :cards_count, "cards count error")
     else

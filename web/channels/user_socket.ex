@@ -6,6 +6,7 @@ defmodule HsTavern.UserSocket do
   # channel "room:*", HsTavern.RoomChannel
 
   channel "card:*", HsTavern.CardChannel
+  channel "desk:*", HsTavern.DeskChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

@@ -14,10 +14,14 @@ export default class IndexDesk extends React.Component {
 
   render() {
     const desks = this.props.store.desks.index;
+    const {updateIndexDesk} = this.props.actions;
     return(
       <div>desk index
         {desks.map((desk)=> {
-          return <Desk key={desk.id} desk={desk}/>
+          return(<Desk
+            update={updateIndexDesk}
+            key={desk.id}
+            desk={desk}/>)
         })}
       </div>
     )

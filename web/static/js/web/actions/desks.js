@@ -5,6 +5,10 @@ export function clearDesks() {
   return { type: "CLEAR_DESKS" }
 }
 
+export function updateIndexDesk(desk) {
+  return { type: "UPDATE_INDEX_DESK", desk }
+}
+
 export function fetchDesks() {
   return(dispatch, getState) => {
     if(_.isEmpty(getState().desks.index)) {

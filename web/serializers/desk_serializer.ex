@@ -12,7 +12,9 @@ defmodule HsTavern.Serializers.DeskSerializer do
       title: desk.title,
       user: UserSerializer.to_map(desk.user),
       inserted_at: desk.inserted_at,
-      player_class: desk.player_class
+      player_class: desk.player_class,
+      comments_count: desk.comments_count,
+      likes_count: desk.likes_count
     }
   end
 
