@@ -4,7 +4,9 @@ const local = (typeof $local === 'undefined') ? {} : JSON.parse($local);
 
 const initialState = {
   desks: {
-    index: []
+    isOpenModal: false,
+    index: [],
+    show: {}
   },
   builder: {
     errors: {},

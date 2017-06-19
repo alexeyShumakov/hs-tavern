@@ -9,6 +9,11 @@ defmodule HsTavern.Api.DeskController do
     json(conn, desks)
   end
 
+  def show(conn, %{"id" => id}, user, _) do
+    desk = DeskProvider.one_desk!(id, user) |> DeskSerializer.to_map
+    json(conn, desk)
+  end
+
   def check_user(conn) do
     unless Guardian.Plug.authenticated?(conn) do
       conn |> json(%{status: :authenticated})

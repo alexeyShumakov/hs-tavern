@@ -9,7 +9,7 @@ defmodule HsTavern.Desk do
     field :title, :string
     field :likes_count, :integer, default: 0
     field :comments_count, :integer, default: 0
-    has_many :cards, DeskCard
+    has_many :cards, DeskCard, on_delete: :delete_all
     belongs_to :user, User
     many_to_many :likes, Like, join_through: "desks_likes", on_delete: :delete_all
     many_to_many :comments, Comment, join_through: "comments_likes", on_delete: :delete_all

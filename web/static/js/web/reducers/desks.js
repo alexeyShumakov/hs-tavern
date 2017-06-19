@@ -1,9 +1,19 @@
 import actionTypes from '../constants';
-const init = { index: [] }
+const init = {
+  index: [],
+  isOpenModal: false,
+  show: {}
+}
 
 let desks;
 export default (state = init, action) => {
   switch (action.type) {
+    case "SET_DESK_MODAL":
+      return Object.assign({}, state, {isOpenModal: action.isOpen})
+
+    case "SET_DESK":
+      return Object.assign({}, state, {show: action.desk})
+
     case "UPDATE_INDEX_DESK":
       desks = state.index.map((desk)=>{
         if(desk.id != action.desk.id)

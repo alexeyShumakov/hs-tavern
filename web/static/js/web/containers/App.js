@@ -13,11 +13,22 @@ import CardsModal from "../components/cards/modal/modal";
 import Builder from "../components/builder/builder";
 import ClassBuilder from "../components/builder/classBuilder";
 import DeskIndex from "../components/desk/index";
+import DeskModal from "../components/desk/modal";
 
 const App = (props) => {
   const { store, actions, children } = props;
   return(
     <div>
+      { store.desks.isOpenModal &&
+          <DeskModal
+            desk={store.desks.show}
+            isOpen={store.desks.isOpenModal}
+            close={()=> {
+              actions.setDesk({});
+              actions.setDeskModal(false)
+            }}
+          />
+      }
       { store.cards.isOpenModal &&
         <CardsModal
           store={store}

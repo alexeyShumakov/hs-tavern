@@ -42,6 +42,6 @@ defmodule HsTavern.Router do
    scope "/api", HsTavern do
     pipe_through :api
     resources "/cards", Api.CardController, only: [:show, :index]
-    resources "/desks", Api.DeskController, only: [:index]
+    resources "/desks", Api.DeskController, only: [:show, :index]
    end
 end

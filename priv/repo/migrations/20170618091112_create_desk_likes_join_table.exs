@@ -4,7 +4,7 @@ defmodule HsTavern.Repo.Migrations.CreateDeskLikesJoinTable do
   def change do
     create table(:desks_likes, primary_key: false) do
       add :like_id, references(:likes)
-      add :desk_id, references(:desks)
+      add :desk_id, references(:desks, on_delete: :delete_all)
     end
 
     alter table(:desks) do

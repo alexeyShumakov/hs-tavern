@@ -27,7 +27,7 @@ export default class CardsModal extends React.Component {
   }
 
   render() {
-    const { cc, isOpen, card, channel, store, actions } = this.props;
+    const {isOpen, card, channel, store, actions } = this.props;
     return(
       <div>
         { isOpen &&

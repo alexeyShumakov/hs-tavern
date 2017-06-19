@@ -18,9 +18,9 @@ export default class Desk extends React.Component {
   }
 
   render() {
-    const { desk, isLogin, setModal } = this.props;
+    const {fetchDesk, desk, isLogin, setModal, setDeskModal } = this.props;
     return(
-      <div className="media">
+      <div className="media" onClick={fetchDesk}>
         <div className="media-left">
           {desk.player_class}
         </div>
@@ -30,7 +30,8 @@ export default class Desk extends React.Component {
             <div className="level-left">
               <a className="level-item">
                 <span>{desk.likes_count}</span>
-                <span className="icon is-small" onClick={()=> {
+                <span className="icon is-small" onClick={(e)=> {
+                  e.stopPropagation();
                   if(isLogin) {
                     this.state.channel.push("like", {desk_id: desk.id})
                   } else {

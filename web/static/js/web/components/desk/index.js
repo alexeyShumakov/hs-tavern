@@ -13,15 +13,19 @@ export default class IndexDesk extends React.Component {
   }
 
   render() {
-    const desks = this.props.store.desks.index;
-    const {updateIndexDesk} = this.props.actions;
+    const {index} = this.props.store.desks;
+    const {updateIndexDesk, setDeskModal, setModal, fetchDesk} = this.props.actions;
     return(
       <div>desk index
-        {desks.map((desk)=> {
+        {index.map((desk)=> {
           return(<Desk
             update={updateIndexDesk}
+            fetchDesk={()=> {
+              fetchDesk(desk.id).then(()=>{setDeskModal(true)})
+            }}
             isLogin={this.props.store.user.is_authenticated}
-            setModal={this.props.actions.setModal}
+            setModal={setModal}
+            setDeskModal={setDeskModal}
             key={desk.id}
             desk={desk}/>)
         })}

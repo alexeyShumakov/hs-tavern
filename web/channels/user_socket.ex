@@ -26,7 +26,7 @@ defmodule HsTavern.UserSocket do
 
   def connect(%{"guardian_token" => jwt} = params, socket) do
     case sign_in(socket, jwt) do
-      {:ok, authed_socket, guardian_params} ->
+      {:ok, authed_socket, _guardian_params} ->
         {:ok, authed_socket}
       _ ->
         {:ok, socket}
@@ -47,5 +47,8 @@ defmodule HsTavern.UserSocket do
   #     HsTavern.Endpoint.broadcast("users_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
-  def id(_socket), do: nil
+  def id(socket) do
+    IO.puts "disconnect"
+    nil
+  end
 end

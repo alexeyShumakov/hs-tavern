@@ -34,10 +34,12 @@ defmodule HsTavern.DeskProvider do
 
   def desk_query do
     from desk in Desk,
+      left_join: desk_cards in assoc(desk, :cards),
+      left_join: card in assoc(desk_cards, :card),
       left_join: user in assoc(desk, :user),
       left_join: l in assoc(desk, :likes),
       left_join: u in assoc(l, :user),
       order_by: [desc: desk.inserted_at],
-      preload: [:likes_users, user: user, likes: {l, user: u}]
+      preload: [:likes_users, user: user, likes: {l, user: u}, cards: {desk_cards, card: card}]
   end
 end
