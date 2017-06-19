@@ -1,16 +1,11 @@
 defmodule HsTavern.Api.DeskController do
   use HsTavern.Web, :controller
   use Guardian.Phoenix.Controller
-  alias HsTavern.Desk
-  alias HsTavern.DeskCard
+  alias HsTavern.DeskProvider
   alias HsTavern.Serializers.DeskSerializer
 
   def index(conn, params, user, _) do
-    query =  from d in Desk,
-      join: u in assoc(d, :user),
-      order_by: [desc: d.inserted_at],
-      preload: [user: u]
-    desks = query |> Repo.all |> DeskSerializer.to_map
+    desks = DeskProvider.get_desks(user) |> DeskSerializer.to_map
     json(conn, desks)
   end
 

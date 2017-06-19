@@ -38,6 +38,6 @@ defmodule HsTavern.DeskProvider do
       left_join: l in assoc(desk, :likes),
       left_join: u in assoc(l, :user),
       order_by: [desc: desk.inserted_at],
-      preload: [:user, :likes_users, likes: {l, user: u}]
+      preload: [:likes_users, user: user, likes: {l, user: u}]
   end
 end
