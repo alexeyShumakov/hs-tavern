@@ -20,6 +20,8 @@ export default class IndexDesk extends React.Component {
         {desks.map((desk)=> {
           return(<Desk
             update={updateIndexDesk}
+            isLogin={this.props.store.user.is_authenticated}
+            setModal={this.props.actions.setModal}
             key={desk.id}
             desk={desk}/>)
         })}

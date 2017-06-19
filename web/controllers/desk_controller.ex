@@ -1,15 +1,10 @@
 defmodule HsTavern.DeskController do
   use HsTavern.Web, :controller
   use Guardian.Phoenix.Controller
-  alias HsTavern.Desk
-  alias HsTavern.DeskCard
+  alias HsTavern.{Desk, DeskCard, DeskProvider}
 
   def index(conn, params, user, _) do
-    query =  from d in Desk,
-      join: u in assoc(d, :user),
-      order_by: [desc: d.inserted_at],
-      preload: [user: u]
-    desks = query |> Repo.all
+    desks = DeskProvider.get_desks(user)
     render(conn, "index.html", desks: desks)
   end
 

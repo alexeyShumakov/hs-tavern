@@ -1,6 +1,6 @@
 defmodule HsTavern.Desk do
   use HsTavern.Web, :model
-  alias HsTavern.{DeskCard, User, Like}
+  alias HsTavern.{DeskCard, User, Like, Comment}
 
   schema "desks" do
     field :player_class, :string
@@ -12,7 +12,9 @@ defmodule HsTavern.Desk do
     has_many :cards, DeskCard
     belongs_to :user, User
     many_to_many :likes, Like, join_through: "desks_likes", on_delete: :delete_all
+    many_to_many :comments, Comment, join_through: "comments_likes", on_delete: :delete_all
     has_many :likes_users, through: [:likes, :user]
+    field :like_me, :boolean, virtual: true, default: false
 
     timestamps()
   end

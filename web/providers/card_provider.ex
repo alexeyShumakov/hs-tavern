@@ -1,7 +1,6 @@
 defmodule HsTavern.CardProvider do
   import Ecto.Query
-  alias HsTavern.Card
-  alias HsTavern.CommentProvider
+  alias HsTavern.{Repo, Card, CommentProvider}
 
   def one_card!(slug, nil) do
     get_card(slug)
@@ -27,13 +26,13 @@ defmodule HsTavern.CardProvider do
       where: [slug: ^slug],
       preload: [:likes_users, likes: {l, user: u}]
 
-    card = HsTavern.Repo.one!(query)
+    card = Repo.one!(query)
     offset = CommentProvider.calc_offset(card.comments_count)
     comments = CommentProvider.comments_query
     |> where(card_id: ^card.id)
     |> offset(^offset)
     |> limit(3)
-    |> HsTavern.Repo.all
+    |> Repo.all
     card |> Map.put(:comments, comments)
   end
 end

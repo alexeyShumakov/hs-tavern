@@ -18,11 +18,9 @@ export default class Desk extends React.Component {
   }
 
   render() {
-    const { desk } = this.props;
+    const { desk, isLogin, setModal } = this.props;
     return(
-      <div className="media" onClick={()=> {
-        this.state.channel.push("like", {desk_id: desk.id})
-      }}>
+      <div className="media">
         <div className="media-left">
           {desk.player_class}
         </div>
@@ -32,7 +30,15 @@ export default class Desk extends React.Component {
             <div className="level-left">
               <a className="level-item">
                 <span>{desk.likes_count}</span>
-                <span className="icon is-small"><i className="fa fa-heart"></i></span>
+                <span className="icon is-small" onClick={()=> {
+                  if(isLogin) {
+                    this.state.channel.push("like", {desk_id: desk.id})
+                  } else {
+                    setModal(true);
+                  }
+                  }}>
+                  <i className={`fa fa-heart${desk.like_me ? "" : "-o"}`}></i>
+                </span>
               </a>
               <a className="level-item">
                 <span className="icon is-small"><i className="fa fa-comment"></i></span>

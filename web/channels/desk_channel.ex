@@ -2,8 +2,9 @@ defmodule HsTavern.DeskChannel do
   import Ecto.{Query}
   import Guardian.Phoenix.Socket
   use Phoenix.Channel
-  alias HsTavern.{Like, Desk, Repo}
+  alias HsTavern.{Like, Desk, Repo, DeskProvider}
 
+  intercept ["like"]
 
   def join("desk:" <> id, _params, socket) do
     {:ok, socket}
@@ -13,10 +14,10 @@ defmodule HsTavern.DeskChannel do
     case current_resource(socket) do
       nil -> nil
       user ->
-        desk = Repo.get!(Desk, desk_id)
+        desk = DeskProvider.one_desk!(desk_id, user)
         params = %{entity_id: desk.id, user_id: user.id, entity_type: "desk"}
         desk = Repo.get_by(Like, params) |> handle_like(params, desk)
-        broadcast! socket, "like", %{id: desk.id, likes_count: desk.likes_count }
+        broadcast! socket, "like", desk
     end
     {:noreply, socket}
   end
@@ -35,8 +36,10 @@ defmodule HsTavern.DeskChannel do
     Ecto.Changeset.change(desk, likes_count: desk.likes_count - 1) |> Repo.update!
   end
 
-  def handle_out("like", payload, socket) do
-    push socket, "like", payload
+  def handle_out("like", desk, socket) do
+    user = current_resource(socket)
+    desk = DeskProvider.one_desk!(desk.id, user)
+    push socket, "like", %{id: desk.id, likes_count: desk.likes_count, like_me: desk.like_me}
     {:noreply, socket}
   end
 end
