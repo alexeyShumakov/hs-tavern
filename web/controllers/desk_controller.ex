@@ -8,6 +8,11 @@ defmodule HsTavern.DeskController do
     render(conn, "index.html", desks: desks)
   end
 
+  def show(conn, %{"id" => id}, user, _) do
+    desk = DeskProvider.one_desk!(id, user)
+    render(conn, "show.html", desk: desk)
+  end
+
   def create(conn, %{"desk" => params}, user, _) do
     check_user(conn)
     desk = Desk.changeset(%Desk{}, params |> Map.put("user_id", user.id))

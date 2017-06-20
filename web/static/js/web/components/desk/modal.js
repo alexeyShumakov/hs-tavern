@@ -1,4 +1,5 @@
 import React from "react";
+import Desk from "./show/desk"
 
 export default class DeskModal extends React.Component {
   constructor(props) {
@@ -18,22 +19,20 @@ export default class DeskModal extends React.Component {
   }
 
   render() {
-    const { desk, close } = this.props;
+    const { setDesk, desk, close, setModal, isLogin } = this.props;
     return(
       <div className="modal is-active" onKeyDown={this.handleKeydown}>
         <div className="modal-background" onClick={close}/>
-        <div className="modal-content">
+        <div className="modal-content desk__modal">
           <div className="box">
-            <div className="columns">
-              <div className="column is-three-quarters">
-                <div className="box">
-                  {desk.title}
-                </div>
-              </div>
-              <div className="column">
-                <div className="box"></div>
-              </div>
-            </div>
+            <Desk
+              isLogin={isLogin}
+              desk={desk}
+              update={setDesk}
+              setModal={()=>{
+                close();
+                setModal(true);
+            }}/>
           </div>
         </div>
         <button className="modal-close" onClick={close}/>

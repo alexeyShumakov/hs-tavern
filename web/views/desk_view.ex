@@ -2,12 +2,22 @@ defmodule HsTavern.DeskView do
   use HsTavern.Web, :view
   alias HsTavern.Serializers.DeskSerializer
 
-  def desk_json(desks) do
+  def desks_json(desks) do
     %{desks: %{
       index: DeskSerializer.to_map(desks)
     }}
     |> Poison.encode!
     |> escape_javascript
     |> raw
+  end
+
+  def desk_json(desk) do
+    %{desks: %{
+      show: DeskSerializer.to_map(desk)
+    }}
+    |> Poison.encode!
+    |> escape_javascript
+    |> raw
+
   end
 end

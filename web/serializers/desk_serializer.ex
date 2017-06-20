@@ -16,7 +16,8 @@ defmodule HsTavern.Serializers.DeskSerializer do
       comments_count: desk.comments_count,
       likes_count: desk.likes_count,
       like_me: desk.like_me,
-      cards: DeskCardSerializer.to_map(desk.cards)
+      cards: DeskCardSerializer.to_map(desk.cards),
+      description: desk.description
     }
   end
 

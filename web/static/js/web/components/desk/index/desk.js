@@ -1,5 +1,6 @@
 import React from "react";
 import socket from "../../../../socket";
+import Counter from "../counter";
 
 export default class Desk extends React.Component {
   constructor(props) {
@@ -13,39 +14,32 @@ export default class Desk extends React.Component {
     this.state = {channel}
   }
 
-  componentWillUnmount() {
-    this.state.channel.leave()
-  }
-
   render() {
     const {fetchDesk, desk, isLogin, setModal, setDeskModal } = this.props;
     return(
-      <div className="media" onClick={fetchDesk}>
+      <div className="media" onClick={()=>{
+        fetchDesk()
+        window.history.pushState(null, null, `/desks/${desk.id}`);
+      }}>
         <div className="media-left">
           {desk.player_class}
         </div>
         <div className="media-content">
           {desk.title} by {desk.user.name}
-          <div className="level">
-            <div className="level-left">
-              <a className="level-item">
-                <span>{desk.likes_count}</span>
-                <span className="icon is-small" onClick={(e)=> {
-                  e.stopPropagation();
-                  if(isLogin) {
-                    this.state.channel.push("like", {desk_id: desk.id})
-                  } else {
-                    setModal(true);
-                  }
-                  }}>
-                  <i className={`fa fa-heart${desk.like_me ? "" : "-o"}`}></i>
-                </span>
-              </a>
-              <a className="level-item">
-                <span className="icon is-small"><i className="fa fa-comment"></i></span>
-              </a>
-            </div>
-          </div>
+
+          <Counter
+            likesCount={desk.likes_count}
+            commentsCount={desk.comments_count}
+            likeMe={desk.like_me}
+            likeCallback={(e)=>{
+              e.stopPropagation();
+              if(isLogin) {
+                this.state.channel.push("like", {desk_id: desk.id})
+              } else {
+                setModal(true);
+              }
+            }}
+          />
         </div>
       </div>
     )

@@ -14,6 +14,7 @@ import Builder from "../components/builder/builder";
 import ClassBuilder from "../components/builder/classBuilder";
 import DeskIndex from "../components/desk/index";
 import DeskModal from "../components/desk/modal";
+import DeskShow from "../components/desk/show/show";
 
 const App = (props) => {
   const { store, actions, children } = props;
@@ -23,9 +24,13 @@ const App = (props) => {
           <DeskModal
             desk={store.desks.show}
             isOpen={store.desks.isOpenModal}
+            setModal={actions.setModal}
+            setDesk={actions.setDesk}
+            isLogin={store.user.is_authenticated}
             close={()=> {
               actions.setDesk({});
               actions.setDeskModal(false)
+              window.history.back();
             }}
           />
       }
@@ -54,6 +59,9 @@ const App = (props) => {
             <div className="column">
               <Route exact path="/desks"
                 render={route => (<DeskIndex {...{route, store, actions}}/>)}
+              />
+              <Route exact path="/desks/:deskId"
+                render={route => (<DeskShow {...{route, store, actions}}/>)}
               />
               <Route exact path="/cards/:cardId"
                 render={route => (<Card {...{route, store, actions}}/>)}

@@ -48,7 +48,6 @@ defmodule HsTavern.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   def id(socket) do
-    IO.puts "disconnect"
     nil
   end
 end
