@@ -5,13 +5,6 @@ import Counter from "../counter";
 export default class Desk extends React.Component {
   constructor(props) {
     super(props);
-    const {desk, update} = props;
-    const channel = socket.channel(`desk:${desk.id}`, {})
-    channel.join()
-    channel.on("like", payload => {
-      update(payload);
-    })
-    this.state = {channel}
   }
 
   render() {
@@ -34,7 +27,7 @@ export default class Desk extends React.Component {
             likeCallback={(e)=>{
               e.stopPropagation();
               if(isLogin) {
-                this.state.channel.push("like", {desk_id: desk.id})
+                desk.channel.push("like", {desk_id: desk.id})
               } else {
                 setModal(true);
               }

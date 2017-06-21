@@ -1,5 +1,7 @@
 import axios from "../utils/axios";
-import _ from "lodash";
+import socket from "../../socket";
+import store from "../store/store";
+import createDeskChannel from "../channels/desk";
 
 export function clearDesks() {
   return { type: "CLEAR_DESKS" }
@@ -17,6 +19,10 @@ export function updateIndexDesk(desk) {
   return { type: "UPDATE_INDEX_DESK", desk }
 }
 
+export function updateDesk(desk) {
+  return { type: "UPDATE_DESK", desk }
+}
+
 export function fetchDesk(id) {
   return(dispatch, getState) => {
     if(_.isEmpty(getState().desks.show)) {
@@ -31,11 +37,19 @@ export function fetchDesk(id) {
 
 export function fetchDesks() {
   return(dispatch, getState) => {
-    if(_.isEmpty(getState().desks.index)) {
+    let desks = getState().desks.index;
+    if(_.isEmpty(desks)) {
       return axios.get('/api/desks').then((response) => {
-        dispatch(setDesks(response.data))
+        desks = response.data.map((desk)=>{
+          return Object.assign({}, desk, {channel: createDeskChannel(desk.id)})
+        })
+        dispatch(setDesks(desks))
       })
     } else {
+        desks = desks.map((desk)=>{
+          return Object.assign({}, desk, {channel: createDeskChannel(desk.id)})
+        })
+        dispatch(setDesks(desks))
       return Promise.resolve();
     }
   }

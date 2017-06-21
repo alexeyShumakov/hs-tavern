@@ -18,10 +18,14 @@ import DeskShow from "../components/desk/show/show";
 
 const App = (props) => {
   const { store, actions, children } = props;
+  const deskChannel = store.desks.index.find((desk)=>{
+    return desk.id === store.desks.show.id
+  })
   return(
     <div>
       { store.desks.isOpenModal &&
           <DeskModal
+            channel={deskChannel.channel}
             desk={store.desks.show}
             isOpen={store.desks.isOpenModal}
             setModal={actions.setModal}

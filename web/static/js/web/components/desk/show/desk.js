@@ -8,16 +8,9 @@ import socket from "../../../../socket";
 export default class Desk extends React.Component {
   constructor(props) {
     super(props);
-    const {desk, update} = props;
-    const channel = socket.channel(`desk:${desk.id}`, {})
-    channel.join()
-    channel.on("like", payload => {
-      update(Object.assign({}, desk, payload));
-    })
-    this.state = {channel}
   }
   render() {
-    const {desk, isLogin, setModal} = this.props;
+    const {channel, desk, isLogin, setModal} = this.props;
     const cards = desk.cards.map((deskCard)=>{
       let card = deskCard.card;
       card["count"] = deskCard.count;
@@ -36,7 +29,7 @@ export default class Desk extends React.Component {
               likeCallback={(e)=>{
                 e.stopPropagation();
                 if(isLogin) {
-                  this.state.channel.push("like", {desk_id: desk.id})
+                  channel.push("like", {desk_id: desk.id})
                 } else {
                   setModal(true);
                 }

@@ -5,7 +5,7 @@ const init = {
   show: {}
 }
 
-let desks;
+let desks, desk;
 export default (state = init, action) => {
   switch (action.type) {
     case "SET_DESK_MODAL":
@@ -13,6 +13,9 @@ export default (state = init, action) => {
 
     case "SET_DESK":
       return Object.assign({}, state, {show: action.desk})
+    case "UPDATE_DESK":
+      desk = Object.assign({}, state.show, action.desk)
+      return Object.assign({}, state, {show: desk})
 
     case "UPDATE_INDEX_DESK":
       desks = state.index.map((desk)=>{
@@ -23,6 +26,7 @@ export default (state = init, action) => {
       return Object.assign({}, state, {index: desks})
 
     case "CLEAR_DESKS":
+      state.index.forEach((desk)=> { desk.channel.leave() })
       return Object.assign({}, init)
 
     case "SET_DESKS":
