@@ -5,7 +5,6 @@ import createDeskChannel from "../../../channels/desk";
 export default class DeskShow extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.store);
     this.state = {channel: createDeskChannel(props.store.desks.show.id)}
   }
 
@@ -14,15 +13,18 @@ export default class DeskShow extends React.Component {
   }
 
   render() {
-    let desk = this.props.store.desks.show;
-    let { setDesk, setModal } = this.props.actions;
+    let { store, actions } = this.props;
+    let { setDesk, setModal } = actions;
+    let desk = store.desks.show;
     return(
       <div>
         <Desk setModal={setModal}
           channel={this.state.channel}
           desk={desk}
           update={setDesk}
-          isLogin={this.props.store.user.is_authenticated}
+          isLogin={store.user.is_authenticated}
+          store={store}
+          actions={actions}
         />
       </div>
     )

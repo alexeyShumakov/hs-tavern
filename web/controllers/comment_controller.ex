@@ -4,8 +4,9 @@ defmodule HsTavern.CommentController do
   alias HsTavern.CommentProvider
   alias HsTavern.Serializers.CommentSerializer
 
-  def index(conn, %{"entity_id" => entity_id }, user, _) do
-    comments = CommentProvider.get_comments(%{entity_id: entity_id}, user)
+  def index(conn, %{"entity_id" => entity_id, "entity_type" => entity_type }, user, _) do
+    params = %{entity_id: entity_id, entity_type: entity_type}
+    comments = CommentProvider.get_comments(params, user)
                |> CommentSerializer.to_map
     json(conn, comments)
   end

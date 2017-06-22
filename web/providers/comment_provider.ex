@@ -1,23 +1,37 @@
 defmodule HsTavern.CommentProvider do
   import Ecto.Query
-  alias HsTavern.Comment
+  alias HsTavern.{Comment, Repo}
 
-  def get_comments(%{entity_id: entity_id}, nil) do
-    comments(entity_id)
+  def get_last_three_comments(%{comments_count: comments_count} = params, user) do
+    offset = calc_offset(comments_count)
+
+    params
+    |> Map.drop([:comments_count])
+    |> comments
+    |> offset(^offset)
+    |> limit(3)
+    |> Repo.all
+    |> check_comments(user)
   end
 
-  def get_comments(%{entity_id: entity_id}, user) do
-    comments(entity_id) |> check_comments(user)
+  def get_comments(params, user) do
+    comments(params)
+    |> Repo.all
+    |> check_comments(user)
   end
+
+  def check_comments(comments, nil), do: comments
 
   def check_comments(comments, user) do
     comments |> Enum.map(
       fn comment -> Map.put(comment, :like_me, Enum.member?(comment.likes_users, user) ) end
     )
-
   end
-  def comments(entity_id) do
-    comments_query |> where(card_id: ^entity_id) |> HsTavern.Repo.all
+
+  def comments(%{entity_id: entity_id, entity_type: entity_type}) do
+    comments_query
+    |> where(entity_type: ^entity_type)
+    |> where(entity_id: ^entity_id)
   end
 
   def calc_offset(total_count) do

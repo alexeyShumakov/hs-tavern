@@ -3,6 +3,42 @@ import socket from "../../socket";
 import store from "../store/store";
 import createDeskChannel from "../channels/desk";
 
+export function likeDeskComment(deskId) {
+  return(dispatch, getState) => {
+    return axios.post("/likes", {
+      like: {
+        entity_type: "comment",
+        entity_id: deskId
+      }
+    }).then((resp)=>{
+      dispatch(updateDeskComment(resp.data));
+    }, ()=> {
+      console.log("err")
+    })
+
+  }
+}
+
+export function updateDeskComment(comment) {
+  return { type: "UPDATE_DESK_COMMENT", comment }
+}
+
+export function pushDeskComment(comment) {
+  return { type: "PUSH_DESK_COMMENT", comment }
+}
+
+export function fetchAllDeskComments(deskId) {
+  return(dispatch, getState) => {
+    return axios.get("/comments", {params: {entity_type: "desk", entity_id: deskId}})
+      .then((resp)=>{
+      let desk = getState().desks.show;
+      desk = Object.assign({}, desk, {comments: resp.data});
+      dispatch(setDesk(desk));
+    }, ()=> {
+      console.log("err")
+    })
+  }
+}
 export function clearDesks() {
   return { type: "CLEAR_DESKS" }
 }

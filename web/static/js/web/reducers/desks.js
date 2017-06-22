@@ -5,7 +5,7 @@ const init = {
   show: {}
 }
 
-let desks, desk;
+let desks, desk, comments;
 export default (state = init, action) => {
   switch (action.type) {
     case "SET_DESK_MODAL":
@@ -15,6 +15,22 @@ export default (state = init, action) => {
       return Object.assign({}, state, {show: action.desk})
     case "UPDATE_DESK":
       desk = Object.assign({}, state.show, action.desk)
+      return Object.assign({}, state, {show: desk})
+
+    case "UPDATE_DESK_COMMENT":
+      comments = state.show.comments.map((comment)=>{
+        if(comment.id != action.comment.id) {
+          return comment
+        } else {
+          return Object.assign({}, comment, action.comment)
+        }
+      })
+      desk = Object.assign({}, state.show, {comments})
+      return Object.assign({}, state, {show: desk})
+
+    case "PUSH_DESK_COMMENT":
+      comments = [...state.show.comments, action.comment]
+      desk = Object.assign({}, state.show, {comments})
       return Object.assign({}, state, {show: desk})
 
     case "UPDATE_INDEX_DESK":

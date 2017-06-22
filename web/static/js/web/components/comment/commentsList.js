@@ -1,5 +1,7 @@
 import React from "react";
 import Comment from "./comment";
+import CommentEditor from "./commentEditor";
+
 export default class CommentsList extends React.Component {
   constructor(props) {
     super(props);
@@ -7,14 +9,16 @@ export default class CommentsList extends React.Component {
   }
 
   render() {
-  const comments = this.props.comments.map((c)=> {
-    return(<Comment
-      key={c.id}
-      comment={c}
-      store={this.props.store}
-      actions={this.props.actions}
-      />)
-  })
+    let { comments, likeCallback, openAuthModal, fetchComments, currentUser, createCallback} = this.props;
+    comments = comments.map((c)=> {
+      return(<Comment
+        key={c.id}
+        comment={c}
+        isLogin={currentUser.is_authenticated}
+        likeCallback={likeCallback}
+        openAuthModal={openAuthModal}
+        />)
+    })
 
     return(
       <div>
@@ -22,13 +26,17 @@ export default class CommentsList extends React.Component {
           <div className="notification is-pointer has-text-centered"
             onClick={ () => {
               this.setState({showUploadButton: false});
-              this.props.actions.fetchAllCardComments(this.props.parent.id);
+              fetchComments();
             }}
           >
           Show all comments
           </div>
         }
         {comments}
+        <CommentEditor
+          currentUser={currentUser}
+          createCallback={createCallback}
+          openAuthModal={openAuthModal}/>
       </div>
     )
   }

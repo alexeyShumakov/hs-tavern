@@ -1,6 +1,6 @@
 defmodule HsTavern.Serializers.DeskSerializer do
   use HsTavern.Web, :view
-  alias HsTavern.Serializers.{UserSerializer, DeskCardSerializer}
+  alias HsTavern.Serializers.{CommentSerializer, UserSerializer, DeskCardSerializer}
 
   def to_map(desks) when is_list(desks) do
     desks |> Enum.map(&to_map&1)
@@ -17,7 +17,8 @@ defmodule HsTavern.Serializers.DeskSerializer do
       likes_count: desk.likes_count,
       like_me: desk.like_me,
       cards: DeskCardSerializer.to_map(desk.cards),
-      description: desk.description
+      description: desk.description,
+      comments: CommentSerializer.to_map(desk.comments)
     }
   end
 

@@ -25,6 +25,8 @@ const App = (props) => {
     <div>
       { store.desks.isOpenModal &&
           <DeskModal
+            actions={actions}
+            store={store}
             channel={deskChannel.channel}
             desk={store.desks.show}
             isOpen={store.desks.isOpenModal}

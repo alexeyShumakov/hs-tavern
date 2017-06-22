@@ -3,11 +3,11 @@ defmodule HsTavern.DeskProvider do
   alias HsTavern.{Repo, Desk, CommentProvider}
 
   def one_desk!(id, nil) do
-    get_desk id
+    get_desk id, nil
   end
 
   def one_desk!(id, user) do
-    desk = get_desk(id) |> check_like(user)
+    desk = get_desk(id, user) |> check_like(user)
   end
 
   def check_like(desk, nil) do
@@ -18,10 +18,13 @@ defmodule HsTavern.DeskProvider do
     Map.put(desk, :like_me, Enum.member?(desk.likes_users, user))
   end
 
-  def get_desk(id) do
+  def get_desk(id, user) do
     query = desk_query() |> where(id: ^id)
 
     desk = Repo.one!(query)
+    params = %{comments_count: desk.comments_count, entity_id: id, entity_type: "desk"}
+    comments = CommentProvider.get_last_three_comments(params, user)
+    Map.put desk, :comments, comments
   end
 
   def get_desks(nil) do

@@ -14,12 +14,12 @@ defmodule HsTavern.CardChannel do
 
   def handle_in("create_comment", %{"card_id" => card_id, "body" => body}, socket) do
     %{ id: user_id } = current_resource(socket)
-    changeset = Comment.changeset(%Comment{}, %{card_id: card_id, body: body, user_id: user_id})
+    params = %{entity_id: card_id, entity_type: "card", card_id: card_id, body: body, user_id: user_id}
+    changeset = Comment.changeset_with_card(%Comment{}, params)
     case Repo.insert(changeset) do
-      {:ok, c} ->
-        comment = c |> Repo.preload([:user])
-        HsTavern.Card |> where(id: ^card_id) |> Repo.update_all(inc: [comments_count: 1])
+      {:ok, comment} ->
         card = Repo.get HsTavern.Card, card_id
+        comment = Comment |> where(id: ^comment.id) |> preload(:user) |> Repo.one!
         comment_map = CommentSerializer.to_map(comment)
         broadcast! socket, "create_comment", %{comment: comment_map, comments_count: card.comments_count}
       {:error, _reason} -> nil

@@ -3,6 +3,7 @@ import Curve from "../../builder/costCurve";
 import DeskCard from "./deskCard";
 import Counter from "../counter";
 import socket from "../../../../socket";
+import CommentsList from "../../comment/commentsList";
 
 
 export default class Desk extends React.Component {
@@ -10,7 +11,7 @@ export default class Desk extends React.Component {
     super(props);
   }
   render() {
-    const {channel, desk, isLogin, setModal} = this.props;
+    const {store, actions, channel, desk, isLogin, setModal} = this.props;
     const cards = desk.cards.map((deskCard)=>{
       let card = deskCard.card;
       card["count"] = deskCard.count;
@@ -37,6 +38,20 @@ export default class Desk extends React.Component {
             />
             <div className="box">
               {desk.description}
+            </div>
+            <div className="box">
+
+            <CommentsList
+              likeCallback={(id)=>{ actions.likeDeskComment(id) }}
+              openAuthModal={()=>{ actions.setModal(true) }}
+              fetchComments={()=>{ actions.fetchAllDeskComments(desk.id) }}
+              comments={desk.comments}
+              currentUser={store.user}
+              totalCount={desk.comments_count}
+              createCallback={(body)=>{
+                channel.push("comment",{desk_id: desk.id, body: body} )
+              }}
+              />
             </div>
           </div>
           <div className="column">

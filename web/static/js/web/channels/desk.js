@@ -10,5 +10,9 @@ export default (id) => {
     if(store.getState().desks.show.id == payload.id)
       store.dispatch(actions.updateDesk(payload));
   })
+
+  channel.on("comment", payload => {
+    store.dispatch(actions.pushDeskComment(payload));
+  })
   return channel
 }

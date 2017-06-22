@@ -15,8 +15,9 @@ export default class CardContent extends React.Component {
   }
 
   render() {
-    const isLogin =  this.props.store.user.is_authenticated;
-    const card = this.props.store.cards.show;
+    const {store, actions} = this.props;
+    const isLogin =  store.user.is_authenticated;
+    const card = store.cards.show;
 
     return(
       <div className="box">
@@ -68,10 +69,10 @@ export default class CardContent extends React.Component {
               {card.likes_count}
               <span className="icon"
                 onClick={()=>{
-                  if(this.props.store.user.is_authenticated) {
-                    this.props.actions.likeCard(card.id);
+                  if(store.user.is_authenticated) {
+                    actions.likeCard(card.id);
                   } else {
-                    this.props.actions.setModal(true);
+                    actions.setModal(true);
                   }
                 }}
               ><i className={`fa fa-heart${card.like_me ? "" : "-o"}`}></i></span>
@@ -84,54 +85,17 @@ export default class CardContent extends React.Component {
         </nav>
         <hr/>
         <CommentsList
-          parent={card}
-          totalCount={card.comments_count}
-          actions={this.props.actions}
+          likeCallback={(id)=>{ actions.likeCardComment(id) }}
+          openAuthModal={()=>{ actions.setModal(true) }}
+          fetchComments={()=>{ actions.fetchAllCardComments(card.id) }}
           comments={card.comments}
-          store={this.props.store}/>
-        {isLogin ?
-          <div className="media">
-            <div className="media-left">
-              <p className="image is-48x48">
-                <img src={this.props.store.user.avatar}/>
-              </p>
-            </div>
-
-            <div className="media-content">
-              <div className="field">
-                <p className="control">
-                  <textarea
-                    className="textarea"
-                    onChange={(e) => {this.setState({comment: e.target.value})}}
-                    value={this.state.comment} id="" name="" cols="30" rows="10">
-                  </textarea>
-                </p>
-              </div>
-
-              <nav className="level">
-                <div className="level-left">
-                  <div className="level-item">
-                    <button className="button"
-                      onClick={()=> {
-                        this.setState({comment: ""});
-                        this.props.store.cards.channel
-                          .push("create_comment",{card_id: card.id, body: this.state.comment} )
-                      }}
-                    >create comment</button>
-                  </div>
-                </div>
-              </nav>
-            </div>
-          </div>
-          :
-            <article
-              onClick={()=> this.props.actions.setModal(true) }
-              className="notification is-pointer has-text-centered">
-              <div>
-                Please, Sing in to comment
-              </div>
-            </article>
-        }
+          currentUser={store.user}
+          totalCount={card.comments_count}
+          createCallback={(body)=>{
+            store.cards.channel
+              .push("create_comment",{card_id: card.id, body: body} )
+          }}
+          />
       </div>
     )
   }

@@ -22,7 +22,7 @@ export function likeCard(cardId) {
 
 export function fetchAllCardComments(cardId) {
   return(dispatch, getState) => {
-    return axios.get("/comments", {params: {entity_id: cardId}})
+    return axios.get("/comments", {params: {entity_type: "card", entity_id: cardId}})
       .then((resp)=>{
       const card = getState().cards.show;
       const newCard = Object.assign({}, card, {comments: resp.data});

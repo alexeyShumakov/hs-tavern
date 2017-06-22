@@ -19,7 +19,7 @@ export default class DeskModal extends React.Component {
   }
 
   render() {
-    const {channel, setDesk, desk, close, setModal, isLogin } = this.props;
+    const {store, actions, channel, setDesk, desk, close, setModal, isLogin } = this.props;
     console.log(channel);
     return(
       <div className="modal is-active" onKeyDown={this.handleKeydown}>
@@ -27,6 +27,8 @@ export default class DeskModal extends React.Component {
         <div className="modal-content desk__modal">
           <div className="box">
             <Desk
+              store={store}
+              actions={actions}
               channel={channel}
               isLogin={isLogin}
               desk={desk}
