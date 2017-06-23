@@ -14,16 +14,8 @@ export default class Desk extends React.Component {
         fetchDesk()
         window.history.pushState(null, null, `/desks/${desk.id}`);
       }}>
-        <div className="media-left" onClick={(e)=>{
-          e.stopPropagation();
-          if(isLogin) {
-            desk.channel.push("comment", { body: "asdf", desk_id: desk.id})
-          } else {
-            setModal(true);
-          }
-
-        }}>
-            {desk.player_class}
+        <div className="media-left">
+          {desk.player_class}
         </div>
         <div className="media-content">
           {desk.title} by {desk.user.name}

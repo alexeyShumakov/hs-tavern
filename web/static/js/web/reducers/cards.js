@@ -25,7 +25,7 @@ const defaultState = {
   }
 }
 
-let channel, comments, newState, arrId, show;
+let channel, comments, newState, arrId, show, card;
 export default (state = {}, action) => {
   switch (action.type) {
     case "SET_CARD_COMMENT":
@@ -43,6 +43,17 @@ export default (state = {}, action) => {
       comments = state.show.comments;
       let newShow = Object.assign({}, state.show, {comments: [...comments, action.comment]})
       return Object.assign({}, state, {show: newShow});
+
+    case "UPDATE_CARD_COMMENT":
+      comments = state.show.comments.map((comment)=>{
+        if(comment.id != action.comment.id) {
+          return comment
+        } else {
+          return Object.assign({}, comment, action.comment)
+        }
+      })
+      card = Object.assign({}, state.show, {comments})
+      return Object.assign({}, state, {show: card})
 
     case "OPEN_CARD_CHANNEL":
       channel = socket.channel(`card:${action.id}`)

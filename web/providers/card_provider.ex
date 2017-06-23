@@ -7,14 +7,11 @@ defmodule HsTavern.CardProvider do
   end
 
   def check_card(card, nil) do
-      Map.put(card, :like_me, false)
+    Map.put(card, :like_me, false)
   end
 
   def check_card(card, user) do
-    case  Enum.member?(card.likes_users, user) do
-      false-> Map.put(card, :like_me, true)
-      true -> Map.put(card, :like_me, true)
-    end
+    Map.put(card, :like_me, Enum.member?(card.likes_users, user))
   end
 
   def get_card(slug, user) do

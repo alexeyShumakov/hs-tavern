@@ -12,7 +12,8 @@ export default (id) => {
   })
 
   channel.on("comment", payload => {
-    store.dispatch(actions.pushDeskComment(payload));
+    store.dispatch(actions.updateDesk({comments_count: payload.comments_count}));
+    store.dispatch(actions.pushDeskComment(payload.comment));
   })
   return channel
 }

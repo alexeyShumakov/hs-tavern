@@ -3,30 +3,30 @@ defmodule HsTavern.LikeController do
   use Guardian.Phoenix.Controller
 
   plug Guardian.Plug.EnsureAuthenticated
-  alias HsTavern.Like
+  alias HsTavern.{Desk, Like, Comment, Card}
   @models %{
-    "comment" => HsTavern.Comment,
-    "card"    => HsTavern.Card
+    "comment" => Comment,
+    "card"    => Card,
+    "desk"    => Desk
   }
 
   def create(conn, %{"like" => like_params}, user, _) do
-    params = like_params |> Map.put("user_id", user.id)
-    changeset = Like.changeset(%Like{}, params)
-    case Repo.insert(changeset) do
-      {:ok, like} ->
-        query = @models[like.entity_type] |> where(id: ^like.entity_id)
-        query |> Repo.update_all(inc: [likes_count: 1])
-        model = query |> Repo.one!
-        model |> Repo.preload(:likes) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:likes, [like]) |> Repo.update!
-        broadcast(model, like)
+    params = %{
+      entity_id: like_params["entity_id"],
+      entity_type: like_params["entity_type"],
+      user_id: user.id
+    }
+    case Repo.get_by(Like, params) do
+      nil ->
+        Like.create_with_entity(%Like{}, params)
+        |> Repo.insert!
+        model = @models[params.entity_type] |> Repo.get!(params.entity_id)
+        broadcast(model, %{user_id: user.id, entity_type: params.entity_type})
         json(conn, %{ id: model.id, likes_count: model.likes_count, like_me: true})
-
-      {:error, err} ->
-        like = Repo.get_by!(Like, user_id: user.id, entity_id: params["entity_id"], entity_type: params["entity_type"])
-        query = @models[like.entity_type] |> where(id: ^like.entity_id)
-        query |> Repo.update_all(inc: [likes_count: -1])
-        model = query |> Repo.one!
-        Repo.delete! like
+      like ->
+        Like.remove_with_entity(like, params)
+        |> Repo.delete!
+        model = @models[params.entity_type] |> Repo.get!(params.entity_id)
         broadcast(model, %{user_id: nil, entity_type: like.entity_type})
         json(conn, %{ id: model.id, likes_count: model.likes_count, like_me: false})
     end
@@ -34,7 +34,6 @@ defmodule HsTavern.LikeController do
 
   def broadcast(model, like) do
     case like.entity_type do
-      "comment" -> nil
       "card" ->
         HsTavern.Endpoint.broadcast("card:#{model.slug}", "like", %{likes_count: model.likes_count, user_id: like.user_id})
     end

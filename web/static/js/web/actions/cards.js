@@ -33,6 +33,9 @@ export function fetchAllCardComments(cardId) {
   }
 }
 
+export function updateCardComment(comment) {
+  return { type: "UPDATE_CARD_COMMENT", comment }
+}
 export function likeCardComment(commentId) {
   return(dispatch, getState) => {
     return axios.post("/likes", {

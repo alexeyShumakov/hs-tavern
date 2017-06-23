@@ -14,31 +14,27 @@ defmodule HsTavern.DeskChannel do
     case current_resource(socket) do
       nil -> nil
       user ->
-        desk = DeskProvider.one_desk!(desk_id, user)
-        params = %{entity_id: desk.id, user_id: user.id, entity_type: "desk"}
-        desk = Repo.get_by(Like, params) |> handle_like(params, desk)
-        broadcast! socket, "like", desk
+        params = %{entity_id: desk_id, user_id: user.id, entity_type: "desk"}
+        create_like(params)
+        broadcast! socket, "like", %{desk_id: desk_id}
     end
     {:noreply, socket}
   end
 
-  def handle_like(nil, params, desk) do
-    like = Like.changeset(%Like{}, params) |> Repo.insert!
-    desk
-    |> Repo.preload(:likes)
-    |> Ecto.Changeset.change(likes_count: desk.likes_count + 1)
-    |> Ecto.Changeset.put_assoc(:likes, [like])
-    |> Repo.update!
+  def create_like(params) do
+    case Repo.get_by(Like, params) do
+      nil ->
+        Like.create_with_entity(%Like{}, params)
+        |> Repo.insert!
+      like ->
+        Like.remove_with_entity(like, params)
+        |> Repo.delete!
+    end
   end
 
-  def handle_like(like, _params, desk) do
-    Repo.delete! like
-    Ecto.Changeset.change(desk, likes_count: desk.likes_count - 1) |> Repo.update!
-  end
-
-  def handle_out("like", desk, socket) do
+  def handle_out("like", %{desk_id: desk_id}, socket) do
     user = current_resource(socket)
-    desk = DeskProvider.one_desk!(desk.id, user)
+    desk = DeskProvider.one_desk!(desk_id, user)
     push socket, "like", %{id: desk.id, likes_count: desk.likes_count, like_me: desk.like_me}
     {:noreply, socket}
   end
@@ -52,7 +48,8 @@ defmodule HsTavern.DeskChannel do
         new_comment = new_comment
                       |> Repo.preload(:user)
                       |> HsTavern.Serializers.CommentSerializer.to_map
-        broadcast! socket, "comment", new_comment
+        desk = Desk |> Repo.get!(desk_id)
+        broadcast! socket, "comment", %{comments_count: desk.comments_count, comment: new_comment}
     end
     {:noreply, socket}
 

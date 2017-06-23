@@ -7,6 +7,7 @@ defmodule HsTavern.UserSocket do
 
   channel "card:*", HsTavern.CardChannel
   channel "desk:*", HsTavern.DeskChannel
+  channel "comment:*", HsTavern.CommentChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

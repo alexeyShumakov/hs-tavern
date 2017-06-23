@@ -2,6 +2,12 @@ defmodule HsTavern.CommentProvider do
   import Ecto.Query
   alias HsTavern.{Comment, Repo}
 
+  def get_comment!(id, user) do
+    comments_query
+    |> Repo.get!(id)
+    |> check_comment(user)
+  end
+
   def get_last_three_comments(%{comments_count: comments_count} = params, user) do
     offset = calc_offset(comments_count)
 
@@ -20,13 +26,15 @@ defmodule HsTavern.CommentProvider do
     |> check_comments(user)
   end
 
-  def check_comments(comments, nil), do: comments
-
-  def check_comments(comments, user) do
-    comments |> Enum.map(
-      fn comment -> Map.put(comment, :like_me, Enum.member?(comment.likes_users, user) ) end
-    )
+  def check_comment(comment, user) do
+      Map.put(comment, :like_me, Enum.member?(comment.likes_users, user))
   end
+
+  def check_comments(comments, nil), do: comments
+  def check_comments(comments, user) do
+    comments |> Enum.map(fn comment -> check_comment(comment, user)end)
+  end
+
 
   def comments(%{entity_id: entity_id, entity_type: entity_type}) do
     comments_query
