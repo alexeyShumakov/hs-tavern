@@ -3,22 +3,6 @@ import _ from "lodash";
 
 import actionTypes from "../constants";
 
-export function likeCard(cardId) {
-  return(dispatch, getState) => {
-    return axios.post("/likes", {
-      like: {
-        entity_type: "card",
-        entity_id: cardId
-      }
-    }).then((resp)=>{
-      const card = getState().cards.show
-      const newCard = Object.assign({}, card, resp.data)
-      dispatch(setCard(newCard));
-    }, ()=> {
-      console.log("err")
-    })
-  }
-}
 
 export function fetchAllCardComments(cardId) {
   return(dispatch, getState) => {
@@ -35,21 +19,6 @@ export function fetchAllCardComments(cardId) {
 
 export function updateCardComment(comment) {
   return { type: "UPDATE_CARD_COMMENT", comment }
-}
-export function likeCardComment(commentId) {
-  return(dispatch, getState) => {
-    return axios.post("/likes", {
-      like: {
-        entity_type: "comment",
-        entity_id: commentId
-      }
-    }).then((resp)=>{
-      dispatch(setCardComment(resp.data));
-    }, ()=> {
-      console.log("err")
-    })
-
-  }
 }
 
 export function setCardComment(comment) {

@@ -1,5 +1,6 @@
 import React from "react";
 import CommentsList from "../comment/commentsList";
+import Counter from "../desk/counter";
 import _ from "lodash";
 
 export default class CardContent extends React.Component {
@@ -63,26 +64,19 @@ export default class CardContent extends React.Component {
           </div>
         </div>
 
-        <nav className="level">
-          <div className="level-left">
-            <a className="level-item">
-              {card.likes_count}
-              <span className="icon"
-                onClick={()=>{
-                  if(store.user.is_authenticated) {
-                    actions.likeCard(card.id);
-                  } else {
-                    actions.setModal(true);
-                  }
-                }}
-              ><i className={`fa fa-heart${card.like_me ? "" : "-o"}`}></i></span>
-            </a>
-            <a className="level-item">
-              {card.comments_count}
-              <span className="icon"><i className="fa fa-comment-o"></i></span>
-            </a>
-          </div>
-        </nav>
+        <Counter
+          likesCount={card.likes_count}
+          commentsCount={card.comments_count}
+          likeMe={card.like_me}
+          likeCallback={()=>{
+            if(store.user.is_authenticated) {
+              store.cards.channel.push("like",{card_id: card.id})
+            } else {
+              actions.setModal(true);
+            }
+          }}
+        />
+
         <hr/>
         <CommentsList
           likeCallback={(id)=>{ actions.likeCardComment(id) }}

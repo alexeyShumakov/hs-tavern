@@ -2,8 +2,8 @@ defmodule HsTavern.CardProvider do
   import Ecto.Query
   alias HsTavern.{Repo, Card, CommentProvider}
 
-  def one_card!(slug, user) do
-    card = get_card(slug, user) |> check_card(user)
+  def one_card!(id, user) do
+    card = get_card(id, user) |> check_card(user)
   end
 
   def check_card(card, nil) do
@@ -14,16 +14,16 @@ defmodule HsTavern.CardProvider do
     Map.put(card, :like_me, Enum.member?(card.likes_users, user))
   end
 
-  def get_card(slug, user) do
+  def get_card(id, user) do
     query = from card in Card,
       left_join: l in assoc(card, :likes),
       left_join: u in assoc(l, :user),
-      where: [slug: ^slug],
       preload: [:likes_users, likes: {l, user: u}]
-
-    card = Repo.one!(query)
+    card = find_card(id, query)
     params = %{entity_id: card.id, entity_type: "card", comments_count: card.comments_count}
-    comments = CommentProvider.get_last_three_comments(params, user)
-    card |> Map.put(:comments, comments)
+    Map.put(card, :comments, CommentProvider.get_last_three_comments(params, user))
   end
+
+  def find_card(id, query) when is_integer(id), do: Repo.get!(query, id)
+  def find_card(id, query) when is_bitstring(id), do: query |> where(slug: ^id) |> Repo.one!
 end
