@@ -2,7 +2,7 @@ defmodule HsTavern.CardChannel do
   import Ecto.Query
   import Guardian.Phoenix.Socket
   use Phoenix.Channel
-  alias HsTavern.{Comment, Repo, Like, CardProvider}
+  alias HsTavern.{Comment, Repo, Like, CardProvider, LikeProvider}
   alias HsTavern.Serializers.CommentSerializer
 
   intercept(["create_comment", "like"])
@@ -35,8 +35,7 @@ defmodule HsTavern.CardChannel do
     case current_resource(socket) do
       nil -> nil
       user ->
-        params = %{entity_id: card_id, user_id: user.id, entity_type: "card"}
-        create_like(params)
+        LikeProvider.do_like! %{entity_id: card_id, user_id: user.id, entity_type: "card"}
         broadcast! socket, "like", %{card_id: card_id}
     end
     {:noreply, socket}
@@ -47,17 +46,6 @@ defmodule HsTavern.CardChannel do
     card = CardProvider.one_card!(card_id, user)
     push socket, "like", %{likes_count: card.likes_count, like_me: card.like_me}
     {:noreply, socket}
-  end
-
-  def create_like(params) do
-    case Repo.get_by(Like, params) do
-      nil ->
-        Like.create_with_entity(%Like{}, params)
-        |> Repo.insert!
-      like ->
-        Like.remove_with_entity(like, params)
-        |> Repo.delete!
-    end
   end
 
 end

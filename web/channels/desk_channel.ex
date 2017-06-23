@@ -2,7 +2,7 @@ defmodule HsTavern.DeskChannel do
   import Ecto.{Query}
   import Guardian.Phoenix.Socket
   use Phoenix.Channel
-  alias HsTavern.{Like, Desk, Repo, DeskProvider, Comment}
+  alias HsTavern.{Like, Desk, Repo, DeskProvider, LikeProvider, Comment}
 
   intercept ["like"]
 
@@ -14,22 +14,10 @@ defmodule HsTavern.DeskChannel do
     case current_resource(socket) do
       nil -> nil
       user ->
-        params = %{entity_id: desk_id, user_id: user.id, entity_type: "desk"}
-        create_like(params)
+        LikeProvider.do_like! %{entity_id: desk_id, user_id: user.id, entity_type: "desk"}
         broadcast! socket, "like", %{desk_id: desk_id}
     end
     {:noreply, socket}
-  end
-
-  def create_like(params) do
-    case Repo.get_by(Like, params) do
-      nil ->
-        Like.create_with_entity(%Like{}, params)
-        |> Repo.insert!
-      like ->
-        Like.remove_with_entity(like, params)
-        |> Repo.delete!
-    end
   end
 
   def handle_out("like", %{desk_id: desk_id}, socket) do

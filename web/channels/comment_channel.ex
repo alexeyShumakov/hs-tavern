@@ -2,7 +2,7 @@ defmodule HsTavern.CommentChannel do
   import Ecto.{Query}
   import Guardian.Phoenix.Socket
   use Phoenix.Channel
-  alias HsTavern.{Like, Repo, Comment, CommentProvider}
+  alias HsTavern.{Like, Repo, Comment, CommentProvider, LikeProvider}
   alias HsTavern.Serializers.CommentSerializer
 
   intercept ["like"]
@@ -15,8 +15,7 @@ defmodule HsTavern.CommentChannel do
     case current_resource(socket) do
       nil -> nil
       user ->
-        params = %{entity_id: comment_id, entity_type: "comment", user_id: user.id}
-        create_like(params)
+        LikeProvider.do_like! %{entity_id: comment_id, entity_type: "comment", user_id: user.id}
         broadcast! socket, "like", %{comment_id: comment_id}
     end
     {:noreply, socket}
@@ -28,15 +27,4 @@ defmodule HsTavern.CommentChannel do
     push socket, "like", comment
     {:noreply, socket}
   end
-  def create_like(params) do
-    case Repo.get_by(Like, params) do
-      nil ->
-        Like.create_with_entity(%Like{}, params)
-        |> Repo.insert!
-      like ->
-        Like.remove_with_entity(like, params)
-        |> Repo.delete!
-    end
-  end
-
 end
