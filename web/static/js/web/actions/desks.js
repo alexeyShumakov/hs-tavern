@@ -71,12 +71,12 @@ export function fetchDesk(id) {
   }
 }
 
-export function fetchDesks() {
+export function initialFetchDesks() {
   return(dispatch, getState) => {
     let desks = getState().desks.index;
     if(_.isEmpty(desks)) {
       return axios.get('/api/desks').then((response) => {
-        desks = response.data.map((desk)=>{
+        desks = response.data.desks.map((desk)=>{
           return Object.assign({}, desk, {channel: createDeskChannel(desk.id)})
         })
         dispatch(setDesks(desks))
@@ -89,6 +89,27 @@ export function fetchDesks() {
       return Promise.resolve();
     }
   }
+}
+
+export function setDeskFilters(filters) {
+  return {
+    type: "SET_DESK_FILTERS",
+    filters
+  }
+}
+export function fetchDesks() {
+  return(dispatch, getState) => {
+      let currentDesks = getState().desks.index;
+      let filters = getState().desks.filters;
+      return axios.get('/api/desks', {params: filters}).then((response) => {
+        let desks = response.data.desks.map((desk)=>{
+          return Object.assign({}, desk, {channel: createDeskChannel(desk.id)})
+        })
+        desks = currentDesks.concat(desks);
+        dispatch(setDesks(desks));
+        dispatch(setDeskFilters(response.data.filters))
+      })
+    }
 }
 
 export function setDesks(desks) {

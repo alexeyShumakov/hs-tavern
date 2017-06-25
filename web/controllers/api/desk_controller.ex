@@ -5,8 +5,9 @@ defmodule HsTavern.Api.DeskController do
   alias HsTavern.Serializers.DeskSerializer
 
   def index(conn, params, user, _) do
-    desks = DeskProvider.get_desks(user) |> DeskSerializer.to_map
-    json(conn, desks)
+    {desks, filters} = DeskProvider.get_desks_with_filters(user, params)
+    desks = DeskSerializer.short_to_map(desks)
+    json(conn, %{desks: desks, filters: filters})
   end
 
   def show(conn, %{"id" => id}, user, _) do

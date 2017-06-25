@@ -6,7 +6,11 @@ const initialState = {
   desks: {
     isOpenModal: false,
     index: [],
-    show: {}
+    show: {},
+    filters: {
+      page: 1,
+      total_pages: 2
+    }
   },
   builder: {
     errors: {},

@@ -40,6 +40,7 @@ defmodule HsTavern.CommentProvider do
     comments_query
     |> where(entity_type: ^entity_type)
     |> where(entity_id: ^entity_id)
+    |> limit(100)
   end
 
   def calc_offset(total_count) do

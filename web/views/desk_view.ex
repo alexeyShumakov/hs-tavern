@@ -4,7 +4,7 @@ defmodule HsTavern.DeskView do
 
   def desks_json(desks) do
     %{desks: %{
-      index: DeskSerializer.to_map(desks)
+      index: DeskSerializer.short_to_map(desks)
     }}
     |> Poison.encode!
     |> escape_javascript

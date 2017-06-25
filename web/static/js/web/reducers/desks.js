@@ -2,12 +2,19 @@ import actionTypes from '../constants';
 const init = {
   index: [],
   isOpenModal: false,
-  show: {}
+  show: {},
+  filters: {
+    page: 1,
+    total_pages: 2
+  }
 }
 
 let desks, desk, comments;
 export default (state = init, action) => {
   switch (action.type) {
+    case "SET_DESK_FILTERS":
+      return Object.assign({}, state, {filters: action.filters})
+
     case "SET_DESK_MODAL":
       return Object.assign({}, state, {isOpenModal: action.isOpen})
 

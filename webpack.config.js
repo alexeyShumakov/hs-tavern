@@ -1,5 +1,6 @@
 const path = require('path');
 const ExtractText = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
@@ -36,6 +37,10 @@ module.exports = {
     ]
   },
   plugins: [
+    new CopyWebpackPlugin([{
+      from: "web/static/images",
+      to: "../images"
+    }]),
     new ExtractText({
       filename: '../css/app.css',
       disable: false,

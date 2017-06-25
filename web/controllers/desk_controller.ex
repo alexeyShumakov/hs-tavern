@@ -4,7 +4,7 @@ defmodule HsTavern.DeskController do
   alias HsTavern.{Desk, DeskCard, DeskProvider}
 
   def index(conn, params, user, _) do
-    desks = DeskProvider.get_desks(user)
+    desks = DeskProvider.get_desks(user, params)
     render(conn, "index.html", desks: desks)
   end
 

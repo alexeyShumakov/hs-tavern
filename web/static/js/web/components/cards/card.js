@@ -22,7 +22,26 @@ export default class CardContent extends React.Component {
 
     return(
       <div className="box">
-        <h2 className="title is-3">{card.title}</h2>
+        <div className="media">
+          <div className="media-left">
+            <h2 className="title is-4">{card.title}</h2>
+          </div>
+          <div className="media-content"></div>
+          <div className="media-right">
+            <Counter
+              likesCount={card.likes_count}
+              commentsCount={card.comments_count}
+              likeMe={card.like_me}
+              likeCallback={()=>{
+                if(store.user.is_authenticated) {
+                  store.cards.channel.push("like",{card_id: card.id})
+                } else {
+                  actions.setModal(true);
+                }
+              }}
+            />
+          </div>
+        </div>
         <div className="media">
           <div className="media-left">
             <p className="image">
@@ -64,18 +83,6 @@ export default class CardContent extends React.Component {
           </div>
         </div>
 
-        <Counter
-          likesCount={card.likes_count}
-          commentsCount={card.comments_count}
-          likeMe={card.like_me}
-          likeCallback={()=>{
-            if(store.user.is_authenticated) {
-              store.cards.channel.push("like",{card_id: card.id})
-            } else {
-              actions.setModal(true);
-            }
-          }}
-        />
 
         <hr/>
         <CommentsList

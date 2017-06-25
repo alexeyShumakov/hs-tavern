@@ -1,3 +1,9 @@
 .desk__modal {
   width: 1100px;
 }
+
+.index-desk {
+  &:hover {
+    cursor: pointer;
+  }
+}

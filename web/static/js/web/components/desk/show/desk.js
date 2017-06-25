@@ -21,24 +21,39 @@ export default class Desk extends React.Component {
       <div>
         <div className="columns">
           <div className="column is-three-quarters">
-            <h3 className="title is-4">{desk.title}, {desk.player_class}</h3>
-
-            <Counter
-              likesCount={desk.likes_count}
-              commentsCount={desk.comments_count}
-              likeMe={desk.like_me}
-              likeCallback={(e)=>{
-                e.stopPropagation();
-                if(isLogin) {
-                  channel.push("like", {desk_id: desk.id})
-                } else {
-                  setModal(true);
-                }
-              }}
-            />
-            <div className="box">
-              {desk.description}
+            <div className="media">
+              <div className="media-left">
+                <p className="image is-48x48">
+                  <img src={`/images/icons/icon-${desk.player_class.toLowerCase()}.png`} alt=""/>
+                </p>
+              </div>
+              <div className="media-content">
+                <h3 className="title is-4">{desk.title}</h3>
+                <h4 className="subtitle is-6">by {desk.user.name}</h4>
+              </div>
+              <div className="media-right">
+                <Counter
+                  likesCount={desk.likes_count}
+                  commentsCount={desk.comments_count}
+                  likeMe={desk.like_me}
+                  likeCallback={(e)=>{
+                    e.stopPropagation();
+                    if(isLogin) {
+                      channel.push("like", {desk_id: desk.id})
+                    } else {
+                      setModal(true);
+                    }
+                  }}
+                />
+              </div>
             </div>
+            <hr/>
+            <div className="box">
+              <div className="content">
+                {desk.description}
+              </div>
+            </div>
+
             <div className="box">
 
             <CommentsList
