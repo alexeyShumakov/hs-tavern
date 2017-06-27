@@ -9,7 +9,10 @@ const initialState = {
     show: {},
     filters: {
       page: 1,
-      total_pages: 2
+      total_pages: 2,
+      keyword: "",
+      player_class: "All",
+      popularity: "new"
     }
   },
   builder: {

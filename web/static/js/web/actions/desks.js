@@ -97,7 +97,7 @@ export function setDeskFilters(filters) {
     filters
   }
 }
-export function fetchDesks() {
+export function fetchDesks(push = false) {
   return(dispatch, getState) => {
       let currentDesks = getState().desks.index;
       let filters = getState().desks.filters;
@@ -105,7 +105,8 @@ export function fetchDesks() {
         let desks = response.data.desks.map((desk)=>{
           return Object.assign({}, desk, {channel: createDeskChannel(desk.id)})
         })
-        desks = currentDesks.concat(desks);
+        if(push)
+          desks = currentDesks.concat(desks);
         dispatch(setDesks(desks));
         dispatch(setDeskFilters(response.data.filters))
       })

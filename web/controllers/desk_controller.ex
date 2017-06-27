@@ -18,7 +18,7 @@ defmodule HsTavern.DeskController do
     desk = Desk.changeset(%Desk{}, params |> Map.put("user_id", user.id))
     case Repo.insert(desk) do
       {:ok, desk} ->
-        conn |> json(%{status: :ok})
+        conn |> json(%{status: :ok, id: desk.id})
       {:error, changeset} ->
         conn |> json(%{status: :bad})
     end

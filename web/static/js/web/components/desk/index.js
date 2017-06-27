@@ -1,6 +1,9 @@
 import React from "react";
 import Desk from "./index/desk";
 import Waypoint from "react-waypoint";
+import KeywordFilter from "./index/keywordFilter";
+import ClassFilter from "./index/classFilter";
+import PopularityFilter from "./index/popularityFilter";
 
 export default class IndexDesk extends React.Component {
 
@@ -24,6 +27,11 @@ export default class IndexDesk extends React.Component {
         <div className="column is-three-quarters">
           <div className="box">
             <h2 className="title">Desks</h2>
+            <KeywordFilter
+              filters={filters}
+              fetch={fetchDesks}
+              setFilters={setDeskFilters}
+            />
             {index.map((desk)=> {
               return(<Desk
                 update={updateIndexDesk}
@@ -40,10 +48,10 @@ export default class IndexDesk extends React.Component {
           <Waypoint onEnter={()=>{
             let {page, total_pages} = filters;
             if(!this.state.isLoading && page < total_pages) {
-              let newFilters = Object.assign({}, {page: page + 1})
+              let newFilters = Object.assign({}, filters, {page: page + 1})
               setDeskFilters(newFilters)
               this.setState({isLoading: true})
-              fetchDesks().then(()=>{
+              fetchDesks(true).then(()=>{
                 this.setState({isLoading: false})
               })
             }
@@ -52,6 +60,17 @@ export default class IndexDesk extends React.Component {
 
         <div className="column">
           <div className="box">
+            <ClassFilter
+              filters={filters}
+              fetch={fetchDesks}
+              setFilters={setDeskFilters}
+            />
+            <hr/>
+            <PopularityFilter
+              filters={filters}
+              fetch={fetchDesks}
+              setFilters={setDeskFilters}
+            />
           </div>
         </div>
       </div>

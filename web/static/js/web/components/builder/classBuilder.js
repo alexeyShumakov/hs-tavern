@@ -185,7 +185,12 @@ export default class Builder extends React.Component {
             <div className="field">
               <button onClick={()=> {
                 builderValidateDesk()
-                builderSaveDesk()
+                builderSaveDesk().then((response)=>{
+                  let id = response.data.id
+                  this.props.actions.fetchDesk(id).then(()=>{
+                    this.props.route.history.push(`/desks/${id}`);
+                  })
+                }, ()=>{})
               }}
                 className="button is-primary is-fullwidth">
                 <span>Save</span>

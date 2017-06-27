@@ -1,4 +1,5 @@
 import axios from "../utils/axios";
+import { browserHistory } from 'react-router';
 import _ from "lodash";
 
 export function builderSaveDesk() {
@@ -6,8 +7,11 @@ export function builderSaveDesk() {
     let  {desk, isValid} = getState().builder
     let cards = desk.cards.map((card)=> {return {card_id: card.id, count: card.count}})
     desk = Object.assign({}, desk, {cards})
-    if(isValid)
-      return axios.post("/desks", {desk});
+    if(isValid) {
+      return axios.post("/desks", {desk})
+    } else {
+      return Promise.reject()
+    }
   }
 }
 

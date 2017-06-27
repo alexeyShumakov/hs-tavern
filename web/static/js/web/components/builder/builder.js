@@ -1,18 +1,35 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
+const arr = [
+  "druid", "hunter", "mage",
+  "paladin", "priest", "rogue",
+  "shaman", "warlock", "warrior"
+]
 export default (props) => {
-  return(<div>
-      <ul>
-        <li><Link to="/builder/druid">Druid</Link></li>
-        <li><Link to="/builder/hunter">Hunter</Link></li>
-        <li><Link to="/builder/mage">Mage</Link></li>
-        <li><Link to="/builder/paladin">Paladin</Link></li>
-        <li><Link to="/builder/priest">Priest</Link></li>
-        <li><Link to="/builder/rogue">Rogue</Link></li>
-        <li><Link to="/builder/shaman">Shaman</Link></li>
-        <li><Link to="/builder/warlock">Warlock</Link></li>
-        <li><Link to="/builder/warrior">Warrior</Link></li>
-      </ul>
-    </div>)
+  const links = arr.map((className)=>{
+    return <div key={className} className="column is-4">
+      <div className="card">
+        <Link to={`/builder/${className}`}>
+          <div className="card-image">
+            <figure className="image">
+              <img src={`/images/medium/class-${className}.jpg`} alt="Image"
+              />
+            </figure>
+          </div>
+        </Link>
+        <div className="card-content">
+          <Link to={`/builder/${className}`}>{className.toUpperCase()}</Link>
+        </div>
+      </div>
+    </div>
+  })
+  return(
+    <div>
+      <h1 className="title">Choose your way</h1>
+      <div className="columns is-multiline">
+      {links}
+      </div>
+    </div>
+  )
 }

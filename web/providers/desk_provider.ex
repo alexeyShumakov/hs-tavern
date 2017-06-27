@@ -51,10 +51,65 @@ defmodule HsTavern.DeskProvider do
 
     desk_q = from desk in Desk,
       left_join: user in assoc(desk, :user),
-      order_by: [desc: desk.inserted_at],
       preload: [user: user, likes: ^likes_query]
-    pag = Repo.paginate(desk_q, page_size: 12, page: params["page"])
-    filters = %{page: pag.page_number, total_pages: pag.total_pages}
-    {Repo.preload(pag.entries, :likes_users), filters}
+
+    {desks, filters} = {desk_q, %{}, params}
+    |> keyword_filter
+    |> class_filter
+    |> popularity_filter
+    |> page_filter
+
+    {Repo.preload(desks, :likes_users), filters}
+  end
+
+  defp keyword_filter({query, filters, params}) do
+    case params["keyword"] do
+      nil -> { query, Map.put(filters, :keyword, ""), params }
+      keyword -> {
+        query |> where([d], ilike(d.title, ^"%#{keyword}%")),
+        Map.put(filters, :keyword, keyword),
+        params
+      }
+    end
+  end
+
+  defp class_filter({query, filters, params}) do
+    case params["player_class"] do
+      nil -> {query, filters, params}
+      "All" -> {query, filters, params}
+      class ->
+        {
+          where(query, player_class: ^class),
+          Map.put(filters, :player_class, class),
+          params
+        }
+    end
+  end
+
+  defp popularity_filter({query, filters, params}) do
+    case params["popularity"] do
+      "hot" ->
+        {
+          query
+          |> where([d], d.inserted_at > from_now(-1, "month"))
+          |> order_by([d], desc: d.likes_count, desc: d.comments_count),
+          Map.put(filters, :popularity, "hot"),
+          params
+        }
+      _ ->
+        {
+          query |> order_by([d], desc: d.inserted_at),
+          Map.put(filters, :popularity, "new"),
+          params
+        }
+    end
+  end
+
+  defp page_filter({query, filters, params}) do
+    page = query |> Repo.paginate(params)
+    filters = filters
+              |> Map.put(:page, page.page_number)
+              |> Map.put(:total_pages, page.total_pages)
+    { page.entries,  filters}
   end
 end
