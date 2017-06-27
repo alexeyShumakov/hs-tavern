@@ -92,7 +92,7 @@ defmodule HsTavern.DeskProvider do
         {
           query
           |> where([d], d.inserted_at > from_now(-1, "month"))
-          |> order_by([d], desc: d.likes_count, desc: d.comments_count),
+          |> order_by([desc: :likes_count, desc: :comments_count, desc: :inserted_at]),
           Map.put(filters, :popularity, "hot"),
           params
         }

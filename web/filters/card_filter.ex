@@ -52,7 +52,7 @@ defmodule HsTavern.CardFilter do
   end
 
   defp order_filter({card, filters, params}) do
-    { card |> order_by([:cost, :title]) |> preload([:comments]), filters, params }
+    { card |> order_by([:cost, :title]), filters, params }
   end
 
   defp race_filter({card, filters, params}) do
