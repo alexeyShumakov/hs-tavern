@@ -34,7 +34,7 @@ export default class KeywordDeskFilter extends React.Component {
           }}
           className="input"
           type="text"
-          placeholder="Search card"
+          placeholder="Search desk"
         />
       </p>
     </div>

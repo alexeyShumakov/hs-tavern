@@ -12,7 +12,8 @@ const initialState = {
       total_pages: 2,
       keyword: "",
       player_class: "All",
-      popularity: "new"
+      popularity: "new",
+      my: false
     }
   },
   builder: {

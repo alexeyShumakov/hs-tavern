@@ -15,6 +15,7 @@ import ClassBuilder from "../components/builder/classBuilder";
 import DeskIndex from "../components/desk/index";
 import DeskModal from "../components/desk/modal";
 import DeskShow from "../components/desk/show/show";
+import MyDesks from "../components/desk/myDesks";
 
 const App = (props) => {
   const { store, actions, children } = props;
@@ -63,6 +64,9 @@ const App = (props) => {
               <Sidebar {...{store, actions}}/>
             </div>
             <div className="column">
+              <Route exact path="/my_desks"
+                render={route => (<MyDesks {...{route, store, actions}}/>)}
+              />
               <Route exact path="/desks"
                 render={route => (<DeskIndex {...{route, store, actions}}/>)}
               />

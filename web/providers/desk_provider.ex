@@ -22,7 +22,7 @@ defmodule HsTavern.DeskProvider do
   end
 
   def get_desks_with_filters(user, params \\ %{}) do
-    {desks, filters} = desks_query(params)
+    {desks, filters} = desks_query(params, user)
     {check_like(desks, user), filters}
   end
 
@@ -44,7 +44,7 @@ defmodule HsTavern.DeskProvider do
     Repo.one!(query)
   end
 
-  def desks_query(params) do
+  def desks_query(params, current_user \\ nil) do
     likes_query = from l in Like,
       left_join: u in assoc(l, :user),
       preload: [user: u]
@@ -57,6 +57,7 @@ defmodule HsTavern.DeskProvider do
     |> keyword_filter
     |> class_filter
     |> popularity_filter
+    |> user_filter(current_user)
     |> page_filter
 
     {Repo.preload(desks, :likes_users), filters}
@@ -70,6 +71,19 @@ defmodule HsTavern.DeskProvider do
         Map.put(filters, :keyword, keyword),
         params
       }
+    end
+  end
+
+  defp user_filter({query, filters, params}, nil), do: {query, filters, params}
+  defp user_filter({query, filters, params}, user) do
+    case params["my"] do
+      "true" ->
+        {
+          where(query, user_id: ^user.id),
+          Map.put(filters, :my, true),
+          params
+        }
+      _ -> {query, filters, params}
     end
   end
 

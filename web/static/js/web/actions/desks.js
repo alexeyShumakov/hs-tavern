@@ -74,8 +74,9 @@ export function fetchDesk(id) {
 export function initialFetchDesks() {
   return(dispatch, getState) => {
     let desks = getState().desks.index;
+    let filters = getState().desks.filters;
     if(_.isEmpty(desks)) {
-      return axios.get('/api/desks').then((response) => {
+      return axios.get('/api/desks', {params: filters}).then((response) => {
         desks = response.data.desks.map((desk)=>{
           return Object.assign({}, desk, {channel: createDeskChannel(desk.id)})
         })

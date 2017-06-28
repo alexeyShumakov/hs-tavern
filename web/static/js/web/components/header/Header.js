@@ -32,6 +32,9 @@ export default (props) => {
               </figure>
               {props.store.user.name}
             </a>
+            <Link to="/my_desks" className="nav-item">
+              My desks
+            </Link>
             <div className="nav-item">
               <div className="field is-grouped">
                 <p className="control">

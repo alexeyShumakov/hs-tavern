@@ -3,16 +3,19 @@ import Desk from "./index/desk";
 import Waypoint from "react-waypoint";
 import KeywordFilter from "./index/keywordFilter";
 import ClassFilter from "./index/classFilter";
-import PopularityFilter from "./index/popularityFilter";
 
-export default class IndexDesk extends React.Component {
+export default class MyDesks extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {isLoading: true}
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    let {filters} = this.props.store.desks;
+    filters = Object.assign({}, filters, {my: true})
+    this.props.actions.setDeskFilters(filters)
+
     this.props.actions.initialFetchDesks().then(()=>{
       this.setState({isLoading: false})
     });
@@ -29,7 +32,7 @@ export default class IndexDesk extends React.Component {
       <div className="columns">
         <div className="column is-three-quarters">
           <div className="box">
-            <h2 className="title">Desks</h2>
+            <h2 className="title">My Desks</h2>
             <KeywordFilter
               filters={filters}
               fetch={fetchDesks}
@@ -64,12 +67,6 @@ export default class IndexDesk extends React.Component {
         <div className="column">
           <div className="box">
             <ClassFilter
-              filters={filters}
-              fetch={fetchDesks}
-              setFilters={setDeskFilters}
-            />
-            <hr/>
-            <PopularityFilter
               filters={filters}
               fetch={fetchDesks}
               setFilters={setDeskFilters}

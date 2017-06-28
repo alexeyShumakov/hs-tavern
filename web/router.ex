@@ -24,6 +24,7 @@ defmodule HsTavern.Router do
     pipe_through [:browser, :browser_auth]
 
     get "/", DeskController, :index
+    get "/my_desks", DeskController, :my_desks
     resources "/comments", CommentController, only: [:index]
     resources "/cards", CardController, only: [:index, :show]
     resources "/builder", BuilderController, only: [:index, :show]
