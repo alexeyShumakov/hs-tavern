@@ -49,7 +49,7 @@ defmodule HsTavern.Card do
     |> cast(params, card_params)
     |> HsTavern.CardSlug.maybe_generate_slug
     |> HsTavern.CardSlug.unique_constraint
-    |> cast_attachments(params, [:img])
+    |> cast_attachments(params, [:img], allow_paths: true)
     |> validate_required([:title])
   end
 end

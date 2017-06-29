@@ -59,7 +59,7 @@ export function updateDesk(desk) {
   return { type: "UPDATE_DESK", desk }
 }
 
-export function fetchDesk(id) {
+export function initialFetchDesk(id) {
   return(dispatch, getState) => {
     if(_.isEmpty(getState().desks.show)) {
       return axios.get(`/api/desks/${id}`).then((response) => {
@@ -68,6 +68,14 @@ export function fetchDesk(id) {
     } else {
       return Promise.resolve();
     }
+  }
+
+}
+export function fetchDesk(id) {
+  return(dispatch, getState) => {
+    return axios.get(`/api/desks/${id}`).then((response) => {
+      dispatch(setDesk(response.data))
+    })
   }
 }
 

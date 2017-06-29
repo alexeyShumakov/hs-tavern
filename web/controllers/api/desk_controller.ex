@@ -3,6 +3,7 @@ defmodule HsTavern.Api.DeskController do
   use Guardian.Phoenix.Controller
   alias HsTavern.DeskProvider
   alias HsTavern.Serializers.DeskSerializer
+  plug Guardian.Plug.EnsureAuthenticated when action in [:delete]
 
   def index(conn, params, user, _) do
     {desks, filters} = DeskProvider.get_desks_with_filters(user, params)
@@ -15,9 +16,11 @@ defmodule HsTavern.Api.DeskController do
     json(conn, desk)
   end
 
-  def check_user(conn) do
-    unless Guardian.Plug.authenticated?(conn) do
-      conn |> json(%{status: :authenticated})
+  def delete(conn, %{"id" => id}, user, _) do
+    desk = Repo.get!(HsTavern.Desk, id)
+    if desk.user_id == user.id do
+      Repo.delete! desk
     end
+    json(conn, %{status: :deleted})
   end
 end

@@ -5,9 +5,14 @@ import createDeskChannel from "../../../channels/desk";
 export default class DeskShow extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.state = {channel: createDeskChannel(props.store.desks.show.id)}
   }
 
+  componentWillMount() {
+    let id = this.props.route.match.params.deskId;
+    this.props.actions.initialFetchDesk();
+  }
   componentWillUnmount() {
     this.state.channel.leave()
   }

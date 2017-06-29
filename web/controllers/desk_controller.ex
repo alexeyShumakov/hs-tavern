@@ -8,10 +8,7 @@ defmodule HsTavern.DeskController do
     render(conn, "index.html", desks: desks)
   end
 
-  def my_desks(conn, params, nil, _) do
-    conn |> redirect to: "/"
-  end
-
+  def my_desks(conn, params, nil, _), do: conn |> redirect to: "/"
   def my_desks(conn, params, user, _) do
     params = Map.put params, "my", "true"
     {desks, filters} = DeskProvider.get_desks_with_filters(user, params)
@@ -23,8 +20,8 @@ defmodule HsTavern.DeskController do
     render(conn, "show.html", desk: desk)
   end
 
+  def create(conn, _params, nil, _), do: conn |> json(%{status: :authenticated})
   def create(conn, %{"desk" => params}, user, _) do
-    check_user(conn)
     desk = Desk.changeset(%Desk{}, params |> Map.put("user_id", user.id))
     case Repo.insert(desk) do
       {:ok, desk} ->
@@ -32,13 +29,5 @@ defmodule HsTavern.DeskController do
       {:error, changeset} ->
         conn |> json(%{status: :bad})
     end
-  end
-
-  def check_user(conn) do
-    unless Guardian.Plug.authenticated?(conn), do: conn |> json(%{status: :authenticated})
-  end
-
-  def unauthenticated(conn) do
-    redirect conn, to: "/"
   end
 end

@@ -3,7 +3,7 @@ defmodule HsTavern.Repo.Migrations.CreateCommentsDesksJoinTable do
 
   def change do
     create table(:comments_desks, primary_key: false) do
-      add :comment_id, references(:comments)
+      add :comment_id, references(:comments, on_delete: :delete_all)
       add :desk_id, references(:desks)
     end
 

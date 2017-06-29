@@ -184,6 +184,9 @@ export default class Builder extends React.Component {
             <hr/>
             <div className="field">
               <button onClick={()=> {
+                if(!this.props.store.user.is_authenticated)
+                  return this.props.actions.setModal(true)
+
                 builderValidateDesk()
                 builderSaveDesk().then((response)=>{
                   let id = response.data.id

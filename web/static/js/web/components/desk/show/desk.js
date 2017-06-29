@@ -4,6 +4,7 @@ import DeskCard from "./deskCard";
 import Counter from "../counter";
 import socket from "../../../../socket";
 import CommentsList from "../../comment/commentsList";
+import axios from "../../../utils/axios";
 
 
 export default class Desk extends React.Component {
@@ -72,6 +73,23 @@ export default class Desk extends React.Component {
           <div className="column">
             <div className="box">
               <Curve cards={cards} />
+              { store.user.id == desk.user.id &&
+                <div>
+                  <hr/>
+                  <div className="field">
+                    <a className="button is-fullwidth is-warning">edit</a>
+                  </div>
+                  <div className="field">
+                    <a className="button is-fullwidth is-danger"
+                      onClick={()=>{
+                        axios.delete(`/api/desks/${desk.id}`).then(()=>{
+                          console.log("deleted");
+                        })
+                      }}
+                    >delete</a>
+                  </div>
+                </div>
+              }
             </div>
             <div className="box">
                 {cards.map((card)=>{

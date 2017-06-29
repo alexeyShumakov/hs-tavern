@@ -45,7 +45,7 @@ config :guardian, Guardian,
 
 config :arc,
   bucket: "uploads",
-  asset_host: "http://127.0.0.1:9000"
+  asset_host: "http://127.0.0.1:9000/uploads"
 
 config :ex_aws,
   access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),

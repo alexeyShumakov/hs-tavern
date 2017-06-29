@@ -12,7 +12,7 @@ defmodule HsTavern.Desk do
     has_many :cards, DeskCard, on_delete: :delete_all
     belongs_to :user, User
     many_to_many :likes, Like, join_through: "desks_likes", on_delete: :delete_all
-    many_to_many :comments, Comment, join_through: "comments_likes", on_delete: :delete_all
+    many_to_many :comments, Comment, join_through: "comments_desks", on_delete: :delete_all
     has_many :likes_users, through: [:likes, :user]
     field :like_me, :boolean, virtual: true, default: false
 
