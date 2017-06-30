@@ -30,9 +30,11 @@ export default class SearchCard extends React.Component {
           </div>
           <div className="hs-card" style={style}
             onClick={()=>{
+              let newCard = _.pick(card, ["img", "cost", "rarity", "title"])
+              newCard = Object.assign({}, newCard, {card_id: card.id, count: 1})
               !ifFullDesk(desk) &&
                 (desk_card && builderUpdateDeskCard(getCard(desk_card))
-                  || builderAddCardToDesk(Object.assign({}, card, {count: 1})))
+                  || builderAddCardToDesk(newCard))
             }}/>
           {isFull(desk_card) && <div className="hs-card__overlay is-overlay"/> }
           </div>
@@ -46,7 +48,7 @@ function ifFullDesk(desk) {
 }
 function findCard(card, desk) {
   return desk.cards.find((desk_card)=>{
-    return desk_card.id == card.id
+    return desk_card.card_id == card.id
   })
 }
 function getCard(card) {

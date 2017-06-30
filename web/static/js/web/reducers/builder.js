@@ -27,7 +27,7 @@ const init = {
 
 let newDesk, cards, newCards, newState, card, newCard, index;
 let removeCard = (cards, card) => {
-  return cards.filter((desk_card) => {return desk_card.id !== card.id })
+  return cards.filter((desk_card) => {return desk_card.card_id !== card.card_id })
 }
 export default (state = init, action) => {
   switch (action.type) {
@@ -51,7 +51,7 @@ export default (state = init, action) => {
 
     case "BUILDER_UPDATE_DESK_CARD":
       cards  = state.desk.cards.map((desk_card) => {
-        return desk_card.id == action.card.id ? action.card : desk_card
+        return desk_card.card_id == action.card.card_id ? action.card : desk_card
       })
       newDesk = Object.assign({}, state.desk, {cards: cards})
       return Object.assign({}, state, {desk: newDesk})

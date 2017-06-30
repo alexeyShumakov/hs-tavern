@@ -5,7 +5,6 @@ import createDeskChannel from "../../../channels/desk";
 export default class DeskShow extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.state = {channel: createDeskChannel(props.store.desks.show.id)}
   }
 
@@ -18,18 +17,35 @@ export default class DeskShow extends React.Component {
   }
 
   render() {
-    let { store, actions } = this.props;
+    let { store, actions, route } = this.props;
     let { setDesk, setModal } = actions;
     let desk = store.desks.show;
     return(
       <div>
         <Desk setModal={setModal}
+          deleteCallback={()=>{
+            let filters = {
+              page: 1,
+              total_pages: 1,
+              keyword: "",
+              player_class: "All",
+              my: true
+            }
+
+            actions.deleteDesk(desk.id).then(()=>{
+              actions.setDeskFilters(filters)
+              actions.fetchDesks()
+              route.history.push("/my_desks")
+            })
+
+          }}
           channel={this.state.channel}
           desk={desk}
           update={setDesk}
           isLogin={store.user.is_authenticated}
           store={store}
           actions={actions}
+          route={route}
         />
       </div>
     )

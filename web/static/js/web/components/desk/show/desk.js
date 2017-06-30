@@ -4,6 +4,7 @@ import DeskCard from "./deskCard";
 import Counter from "../counter";
 import socket from "../../../../socket";
 import CommentsList from "../../comment/commentsList";
+import { Link } from 'react-router-dom';
 import axios from "../../../utils/axios";
 
 
@@ -12,12 +13,8 @@ export default class Desk extends React.Component {
     super(props);
   }
   render() {
-    const {store, actions, channel, desk, isLogin, setModal} = this.props;
-    const cards = desk.cards.map((deskCard)=>{
-      let card = deskCard.card;
-      card["count"] = deskCard.count;
-      return card
-    })
+    const {deleteCallback, route, store, actions, channel, desk, isLogin, setModal} = this.props;
+    const {cards} = desk;
     return(
       <div>
         <div className="columns">
@@ -77,15 +74,11 @@ export default class Desk extends React.Component {
                 <div>
                   <hr/>
                   <div className="field">
-                    <a className="button is-fullwidth is-warning">edit</a>
+                    <Link to={`/desks/${desk.id}/edit`} className="button is-fullwidth is-warning">edit</Link>
                   </div>
                   <div className="field">
                     <a className="button is-fullwidth is-danger"
-                      onClick={()=>{
-                        axios.delete(`/api/desks/${desk.id}`).then(()=>{
-                          console.log("deleted");
-                        })
-                      }}
+                      onClick={deleteCallback}
                     >delete</a>
                   </div>
                 </div>

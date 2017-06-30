@@ -3,6 +3,11 @@ import socket from "../../socket";
 import store from "../store/store";
 import createDeskChannel from "../channels/desk";
 
+export function deleteDesk(deskId) {
+  return(dispatch, getState) => {
+    return axios.delete(`/desks/${deskId}`)
+  }
+}
 export function likeDeskComment(deskId) {
   return(dispatch, getState) => {
     return axios.post("/likes", {

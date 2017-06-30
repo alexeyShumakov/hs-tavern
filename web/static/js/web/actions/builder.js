@@ -2,10 +2,23 @@ import axios from "../utils/axios";
 import { browserHistory } from 'react-router';
 import _ from "lodash";
 
+export function builderUpdateServerDesk() {
+  return(dispatch, getState) => {
+    let  {desk, isValid} = getState().builder
+    let cards = desk.cards.map((card)=> {return _.pick(card, "id", "card_id", "count")})
+    desk = Object.assign({}, desk, {cards})
+    if(isValid) {
+      return axios.put(`/desks/${desk.id}`, {desk})
+    } else {
+      return Promise.reject()
+    }
+  }
+}
+
 export function builderSaveDesk() {
   return(dispatch, getState) => {
     let  {desk, isValid} = getState().builder
-    let cards = desk.cards.map((card)=> {return {card_id: card.id, count: card.count}})
+    let cards = desk.cards.map((card)=> {return _.pick(card, "card_id", "count")})
     desk = Object.assign({}, desk, {cards})
     if(isValid) {
       return axios.post("/desks", {desk})

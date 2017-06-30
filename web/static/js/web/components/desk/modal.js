@@ -19,7 +19,7 @@ export default class DeskModal extends React.Component {
   }
 
   render() {
-    const {store, actions, channel, setDesk, desk, close, setModal, isLogin } = this.props;
+    const {route, store, actions, channel, setDesk, desk, close, setModal, isLogin } = this.props;
     console.log(channel);
     return(
       <div className="modal is-active" onKeyDown={this.handleKeydown}>
@@ -27,6 +27,24 @@ export default class DeskModal extends React.Component {
         <div className="modal-content desk__modal">
           <div className="box">
             <Desk
+              deleteCallback={()=>{
+                let filters = {
+                  page: 1,
+                  total_pages: 1,
+                  keyword: "",
+                  player_class: "All",
+                  my: true
+                }
+
+                actions.deleteDesk(desk.id).then(()=>{
+                  actions.setDeskModal(false)
+                  actions.setDeskFilters(filters)
+                  actions.fetchDesks()
+                  route.history.push("/my_desks")
+                })
+
+              }}
+              route={route}
               store={store}
               actions={actions}
               channel={channel}

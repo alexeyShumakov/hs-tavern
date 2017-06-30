@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import * as appActions from '../actions';
 
 import Header from "../components/header/Header";
@@ -10,11 +10,12 @@ import Modal from "../components/modal/Modal";
 import Cards from "../components/cards/index/index";
 import Card from "../components/cards/show";
 import CardsModal from "../components/cards/modal/modal";
-import Builder from "../components/builder/builder";
+import SelectClass from "../components/builder/selectClass";
 import ClassBuilder from "../components/builder/classBuilder";
 import DeskIndex from "../components/desk/index";
 import DeskModal from "../components/desk/modal";
 import DeskShow from "../components/desk/show/show";
+import DeskEdit from "../components/desk/edit";
 import MyDesks from "../components/desk/myDesks";
 
 const App = (props) => {
@@ -22,25 +23,30 @@ const App = (props) => {
   const deskChannel = store.desks.index.find((desk)=>{
     return desk.id === store.desks.show.id
   })
+
+  const DeskModalWithRouter = withRouter((route)=>{
+    return(
+      <DeskModal
+        route={route}
+        actions={actions}
+        store={store}
+        channel={deskChannel.channel}
+        desk={store.desks.show}
+        isOpen={store.desks.isOpenModal}
+        setModal={actions.setModal}
+        setDesk={actions.setDesk}
+        isLogin={store.user.is_authenticated}
+        close={()=> {
+          actions.setDesk({});
+          actions.setDeskModal(false)
+          window.history.back();
+        }}
+      />
+    )
+  })
   return(
     <div>
-      { store.desks.isOpenModal &&
-          <DeskModal
-            actions={actions}
-            store={store}
-            channel={deskChannel.channel}
-            desk={store.desks.show}
-            isOpen={store.desks.isOpenModal}
-            setModal={actions.setModal}
-            setDesk={actions.setDesk}
-            isLogin={store.user.is_authenticated}
-            close={()=> {
-              actions.setDesk({});
-              actions.setDeskModal(false)
-              window.history.back();
-            }}
-          />
-      }
+      { store.desks.isOpenModal && <DeskModalWithRouter/> }
       { store.cards.isOpenModal &&
         <CardsModal
           store={store}
@@ -70,6 +76,10 @@ const App = (props) => {
               <Route exact path="/desks"
                 render={route => (<DeskIndex {...{route, store, actions}}/>)}
               />
+              <Route exact path="/desks/:deskId/edit"
+                render={route => (<DeskEdit {...{route, store, actions}}/>)}
+              />
+
               <Route exact path="/desks/:deskId"
                 render={route => (<DeskShow {...{route, store, actions}}/>)}
               />
@@ -77,7 +87,7 @@ const App = (props) => {
                 render={route => (<Card {...{route, store, actions}}/>)}
               />
               <Route exact path="/builder"
-                render={route => (<Builder {...{route, store, actions}}/>)}
+                render={route => (<SelectClass {...{route, store, actions}}/>)}
               />
               <Route exact path="/builder/:heroClass"
                 render={route => (<ClassBuilder {...{route, store, actions}}/>)}

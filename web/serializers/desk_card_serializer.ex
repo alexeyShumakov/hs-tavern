@@ -7,11 +7,14 @@ defmodule HsTavern.Serializers.DeskCardSerializer do
   end
 
   def to_map(desk_card) do
-    card = desk_card.card
     %{
       id: desk_card.id,
+      card_id: desk_card.card.id,
+      cost: desk_card.card.cost,
       count: desk_card.count,
-      card:  CardSerializer.short_to_map(card)
+      title: desk_card.card.title,
+      rarity: desk_card.card.rarity,
+      img: HsTavern.CardImg.url({desk_card.card.img, desk_card.card}, :thumb),
     }
   end
 

@@ -31,4 +31,15 @@ defmodule HsTavern.DeskView do
     |> raw
 
   end
+  def builder_json(cards, filters, desk) do
+    %{ builder: %{
+        filters: filters,
+        cards: Enum.map(cards, &CardSerializer.short_to_map&1),
+        desk: DeskSerializer.to_map(desk)
+      },
+    }
+    |> Poison.encode!
+    |> escape_javascript
+    |> raw
+  end
 end
