@@ -5,7 +5,7 @@ const init = {
   show: {},
   filters: {
     page: 1,
-    total_pages: 1,
+    total_pages: 2,
     keyword: "",
     player_class: "All",
     popularity: "new",

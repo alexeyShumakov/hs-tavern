@@ -7,14 +7,11 @@ export default (id) => {
   channel.join()
   channel.on("like", payload => {
     switch(payload["entity_type"]) {
-    case "desk":
-      store.dispatch(actions.updateDeskComment(payload));
-
-    case "card":
-      store.dispatch(actions.updateCardComment(payload));
-    default:
-      console.log("ERR")
-    }
+      case "desk":
+        return store.dispatch(actions.updateDeskComment(payload));
+      case "card":
+        return store.dispatch(actions.updateCardComment(payload));
+      }
 
   })
   return channel

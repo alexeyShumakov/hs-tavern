@@ -6,6 +6,7 @@ import socket from "../../../../socket";
 import CommentsList from "../../comment/commentsList";
 import { Link } from 'react-router-dom';
 import axios from "../../../utils/axios";
+import _ from "lodash";
 
 
 export default class Desk extends React.Component {
@@ -15,6 +16,7 @@ export default class Desk extends React.Component {
   render() {
     const {deleteCallback, route, store, actions, channel, desk, isLogin, setModal} = this.props;
     const {cards} = desk;
+    let sortedCards = _.sortBy(cards, ["cost", "title"])
     return(
       <div>
         <div className="columns">
@@ -85,7 +87,7 @@ export default class Desk extends React.Component {
               }
             </div>
             <div className="box">
-                {cards.map((card)=>{
+                {sortedCards.map((card)=>{
                   return <DeskCard key={card.id} card={card} />
                 })}
             </div>

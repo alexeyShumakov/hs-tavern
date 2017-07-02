@@ -34,7 +34,7 @@ export default class DeskShow extends React.Component {
 
             actions.deleteDesk(desk.id).then(()=>{
               actions.setDeskFilters(filters)
-              actions.fetchDesks()
+              actions.setDesks([])
               route.history.push("/my_desks")
             })
 
