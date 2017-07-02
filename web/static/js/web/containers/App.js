@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Route, withRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import * as appActions from '../actions';
 
 import Header from "../components/header/Header";
@@ -24,29 +24,25 @@ const App = (props) => {
     return desk.id === store.desks.show.id
   })
 
-  const DeskModalWithRouter = withRouter((route)=>{
-    return(
-      <DeskModal
-        route={route}
-        actions={actions}
-        store={store}
-        channel={deskChannel.channel}
-        desk={store.desks.show}
-        isOpen={store.desks.isOpenModal}
-        setModal={actions.setModal}
-        setDesk={actions.setDesk}
-        isLogin={store.user.is_authenticated}
-        close={()=> {
-          actions.setDesk({});
-          actions.setDeskModal(false)
-          window.history.back();
-        }}
-      />
-    )
-  })
   return(
     <div>
-      { store.desks.isOpenModal && <DeskModalWithRouter/> }
+      { store.desks.isOpenModal &&
+        <DeskModal
+          actions={actions}
+          store={store}
+          channel={deskChannel.channel}
+          desk={store.desks.show}
+          isOpen={store.desks.isOpenModal}
+          setModal={actions.setModal}
+          setDesk={actions.setDesk}
+          isLogin={store.user.is_authenticated}
+          close={()=> {
+            actions.setDesk({});
+            actions.setDeskModal(false)
+            window.history.back();
+          }}
+        />
+      }
       { store.cards.isOpenModal &&
         <CardsModal
           store={store}

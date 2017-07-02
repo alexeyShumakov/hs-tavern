@@ -32,10 +32,9 @@ export default class DeskShow extends React.Component {
               my: true
             }
 
-            actions.deleteDesk(desk.id).then(()=>{
+            return actions.deleteDesk(desk.id).then(()=>{
               actions.setDeskFilters(filters)
               actions.setDesks([])
-              route.history.push("/my_desks")
             })
 
           }}
@@ -45,7 +44,6 @@ export default class DeskShow extends React.Component {
           isLogin={store.user.is_authenticated}
           store={store}
           actions={actions}
-          route={route}
         />
       </div>
     )

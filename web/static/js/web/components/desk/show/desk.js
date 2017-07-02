@@ -4,7 +4,7 @@ import DeskCard from "./deskCard";
 import Counter from "../counter";
 import socket from "../../../../socket";
 import CommentsList from "../../comment/commentsList";
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import axios from "../../../utils/axios";
 import _ from "lodash";
 
@@ -14,9 +14,20 @@ export default class Desk extends React.Component {
     super(props);
   }
   render() {
+
     const {deleteCallback, route, store, actions, channel, desk, isLogin, setModal} = this.props;
     const {cards} = desk;
     let sortedCards = _.sortBy(cards, ["cost", "title"])
+
+    const DeleteButton = withRouter(({history})=>{
+      return <a className="button is-fullwidth is-danger"
+        onClick={()=>{
+          deleteCallback().then(()=>{
+            history.push("/my_desks")
+          })
+        }}
+      >delete</a>
+    })
     return(
       <div>
         <div className="columns">
@@ -79,9 +90,7 @@ export default class Desk extends React.Component {
                     <Link to={`/desks/${desk.id}/edit`} className="button is-fullwidth is-warning">edit</Link>
                   </div>
                   <div className="field">
-                    <a className="button is-fullwidth is-danger"
-                      onClick={deleteCallback}
-                    >delete</a>
+                    <DeleteButton />
                   </div>
                 </div>
               }
