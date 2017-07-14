@@ -28,6 +28,7 @@ sets = [
 races = ["Beast", "Dragon", "Elemental",
 "Murloc", "Pirate", "Totem", "Mech"]
 
+comments_body = ~s({"entityMap":{},"blocks":[{"key":"1inns","text":"comment","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]})
 cards_count = 700
 users_count = 100
 comments_count = 500
@@ -75,7 +76,7 @@ end)
 
 Enum.each(1..comments_count, fn id ->
   params = %{}
-  |> Map.put(:body, "comment id##{id}")
+  |> Map.put(:body, comments_body)
   |> Map.put(:entity_id, :rand.uniform(cards_count))
   |> Map.put(:entity_type, "card")
   |> Map.put(:user_id, :rand.uniform(users_count))
@@ -84,7 +85,7 @@ end)
 
 Enum.each(1..comments_count, fn id ->
   params = %{}
-  |> Map.put(:body, "comment id##{id}")
+  |> Map.put(:body, comments_body)
   |> Map.put(:entity_id, :rand.uniform(desks_count))
   |> Map.put(:entity_type, "desk")
   |> Map.put(:user_id, :rand.uniform(users_count))

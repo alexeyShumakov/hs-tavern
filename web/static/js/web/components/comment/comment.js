@@ -1,12 +1,19 @@
 import React from "react";
 import Time from "../../utils/time";
 import commentChannel from "../../channels/comment";
+import {Editor, EditorState, convertFromRaw, CompositeDecorator} from "draft-js";
+import selectedMentionDecorator from "../../editor/decorators/selectedMention";
 
 export default class Comment extends React.Component {
   constructor(props) {
+
     super(props);
     let channel = commentChannel(props.comment.id);
-    this.state = {channel: channel};
+    let compositeDecorator = new CompositeDecorator([
+      selectedMentionDecorator
+    ])
+    let editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(props.comment.body)), compositeDecorator)
+    this.state = {channel, editorState};
   }
 
   componentWillUnmount() {
@@ -26,7 +33,12 @@ export default class Comment extends React.Component {
         <div className="media-content">
           <strong>{comment.user.name}</strong>
           <small> <Time time={comment.inserted_at}/></small>
-          <div className="content"> {comment.body} </div>
+          <div className="content">
+            <Editor
+              editorState={this.state.editorState}
+              readOnly={true}
+            />
+         </div>
 
           <nav className="level">
             <div className="level-left">

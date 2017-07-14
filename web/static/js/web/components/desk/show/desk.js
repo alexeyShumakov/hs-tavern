@@ -68,6 +68,7 @@ export default class Desk extends React.Component {
             <div className="box">
 
             <CommentsList
+              commentEditor={store.commentEditor}
               likeCallback={(id)=>{ actions.likeDeskComment(id) }}
               openAuthModal={()=>{ actions.setModal(true) }}
               fetchComments={()=>{ actions.fetchAllDeskComments(desk.id) }}

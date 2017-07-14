@@ -1,9 +1,10 @@
-import "phoenix_html"
-import socket from "./socket"
+import "es6-shim";
+import "phoenix_html";
+import socket from "./socket";
 import React from "react";
 import {render} from "react-dom";
-import { Provider } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import "font-awesome/scss/font-awesome.scss";
 import "../css/app.scss";

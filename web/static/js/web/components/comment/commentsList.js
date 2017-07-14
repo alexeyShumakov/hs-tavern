@@ -9,7 +9,7 @@ export default class CommentsList extends React.Component {
   }
 
   render() {
-    let { comments, likeCallback, openAuthModal, fetchComments, currentUser, createCallback} = this.props;
+    let {commentEditor, comments, likeCallback, openAuthModal, fetchComments, currentUser, createCallback} = this.props;
     comments = comments.map((c)=> {
       return(<Comment
         key={c.id}
@@ -34,6 +34,7 @@ export default class CommentsList extends React.Component {
         }
         {comments}
         <CommentEditor
+          commentEditorState={commentEditor}
           currentUser={currentUser}
           createCallback={createCallback}
           openAuthModal={openAuthModal}/>

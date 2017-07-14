@@ -86,6 +86,7 @@ export default class CardContent extends React.Component {
 
         <hr/>
         <CommentsList
+          commentEditor={store.commentEditor}
           likeCallback={(id)=>{ actions.likeCardComment(id) }}
           openAuthModal={()=>{ actions.setModal(true) }}
           fetchComments={()=>{ actions.fetchAllCardComments(card.id) }}

@@ -43,5 +43,6 @@ defmodule HsTavern.Router do
     pipe_through :api
     resources "/cards", Api.CardController, only: [:show, :index]
     resources "/desks", Api.DeskController, only: [:show, :index, :update]
+    get "/users/search", Api.UserController, :search
    end
 end
