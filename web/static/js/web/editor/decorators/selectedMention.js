@@ -10,7 +10,6 @@ class Mention extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const user = this.props.contentState.getEntity(this.props.entityKey).getData();
     return(
       <Link

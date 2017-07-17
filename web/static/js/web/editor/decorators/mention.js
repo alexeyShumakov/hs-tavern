@@ -2,8 +2,8 @@ import React from "react";
 import {Modifier, CompositeDecorator, Editor, EditorState, convertToRaw, SelectionState} from "draft-js";
 import actions from "../../actions/bindActions";
 
-const MENTION_REGEX = /\@[\w]+/g;
-const CURRENT_MENTION_REGEX = /\@[\w]+$/g;
+const MENTION_REGEX = /\@[\w]+\s?([\w]+)?/g;
+const CURRENT_MENTION_REGEX = /\@[\w]+\s?([\w]+)?$/g;
 
 function component(props) {
   return(<a
@@ -27,6 +27,8 @@ function strategy(contentBlock, callback, contentState) {
     if( text !== null ) {
       text =text[0].slice(1);
       actions.ceFetchMentionSuggestions(text);
+    } else {
+      actions.ceSetMentionSuggestions([]);
     }
   findWithRegex(MENTION_REGEX, contentBlock, callback);
 }

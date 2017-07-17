@@ -4,6 +4,7 @@ import _ from "lodash";
 import Tooltip from "react-tooltip";
 import mentionDecorator, {selectMention} from "../../editor/decorators/mention";
 import selectedMentionDecorator from "../../editor/decorators/selectedMention";
+import SuggestionsList from "./mention/suggestionsList";
 
 export default class CommentEditor extends React.Component {
   constructor(props) {
@@ -46,15 +47,27 @@ export default class CommentEditor extends React.Component {
                         }
                       return "not-nandled";
                     }}
-                    onTab={(e)=>{e.preventDefault(), console.log("TAB")}}
+                    onTab={(e)=>{
+                      const {editorState} = this.state;
+                      const {mentionSuggestions} = this.props.commentEditorState;
+                        if(!_.isEmpty(mentionSuggestions)) {
+                          e.preventDefault();
+                          const newEditorState = selectMention(editorState, mentionSuggestions[0]);
+                          this.setState({editorState: newEditorState})
+                          return "handled";
+                        }
+                      return "not-nandled";
+                    }}
                   />
                 </div>
                 { !_.isEmpty(commentEditorState.mentionSuggestions) &&
-                  <ul>
-                    {commentEditorState.mentionSuggestions.map((suggestion)=>{
-                      return <li key={suggestion.id}>{suggestion.name}</li>
-                    })}
-                  </ul>
+                  <div className="suggestion-wrapper">
+                    <SuggestionsList
+                      editorState={this.state.editorState}
+                      setNewEditorState={(editorState) =>{this.setState({editorState})}}
+                      suggestions={commentEditorState.mentionSuggestions}
+                    />
+                  </div>
                 }
               </div>
 
