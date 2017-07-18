@@ -1,6 +1,7 @@
 @import "./variables";
 @import "~bulma/bulma";
 @import "~rc-slider/assets/index.css";
+@import "~draft-js/dist/Draft.css";
 @import "./nav";
 @import "./nav-search";
 @import "./hs-card";
@@ -9,3 +10,4 @@
 @import "./builder";
 @import "./desk";
 @import "./suggestion";
+@import "./editor";

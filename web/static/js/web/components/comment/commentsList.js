@@ -9,7 +9,7 @@ export default class CommentsList extends React.Component {
   }
 
   render() {
-    let {commentEditor, comments, likeCallback, openAuthModal, fetchComments, currentUser, createCallback} = this.props;
+    let {setToolbar, commentEditor, comments, likeCallback, openAuthModal, fetchComments, currentUser, createCallback} = this.props;
     comments = comments.map((c)=> {
       return(<Comment
         key={c.id}

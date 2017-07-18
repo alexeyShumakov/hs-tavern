@@ -1,6 +1,7 @@
 .suggestion {
   margin-top: 0 !important;
   padding: 5px 0 5px 5px !important;
+  height: 48px;
   &:hover {
     background-color: $white-ter;
     cursor: pointer;
@@ -8,13 +9,13 @@
 }
 
 .suggestion-wrapper {
-  width: 100%;
   position: relative;
 }
+
 .suggestions-list {
-  z-index: 5;
-  width: 500px;
   position: absolute;
+  width: 500px;
+  z-index: 5;
   left: 0;
-  top: 0;
+  bottom: 0;
 }

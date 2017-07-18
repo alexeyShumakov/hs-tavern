@@ -16,3 +16,19 @@ export function ceSetMentionSuggestions(suggestions) {
     suggestions
   };
 }
+
+export function ceFetchCardSuggestions(keyword) {
+  return(dispatch, getState) => {
+    return axios.get("/api/cards", {params: {keyword: keyword, per_page: 6}})
+      .then((resp)=>{
+        dispatch(ceSetCardSuggestions(resp.data.index));
+      });
+  };
+}
+
+export function ceSetCardSuggestions(suggestions) {
+  return {
+    type: "COMMENT_EDITOR_SET_CARD_SUGGESTIONS",
+    suggestions
+  };
+}

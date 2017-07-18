@@ -2,8 +2,8 @@ import React from "react";
 import {Modifier, CompositeDecorator, Editor, EditorState, convertToRaw, SelectionState} from "draft-js";
 import actions from "../../actions/bindActions";
 
-const MENTION_REGEX = /\@[\w]+\s?([\w]+)?/g;
-const CURRENT_MENTION_REGEX = /\@[\w]+\s?([\w]+)?$/g;
+const CARD_REGEX = /%[\w]+\s?([\w]+)?/g;
+const CURRENT_CARD_REGEX = /%[\w]+\s?([\w]+)?$/g;
 
 function component(props) {
   return(<a
@@ -23,22 +23,22 @@ function strategy(contentBlock, callback, contentState) {
   let selection = contentState.getSelectionAfter();
   let startSelection = selection.getStartOffset();
   let text = contentBlock.getText().slice(0, startSelection + 1);
-  text = text.match(CURRENT_MENTION_REGEX)
+  text = text.match(CURRENT_CARD_REGEX);
     if( text !== null ) {
       text =text[0].slice(1);
-      actions.ceFetchMentionSuggestions(text);
+      actions.ceFetchCardSuggestions(text);
     } else {
-      actions.ceSetMentionSuggestions([]);
+      actions.ceSetCardSuggestions([]);
     }
-  findWithRegex(MENTION_REGEX, contentBlock, callback);
+  findWithRegex(CARD_REGEX, contentBlock, callback);
 }
 
 export default {strategy, component};
 
-export function selectMention(editorState, suggestion) {
+export function selectCard(editorState, suggestion) {
   const selectionState = editorState.getSelection();
   const contentState = editorState.getCurrentContent();
-  const contentStateWithEntity = contentState.createEntity('MENTION', 'IMMUTABLE', suggestion)
+  const contentStateWithEntity = contentState.createEntity('CARD', 'IMMUTABLE', suggestion);
   const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
   const key = selectionState.getAnchorKey();
@@ -46,24 +46,24 @@ export function selectMention(editorState, suggestion) {
 
   let startSelection = selectionState.getStartOffset();
   let text = selectedBlock.getText().slice(0, startSelection + 1);
-  let name = suggestion.name;
-  text = CURRENT_MENTION_REGEX.exec(text)
+  let {title} = suggestion;
+  text = CURRENT_CARD_REGEX.exec(text);
   let newSelectionState = new SelectionState({
     anchorKey: selectedBlock.getKey(),
     anchorOffset: text.index,
     focusKey: selectedBlock.getKey(),
     focusOffset: text.index + text[0].length
-  })
+  });
 
-  const textWithEntity = Modifier.replaceText(contentStateWithEntity, newSelectionState, name, null, entityKey);
+  const textWithEntity = Modifier.replaceText(contentStateWithEntity, newSelectionState, title, null, entityKey);
   newSelectionState = new SelectionState({
     anchorKey: selectedBlock.getKey(),
-    anchorOffset: text.index + name.length,
+    anchorOffset: text.index + title.length,
     focusKey: selectedBlock.getKey(),
-    focusOffset:  text.index + name.length
-  })
-  const newEditorState = EditorState.set(editorState,  {currentContent: textWithEntity})
-  actions.ceSetMentionSuggestions([]);
-  return EditorState.acceptSelection(newEditorState, newSelectionState)
+    focusOffset: text.index + title.length
+  });
+  const newEditorState = EditorState.set(editorState,  {currentContent: textWithEntity});
+  actions.ceSetCardSuggestions([]);
+  return EditorState.acceptSelection(newEditorState, newSelectionState);
 
 }
