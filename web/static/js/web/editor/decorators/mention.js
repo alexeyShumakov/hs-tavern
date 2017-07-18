@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import {Modifier, CompositeDecorator, Editor, EditorState, convertToRaw, SelectionState} from "draft-js";
 import actions from "../../actions/bindActions";
 

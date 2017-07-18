@@ -3,6 +3,7 @@ import {Modifier, CompositeDecorator, Editor, EditorState, convertToRaw, Selecti
 import _ from "lodash";
 import Tooltip from "react-tooltip";
 import cardDecorator, {selectCard} from "../../editor/decorators/card";
+import linkifyStrategy from "../../editor/decorators/linkify";
 import mentionDecorator, {selectMention} from "../../editor/decorators/mention";
 import selectedMentionDecorator from "../../editor/decorators/selectedMention";
 import selectedCardDecorator from "../../editor/decorators/selectedCard";
@@ -14,7 +15,7 @@ export default class CommentEditor extends React.Component {
     super(props);
     const compositeDecorator = new CompositeDecorator([
       mentionDecorator, selectedMentionDecorator,
-      cardDecorator, selectedCardDecorator
+      cardDecorator, selectedCardDecorator, linkifyStrategy
     ])
     const editorState = EditorState.createEmpty(compositeDecorator);
     this.state = {editorState};
