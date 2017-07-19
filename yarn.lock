@@ -1370,6 +1370,14 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
+emojione-assets@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/emojione-assets/-/emojione-assets-3.1.0.tgz#8d1a8bb97d169ffb2c856cd3b59ad31d621b0736"
+
+emojione@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/emojione/-/emojione-3.1.1.tgz#f5680fbee2cb2a56e99042b14d935e3eb861b300"
+
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"

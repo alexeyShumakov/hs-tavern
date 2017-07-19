@@ -5,6 +5,7 @@ import {Editor, EditorState, convertFromRaw, CompositeDecorator} from "draft-js"
 import selectedMentionDecorator from "../../editor/decorators/selectedMention";
 import selectedCardDecorator from "../../editor/decorators/selectedCard";
 import linkifyDecorator from "../../editor/decorators/linkify";
+import emojiDecorator from "../../editor/decorators/emoji";
 
 export default class Comment extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ export default class Comment extends React.Component {
     super(props);
     let channel = commentChannel(props.comment.id);
     let compositeDecorator = new CompositeDecorator([
-      selectedMentionDecorator, selectedCardDecorator, linkifyDecorator
+      selectedMentionDecorator, selectedCardDecorator,
+      linkifyDecorator, emojiDecorator
     ])
     let editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(props.comment.body)), compositeDecorator)
     this.state = {channel, editorState};

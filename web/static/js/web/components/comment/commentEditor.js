@@ -3,22 +3,26 @@ import {Modifier, CompositeDecorator, Editor, EditorState, convertToRaw, Selecti
 import _ from "lodash";
 import Tooltip from "react-tooltip";
 import cardDecorator, {selectCard} from "../../editor/decorators/card";
-import linkifyStrategy from "../../editor/decorators/linkify";
+import linkifyDecorator from "../../editor/decorators/linkify";
 import mentionDecorator, {selectMention} from "../../editor/decorators/mention";
 import selectedMentionDecorator from "../../editor/decorators/selectedMention";
 import selectedCardDecorator from "../../editor/decorators/selectedCard";
+import emojiDecorator from "../../editor/decorators/emoji";
 import SuggestionsList from "./mention/suggestionsList";
 import CardSuggestions from "./card/suggestionsList";
+import EmojiPanel from "./emoji/panel";
 
 export default class CommentEditor extends React.Component {
   constructor(props) {
     super(props);
     const compositeDecorator = new CompositeDecorator([
       mentionDecorator, selectedMentionDecorator,
-      cardDecorator, selectedCardDecorator, linkifyStrategy
+      cardDecorator, selectedCardDecorator,
+      linkifyDecorator, emojiDecorator
     ])
     const editorState = EditorState.createEmpty(compositeDecorator);
-    this.state = {editorState};
+    const isShowEmoji = false
+    this.state = {editorState, isShowEmoji};
     this.onChange = (editorState) => this.setState({editorState})
     this.handleSuggestion = this.handleSuggestion.bind(this);
   }
@@ -125,11 +129,32 @@ export default class CommentEditor extends React.Component {
                           <i className="fa fa-navicon"></i>
                         </span>
                       </a>
-                      <a data-tip="Insert emoji" className="button is-small is-white">
-                        <span className="icon is-small">
-                          <i className="fa fa-smile-o"></i>
-                        </span>
-                      </a>
+                      <div className='editor__emoji-button'>
+                        {this.state.isShowEmoji &&
+                         <EmojiPanel
+                           isShow={this.state.isShowEmoji}
+                           hidePanel={()=>{
+                             this.setState({isShowEmoji: false})
+                           }}
+                           insertEmoji={(shortname)=>{
+                             const {editorState} = this.state;
+                             const contentState = editorState.getCurrentContent();
+                             const selectionState = editorState.getSelection();
+                             const newContentState = Modifier.insertText(contentState, selectionState, `${shortname} `)
+                             const newEditorState = EditorState.push(editorState, newContentState, 'insert-characters')
+                             this.setState({editorState: newEditorState})
+                           }}
+                         />
+                        }
+
+                        <a
+                          onClick={()=>{this.setState({isShowEmoji: !this.state.isShowEmoji})}}
+                          data-tip="Insert emoji" className="button is-small is-white">
+                          <span className="icon is-small">
+                            <i className="fa fa-smile-o"></i>
+                          </span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>

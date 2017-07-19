@@ -25,3 +25,38 @@
   padding: 10px !important;
   margin-bottom: 10px !important;
 }
+
+.editor-emoji {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  vertical-align: middle;
+  display: inline-block;
+  overflow: hidden;
+  width: 16px;
+  height: 16px;
+  line-height: inherit;
+  color: transparent;
+}
+
+.emoji-box {
+  z-index: 5;
+  position: absolute;
+  bottom: 20px;
+  left: -160px;
+  width: 320px;
+  height: 320px;
+  overflow: auto;
+}
+
+.emoji-box__item {
+  cursor: pointer;
+  &:hover {
+    background-color: $white-ter;
+  }
+}
+
+.editor__emoji-button {
+  display: inline-block;
+  position: relative;
+}
