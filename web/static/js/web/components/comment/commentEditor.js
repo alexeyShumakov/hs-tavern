@@ -10,6 +10,7 @@ import selectedCardDecorator from "../../editor/decorators/selectedCard";
 import emojiDecorator from "../../editor/decorators/emoji";
 import SuggestionsList from "./mention/suggestionsList";
 import CardSuggestions from "./card/suggestionsList";
+import GiphyPanel from "./giphy/panel";
 import EmojiPanel from "./emoji/panel";
 
 export default class CommentEditor extends React.Component {
@@ -22,7 +23,8 @@ export default class CommentEditor extends React.Component {
     ])
     const editorState = EditorState.createEmpty(compositeDecorator);
     const isShowEmoji = false
-    this.state = {editorState, isShowEmoji};
+    const isShowGiphy = false
+    this.state = {editorState, isShowEmoji, isShowGiphy};
     this.onChange = (editorState) => this.setState({editorState})
     this.handleSuggestion = this.handleSuggestion.bind(this);
   }
@@ -119,11 +121,23 @@ export default class CommentEditor extends React.Component {
                 <div className="level-right">
                   <div className="block">
                     <div className="field is-grouped">
-                      <a data-tip="Attach image" className="button is-small is-white">
+                      <div className="editor__giphy-button">
+                        {this.state.isShowGiphy &&
+                         <GiphyPanel
+                           isShow={this.state.isShowGiphy}
+                           hidePanel={()=>{
+                             this.setState({isShowGiphy: false})
+                           }}
+                         />
+                        }
+                        <a
+                          onClick={()=>{this.setState({isShowGiphy: !this.state.isShowGiphy})}}
+                          data-tip="Attach image" className="button is-small is-white">
                         <span className="icon is-small">
                           <i className="fa fa-image"></i>
                         </span>
                       </a>
+                      </div>
                       <a data-tip="Insert desk" className="button is-small is-white">
                         <span className="icon is-small">
                           <i className="fa fa-navicon"></i>

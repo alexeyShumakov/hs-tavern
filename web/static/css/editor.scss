@@ -49,6 +49,10 @@
   overflow: auto;
 }
 
+.giphy-box {
+  @extend .emoji-box;
+}
+
 .emoji-box__item {
   cursor: pointer;
   &:hover {
@@ -56,7 +60,7 @@
   }
 }
 
-.editor__emoji-button {
+.editor__emoji-button, .editor__giphy-button {
   display: inline-block;
   position: relative;
 }
