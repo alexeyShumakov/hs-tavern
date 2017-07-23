@@ -58,4 +58,6 @@ config :ex_aws,
     region: "us-east-1"
   ]
 
+config :giphy, api_key: System.get_env("GIPHY_KEY")
+
 import_config "#{Mix.env}.exs"

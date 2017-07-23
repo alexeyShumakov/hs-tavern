@@ -11,6 +11,9 @@ defmodule HsTavern.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :api_auth do
     plug Guardian.Plug.VerifyHeader
     plug Guardian.Plug.LoadResource
   end
@@ -29,6 +32,12 @@ defmodule HsTavern.Router do
     resources "/cards", CardController, only: [:index, :show]
     resources "/builder", BuilderController, only: [:index, :show]
     resources "/desks", DeskController, only: [:delete, :index, :create, :show, :edit, :update]
+
+  end
+
+  scope "/media", HsTavern do
+    pipe_through :api
+    get "/search", MediaController, :search
   end
 
   scope "/auth", HsTavern do
@@ -40,7 +49,7 @@ defmodule HsTavern.Router do
   end
 
    scope "/api", HsTavern do
-    pipe_through :api
+    pipe_through [:api, :api_auth]
     resources "/cards", Api.CardController, only: [:show, :index]
     resources "/desks", Api.DeskController, only: [:show, :index, :update]
     get "/users/search", Api.UserController, :search

@@ -40,17 +40,28 @@
 }
 
 .emoji-box {
+  background-color: #fff;
   z-index: 5;
   position: absolute;
   bottom: 20px;
   left: -160px;
-  width: 320px;
+  width: 250px;
   height: 320px;
   overflow: auto;
 }
 
 .giphy-box {
   @extend .emoji-box;
+  width: 250px;
+  height: 320px;
+  .columns {
+    min-height: 100px;
+  }
+}
+
+.giphy-box__item {
+  margin: 2px;
+  cursor: pointer;
 }
 
 .emoji-box__item {

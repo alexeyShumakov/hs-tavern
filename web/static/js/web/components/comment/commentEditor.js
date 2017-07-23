@@ -130,9 +130,9 @@ export default class CommentEditor extends React.Component {
                            }}
                          />
                         }
-                        <a
-                          onClick={()=>{this.setState({isShowGiphy: !this.state.isShowGiphy})}}
-                          data-tip="Attach image" className="button is-small is-white">
+                        <a onClick={()=>{this.setState({isShowGiphy: !this.state.isShowGiphy})}}
+                          data-tip="Attach image"
+                          className="button is-small is-white">
                         <span className="icon is-small">
                           <i className="fa fa-image"></i>
                         </span>
