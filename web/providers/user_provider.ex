@@ -9,7 +9,7 @@ defmodule HsTavern.UserProvider do
     |> Repo.all
   end
 
-  defp filter_by_name(request, name \\ "") do
+  defp filter_by_name(request, name) do
     request |> where([u], ilike(u.name, ^"%#{name}%"))
   end
 end

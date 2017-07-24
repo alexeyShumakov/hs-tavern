@@ -3,7 +3,7 @@ defmodule HsTavern.CommentProvider do
   alias HsTavern.{Comment, Repo}
 
   def get_comment!(id, user) do
-    comments_query
+    comments_query()
     |> Repo.get!(id)
     |> check_comment(user)
   end
@@ -37,7 +37,7 @@ defmodule HsTavern.CommentProvider do
 
 
   def comments(%{entity_id: entity_id, entity_type: entity_type}) do
-    comments_query
+    comments_query()
     |> where(entity_type: ^entity_type)
     |> where(entity_id: ^entity_id)
     |> limit(100)
@@ -52,7 +52,7 @@ defmodule HsTavern.CommentProvider do
   end
 
   def comments_query() do
-    from c in HsTavern.Comment,
+    from c in Comment,
       left_join: u in assoc(c, :user),
       left_join: l in assoc(c, :likes),
       left_join: like_u in assoc(l, :user),

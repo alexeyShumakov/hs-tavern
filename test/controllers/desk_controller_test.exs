@@ -49,18 +49,18 @@ defmodule HsTavern.DeskControllerTest do
     conn = guardian_login()
            |> post("/desks", [desk: %{@valid_attrs | "cards" => cards()}])
 
-    assert json_response(conn, 200) == %{"status" => "ok"}
+    assert conn.status == 200
   end
 
   test "POST /desks invalid data" do
     conn = guardian_login()
            |> post("/desks", [desk: %{@invalid_attrs | "cards" => cards()}])
-    assert json_response(conn, 200) == %{"status" => "bad"}
+    assert conn.status == 422
   end
 
   test "POST /desks invalid cards" do
     conn = guardian_login()
            |> post("/desks", [desk: %{@valid_attrs | "cards" => cards(1)}])
-    assert json_response(conn, 200) == %{"status" => "bad"}
+    assert conn.status == 422
   end
 end

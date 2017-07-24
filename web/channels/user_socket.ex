@@ -25,7 +25,7 @@ defmodule HsTavern.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
 
-  def connect(%{"guardian_token" => jwt} = params, socket) do
+  def connect(%{"guardian_token" => jwt} = _params, socket) do
     case sign_in(socket, jwt) do
       {:ok, authed_socket, _guardian_params} ->
         {:ok, authed_socket}
@@ -48,7 +48,5 @@ defmodule HsTavern.UserSocket do
   #     HsTavern.Endpoint.broadcast("users_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
-  def id(socket) do
-    nil
-  end
+  def id(_socket), do: nil
 end

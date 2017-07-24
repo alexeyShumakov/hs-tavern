@@ -1,13 +1,12 @@
 defmodule HsTavern.CommentChannel do
-  import Ecto.{Query}
   import Guardian.Phoenix.Socket
   use Phoenix.Channel
-  alias HsTavern.{Like, Repo, Comment, CommentProvider, LikeProvider}
+  alias HsTavern.{CommentProvider, LikeProvider}
   alias HsTavern.Serializers.CommentSerializer
 
   intercept ["like"]
 
-  def join("comment:" <> id, _params, socket) do
+  def join("comment:" <> _id, _params, socket) do
     {:ok, socket}
   end
 

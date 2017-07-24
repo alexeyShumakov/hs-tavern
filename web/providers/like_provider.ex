@@ -1,5 +1,4 @@
 defmodule HsTavern.LikeProvider do
-  import Ecto.Query
   alias HsTavern.{Repo, Like}
 
   def do_like!(params) do

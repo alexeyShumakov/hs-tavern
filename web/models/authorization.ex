@@ -8,7 +8,7 @@ defmodule HsTavern.Authorization do
 
     belongs_to :user, HsTavern.User
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(provider uid user_id)a

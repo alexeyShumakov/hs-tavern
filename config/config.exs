@@ -9,6 +9,10 @@ use Mix.Config
 config :hs_tavern,
   ecto_repos: [HsTavern.Repo]
 
+config :wallaby,
+  screenshot_dir: "/tmp/wallay",
+  driver: Wallaby.Experimental.Chrome
+
 # Configures the endpoint
 config :hs_tavern, HsTavern.Endpoint,
   url: [host: "localhost"],

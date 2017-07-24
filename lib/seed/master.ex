@@ -7,17 +7,17 @@ defmodule HsTavern.Seed.Master do
   @headers ["X-Mashape-Key": "QFoPqBzZPBmshJ2Pq9hptKbD5WX0p18oBYFjsnLkliETS6QyN7"]
 
   def poolboy_config do
-    [{:name, {:local, pool_name}},
+    [{:name, {:local, pool_name()}},
       {:worker_module, Worker},
       {:size, 10},
       {:max_overflow, 2}]
   end
 
-  def start do
+  def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
     children = [
-      :poolboy.child_spec(pool_name, poolboy_config, [])
+      :poolboy.child_spec(pool_name(), poolboy_config(), [])
     ]
 
     options = [
@@ -43,7 +43,7 @@ defmodule HsTavern.Seed.Master do
 
   def create_card(card) do
     :poolboy.transaction(
-      pool_name,
+      pool_name(),
       fn(pid) -> Worker.create_card(pid, card) end,
       :infinity
     )

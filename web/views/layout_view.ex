@@ -4,7 +4,7 @@ defmodule HsTavern.LayoutView do
   def shared_json_data(conn) do
     get_user_data(conn)
     |> Map.put(:is_authenticated, Guardian.Plug.authenticated?(conn))
-    |> Map.put(:csrf_token, get_csrf_token)
+    |> Map.put(:csrf_token, get_csrf_token())
     |> Map.put(:token, Guardian.Plug.current_token(conn))
     |> (fn map -> %{user: map} end).()
     |> Poison.encode!

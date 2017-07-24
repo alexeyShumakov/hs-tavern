@@ -20,11 +20,12 @@ defmodule HsTavern.Mixfile do
     [
       mod: {HsTavern, []},
       applications: [
-      :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy,
-      :logger, :gettext, :phoenix_ecto, :postgrex,
-      :httpoison, :scrivener_ecto, :arc_ecto, :poolboy,
-      :ueberauth, :ueberauth_facebook,
-      :ex_aws, :hackney, :poison
+        :ex_machina,
+        :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy,
+        :logger, :gettext, :phoenix_ecto, :postgrex,
+        :httpoison, :scrivener_ecto, :arc_ecto, :poolboy,
+        :ueberauth, :ueberauth_facebook,
+        :ex_aws, :hackney, :poison
       ]
     ]
   end
@@ -45,7 +46,7 @@ defmodule HsTavern.Mixfile do
       {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:httpoison, "~> 0.11.1"},
+      {:httpoison, ">= 0.0.0", override: true},
       {:scrivener_ecto, "~> 1.2"},
       {:arc, "~> 0.7.0"},
       {:arc_ecto, "~> 0.6.0"},
@@ -58,7 +59,9 @@ defmodule HsTavern.Mixfile do
       {:ueberauth, "~> 0.4.0"},
       {:ueberauth_facebook, "~> 0.6"},
       {:cowboy, "~> 1.0"},
-      {:giphy, "~> 0.1.1"}
+      {:giphy, "~> 0.1.1"},
+      {:wallaby, "~> 0.18.1"},
+      {:ex_machina, "~> 2.0"}
     ]
   end
   # Aliases are shortcuts or tasks specific to the current project.

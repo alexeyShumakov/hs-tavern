@@ -1,6 +1,5 @@
 defmodule HsTavern.Serializers.DeskCardSerializer do
   use HsTavern.Web, :view
-  alias HsTavern.Serializers.CardSerializer
 
   def to_map(desk_cards) when is_list(desk_cards) do
     desk_cards |> Enum.map(&to_map&1)

@@ -2,10 +2,10 @@ defmodule HsTavern.CardController do
   use HsTavern.Web, :controller
   use Guardian.Phoenix.Controller
 
-  alias HsTavern.{Card, CardProvider}
+  alias HsTavern.{CardFilter, CardProvider}
 
-  def index(conn, params, user, _) do
-    {cards, filters} = HsTavern.CardFilter.filter(params)
+  def index(conn, params, _, _) do
+    {cards, filters} = CardFilter.filter(params)
     render(conn, "index.html", cards: cards, filters: filters)
   end
 

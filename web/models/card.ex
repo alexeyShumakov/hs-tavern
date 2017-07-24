@@ -46,7 +46,7 @@ defmodule HsTavern.Card do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, card_params)
+    |> cast(params, card_params())
     |> HsTavern.CardSlug.maybe_generate_slug
     |> HsTavern.CardSlug.unique_constraint
     |> cast_attachments(params, [:img], allow_paths: true)

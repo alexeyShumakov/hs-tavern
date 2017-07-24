@@ -1,6 +1,6 @@
 defmodule HsTavern.DeskView do
   use HsTavern.Web, :view
-  alias HsTavern.Serializers.DeskSerializer
+  alias HsTavern.Serializers.{DeskSerializer, CardSerializer}
 
   def desks_json(desks) do
     %{desks: %{

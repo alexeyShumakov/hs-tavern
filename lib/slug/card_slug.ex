@@ -6,7 +6,7 @@ defmodule HsTavern.CardSlug do
     slug = Slugger.slugify_downcase(value)
     case HsTavern.Repo.get_by(Card, slug: slug) do
       nil -> slug
-      card -> slug <> random_string(32)
+      _ -> slug <> random_string(32)
     end
   end
 

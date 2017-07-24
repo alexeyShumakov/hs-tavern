@@ -1,6 +1,10 @@
 defmodule HsTavern.Endpoint do
   use Phoenix.Endpoint, otp_app: :hs_tavern
 
+  if Application.get_env(:hs_tavern, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox
+  end
+
   socket "/socket", HsTavern.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.

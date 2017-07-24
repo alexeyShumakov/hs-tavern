@@ -3,7 +3,7 @@ defmodule HsTavern.CardProvider do
   alias HsTavern.{Repo, Card, CommentProvider}
 
   def one_card!(id, user) do
-    card = get_card(id, user) |> check_card(user)
+    get_card(id, user) |> check_card(user)
   end
 
   def check_card(card, nil) do

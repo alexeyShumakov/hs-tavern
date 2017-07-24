@@ -1,6 +1,6 @@
 defmodule HsTavern.DeskProvider do
   import Ecto.Query
-  alias HsTavern.{Like, DeskCard, User, Repo, Desk, CommentProvider}
+  alias HsTavern.{Like, Repo, Desk, CommentProvider}
 
 
   def one_desk!(id, user) do

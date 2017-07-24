@@ -45,7 +45,7 @@ defmodule HsTavern.Like do
   end
 
   def remove_with_entity(struct, %{entity_type: entity_type, entity_id: entity_id} = params) do
-    { entity_atom, entity_module } = @entities[entity_type]
+    { _, entity_module } = @entities[entity_type]
     struct
     |> changeset(params)
     |> prepare_changes( fn changeset ->

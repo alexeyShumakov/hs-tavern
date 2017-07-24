@@ -8,7 +8,7 @@ defmodule HsTavern.DeskController do
     render(conn, "index.html", desks: desks)
   end
 
-  def my_desks(conn, _params, nil, _), do: conn |> redirect to: "/"
+  def my_desks(conn, _params, nil, _), do: conn |> redirect(to: "/")
   def my_desks(conn, params, user, _) do
     params = Map.put params, "my", "true"
     {desks, filters} = DeskProvider.get_desks_with_filters(user, params)
@@ -20,7 +20,7 @@ defmodule HsTavern.DeskController do
     render(conn, "show.html", desk: desk)
   end
 
-  def edit(conn, _params, nil, _), do: conn |> redirect to: "/"
+  def edit(conn, _params, nil, _), do: conn |> redirect(to: "/")
   def edit(conn, %{"id" => id}, user, _) do
     desk = DeskProvider.one_desk!(id, user)
     params = %{"class" => desk.player_class, "page_size" => 6}
@@ -36,10 +36,10 @@ defmodule HsTavern.DeskController do
       case changeset.valid? do
         true ->
           DeskCard |> where(desk_id: ^params["id"]) |> Repo.delete_all
-          cards = params["cards"]
-                  |> Enum.map( fn card ->
-                    Map.put(card, "desk_id", params["id"]) |> create_desk_card
-                  end )
+          params["cards"]
+          |> Enum.map( fn card ->
+            Map.put(card, "desk_id", params["id"]) |> create_desk_card
+          end )
           desk = Repo.update!(changeset)
           conn |> json(%{id: desk.id})
         false ->
@@ -65,8 +65,8 @@ defmodule HsTavern.DeskController do
     case Repo.insert(desk) do
       {:ok, desk} ->
         conn |> json(%{status: :ok, id: desk.id})
-      {:error, changeset} ->
-        conn |> json(%{status: :bad})
+      {:error, _} ->
+        conn |> send_resp(422, "")
     end
   end
 

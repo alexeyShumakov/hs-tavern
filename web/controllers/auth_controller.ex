@@ -5,7 +5,7 @@ defmodule HsTavern.AuthController do
 
   plug Ueberauth
 
-  def sign_out(conn, params) do
+  def sign_out(conn, _params) do
     conn
     |> Guardian.Plug.sign_out
     |> json(%{status: :ok})
@@ -15,13 +15,14 @@ defmodule HsTavern.AuthController do
     {:ok, data} = HTTPoison.get("https://graph.facebook.com/v2.9/me?access_token=#{auth.credentials.token}&fields=email,name,picture")
     user_data = Poison.decode!(data.body)
 
-    case find_by_auth(user_data["id"], "facebook") do
+    user = case find_by_auth(user_data["id"], "facebook") do
       nil ->
         email = get_email(%{provider: "facebook", email: user_data["email"], id: user_data["id"]})
         user = create_user(%{email: email, name: user_data["name"]})
         add_user_avatar(user, user_data["picture"]["data"]["url"])
-        auth = create_auth(%{provider: "facebook", user_id: user.id, uid: user_data["id"]})
-      auth-> user = auth.user
+        create_auth(%{provider: "facebook", user_id: user.id, uid: user_data["id"]})
+        user
+      auth -> auth.user
     end
     conn
     |> Guardian.Plug.sign_in(user)
