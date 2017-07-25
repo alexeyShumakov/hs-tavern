@@ -1,13 +1,14 @@
 defmodule HsTavern.DeskChannel do
+  @moduledoc """
+  desk channel
+  """
   import Guardian.Phoenix.Socket
   use Phoenix.Channel
   alias HsTavern.{Desk, Repo, DeskProvider, LikeProvider, Comment}
 
   intercept ["like"]
 
-  def join("desk:" <> _id, _params, socket) do
-    {:ok, socket}
-  end
+  def join("desk:" <> _id, _params, socket), do: {:ok, socket}
 
   def handle_in("like", %{"desk_id"=> desk_id}, socket) do
     case current_resource(socket) do
@@ -24,10 +25,12 @@ defmodule HsTavern.DeskChannel do
       nil -> nil
       user ->
         params = %{body: body, user_id: user.id, entity_type: "desk", entity_id: desk_id}
-        new_comment = Comment.changeset_with_desk(%Comment{}, params) |> Repo.insert!
-        new_comment = new_comment
-                      |> Repo.preload(:user)
-                      |> HsTavern.Serializers.CommentSerializer.to_map
+        new_comment = %Comment{}
+        |> Comment.changeset_with_desk(params)
+        |> Repo.insert!
+        |> Repo.preload(:user)
+        |> HsTavern.Serializers.CommentSerializer.to_map
+
         desk = Desk |> Repo.get!(desk_id)
         broadcast! socket, "comment", %{comments_count: desk.comments_count, comment: new_comment}
     end

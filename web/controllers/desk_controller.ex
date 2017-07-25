@@ -37,9 +37,9 @@ defmodule HsTavern.DeskController do
         true ->
           DeskCard |> where(desk_id: ^params["id"]) |> Repo.delete_all
           params["cards"]
-          |> Enum.map( fn card ->
-            Map.put(card, "desk_id", params["id"]) |> create_desk_card
-          end )
+          |> Enum.map(fn card ->
+            card |> Map.put("desk_id", params["id"]) |> create_desk_card
+          end)
           desk = Repo.update!(changeset)
           conn |> json(%{id: desk.id})
         false ->
@@ -71,6 +71,6 @@ defmodule HsTavern.DeskController do
   end
 
   def create_desk_card(card) do
-    DeskCard.changeset(%DeskCard{}, card) |> Repo.insert!
+    %DeskCard{} |> DeskCard.changeset(card) |> Repo.insert!
   end
 end

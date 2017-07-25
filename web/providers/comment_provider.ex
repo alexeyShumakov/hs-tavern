@@ -1,4 +1,8 @@
 defmodule HsTavern.CommentProvider do
+  @moduledoc """
+  Comment provider
+  """
+
   import Ecto.Query
   alias HsTavern.{Comment, Repo}
 
@@ -21,9 +25,7 @@ defmodule HsTavern.CommentProvider do
   end
 
   def get_comments(params, user) do
-    comments(params)
-    |> Repo.all
-    |> check_comments(user)
+    params |> comments |> Repo.all |> check_comments(user)
   end
 
   def check_comment(comment, user) do
@@ -44,11 +46,8 @@ defmodule HsTavern.CommentProvider do
   end
 
   def calc_offset(total_count) do
-    offset = total_count - 3;
-    cond do
-      offset < 0 -> 0
-      offset >= 0 -> offset
-    end
+    offset = total_count - 3
+    if offset >= 0, do: offset, else: 0
   end
 
   def comments_query() do

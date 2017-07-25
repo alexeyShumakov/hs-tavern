@@ -6,8 +6,6 @@ defmodule HsTavern.MediaController do
   def giphy_search(%{}),                                         do: Giphy.search!("funny cat")
 
   def search(conn, params) do
-    IO.inspect params
     json conn, giphy_search(params)
   end
-
 end

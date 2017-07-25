@@ -12,7 +12,7 @@ defmodule HsTavern.CardChannel do
   end
 
   def handle_in("create_comment", %{"card_id" => card_id, "body" => body}, socket) do
-    %{ id: user_id } = current_resource(socket)
+    %{id: user_id } = current_resource(socket)
     params = %{entity_id: card_id, entity_type: "card", card_id: card_id, body: body, user_id: user_id}
     changeset = Comment.changeset_with_card(%Comment{}, params)
     case Repo.insert(changeset) do

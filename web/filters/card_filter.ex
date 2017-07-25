@@ -1,4 +1,8 @@
 defmodule HsTavern.CardFilter do
+  @moduledoc """
+  Card filter module
+  """
+
   import Ecto.Query
   alias HsTavern.{Repo, Card}
 
@@ -20,8 +24,8 @@ defmodule HsTavern.CardFilter do
 
   defp rarity_filter({card, filters, params}) do
     case params["rarity"] do
-      nil -> { card, filters, params }
-      rarity-> {
+      nil -> {card, filters, params}
+      rarity -> {
         card |> where(rarity: ^rarity),
         Map.put(filters, :rarity, rarity),
         params
@@ -31,7 +35,7 @@ defmodule HsTavern.CardFilter do
 
   defp keyword_filter({card, filters, params}) do
     case params["keyword"] do
-      nil -> { card, Map.put(filters, :keyword, ""), params }
+      nil -> {card, Map.put(filters, :keyword, ""), params}
       keyword -> {
         card |> where([c], ilike(c.title, ^"%#{keyword}%")),
         Map.put(filters, :keyword, keyword),
@@ -42,7 +46,7 @@ defmodule HsTavern.CardFilter do
   end
   defp collectible_filter({card, filters, params}) do
     case params["collectible"] do
-      "false" -> { card, Map.put(filters, :collectible, false), params }
+      "false" -> {card, Map.put(filters, :collectible, false), params}
       _ -> {
         card |> where([c], c.collectible == true),
         filters,
@@ -52,7 +56,7 @@ defmodule HsTavern.CardFilter do
   end
 
   defp order_filter({card, filters, params}) do
-    { card |> order_by([:cost, :title]), filters, params }
+    {card |> order_by([:cost, :title]), filters, params}
   end
 
   defp race_filter({card, filters, params}) do
@@ -96,8 +100,8 @@ defmodule HsTavern.CardFilter do
 
   defp page_filter({card, filters, params}) do
     page = card |> Repo.paginate(params)
-    pag_params = %{ page: page.page_number, total_pages: page.total_pages, page_size: page.page_size }
-    { page.entries, Map.put(filters, :pagination, pag_params) }
+    pag_params = %{page: page.page_number, total_pages: page.total_pages, page_size: page.page_size}
+    {page.entries, Map.put(filters, :pagination, pag_params)}
   end
 
 
@@ -127,7 +131,7 @@ defmodule HsTavern.CardFilter do
   end
 
   defp normalize_str(str) do
-    Regex.scan(~r(\d+), str) |> List.flatten |> Enum.sort |> Enum.map(&String.to_integer&1)
+    ~r(\d+) |> Regex.scan(str) |> List.flatten |> Enum.sort |> Enum.map(&String.to_integer&1)
   end
 
   defp get_range(range, card, card_field) do
@@ -135,7 +139,7 @@ defmodule HsTavern.CardFilter do
       [min]      -> card |> where([c], field(c, ^card_field) >= ^min)
       [0, 7] -> card
       [min, 7] -> card |> where([c], field(c, ^card_field) >= ^min)
-      [min, max] -> card |> where([c], field(c, ^card_field) >= ^min) |>where([c], field(c, ^card_field) <= ^max)
+      [min, max] -> card |> where([c], field(c, ^card_field) >= ^min) |> where([c], field(c, ^card_field) <= ^max)
       _ -> card
     end
   end

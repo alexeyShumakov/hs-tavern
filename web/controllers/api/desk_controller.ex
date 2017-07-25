@@ -12,8 +12,8 @@ defmodule HsTavern.Api.DeskController do
   end
 
   def show(conn, %{"id" => id}, user, _) do
-    desk = DeskProvider.one_desk!(id, user) |> DeskSerializer.to_map
-    json(conn, desk)
+    desk = DeskProvider.one_desk!(id, user)
+    json(conn, DeskSerializer.to_map(desk))
   end
 
   def delete(conn, %{"id" => id}, user, _) do

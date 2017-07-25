@@ -1,10 +1,13 @@
 defmodule HsTavern.DeskProvider do
+  @moduledoc """
+  Desk provider
+  """
   import Ecto.Query
   alias HsTavern.{Like, Repo, Desk, CommentProvider}
 
 
   def one_desk!(id, user) do
-   get_desk(id, user) |> check_like(user)
+   id |> get_desk(user) |> check_like(user)
   end
 
 
@@ -65,7 +68,7 @@ defmodule HsTavern.DeskProvider do
 
   defp keyword_filter({query, filters, params}) do
     case params["keyword"] do
-      nil -> { query, Map.put(filters, :keyword, ""), params }
+      nil -> {query, Map.put(filters, :keyword, ""), params}
       keyword -> {
         query |> where([d], ilike(d.title, ^"%#{keyword}%")),
         Map.put(filters, :keyword, keyword),
@@ -124,6 +127,6 @@ defmodule HsTavern.DeskProvider do
     filters = filters
               |> Map.put(:page, page.page_number)
               |> Map.put(:total_pages, page.total_pages)
-    { page.entries,  filters}
+    {page.entries,  filters}
   end
 end

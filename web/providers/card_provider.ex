@@ -1,9 +1,13 @@
 defmodule HsTavern.CardProvider do
+  @moduledoc """
+  card provider
+  """
+
   import Ecto.Query
   alias HsTavern.{Repo, Card, CommentProvider}
 
   def one_card!(id, user) do
-    get_card(id, user) |> check_card(user)
+    id |> get_card(user) |> check_card(user)
   end
 
   def check_card(card, nil) do
