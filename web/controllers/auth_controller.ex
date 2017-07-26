@@ -33,7 +33,7 @@ defmodule HsTavern.AuthController do
     Repo.one query
   end
 
-  def add_user_avatar(user, url), do: user |> User.changeset(%{avatar: url}) |> Repo.update!(changeset)
+  def add_user_avatar(user, url), do: user |> User.changeset(%{avatar: url}) |> Repo.update!
   def create_user(data), do: %User{} |> User.changeset(data) |> Repo.insert!
   def create_auth(data), do: %Authorization{} |> Authorization.changeset(data) |> Repo.insert!
 
