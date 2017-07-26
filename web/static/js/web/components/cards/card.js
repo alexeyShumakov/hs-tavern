@@ -94,9 +94,9 @@ export default class CardContent extends React.Component {
           currentUser={store.user}
           totalCount={card.comments_count}
           setToolbar={actions.ceSetShowToolbar}
-          createCallback={(body)=>{
+          createCallback={(commentData)=>{
             store.cards.channel
-              .push("create_comment",{card_id: card.id, body: body} )
+              .push("create_comment", Object.assign({}, commentData, {entity_id: card.id, entity_type: 'card'}))
           }}
           />
       </div>

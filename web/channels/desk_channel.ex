@@ -20,18 +20,18 @@ defmodule HsTavern.DeskChannel do
     {:noreply, socket}
   end
 
-  def handle_in("comment", %{"desk_id" => desk_id, "body" => body}, socket) do
+  def handle_in("comment", params, socket) do
     case current_resource(socket) do
       nil -> nil
       user ->
-        params = %{body: body, user_id: user.id, entity_type: "desk", entity_id: desk_id}
+        params = params |> Map.put("user_id", user.id)
         new_comment = %Comment{}
         |> Comment.changeset_with_desk(params)
         |> Repo.insert!
         |> Repo.preload(:user)
         |> HsTavern.Serializers.CommentSerializer.to_map
 
-        desk = Desk |> Repo.get!(desk_id)
+        desk = Desk |> Repo.get!(params["entity_id"])
         broadcast! socket, "comment", %{comments_count: desk.comments_count, comment: new_comment}
     end
     {:noreply, socket}

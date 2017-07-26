@@ -11,6 +11,8 @@ defmodule HsTavern.Comment do
     field :like_me, :boolean, virtual: true, default: false
     field :entity_type, :string
     field :entity_id, :integer
+    field :media_data, :string
+    field :media_type, :string
     belongs_to :user, User
     belongs_to :card, Card
     many_to_many :desks, Desk, join_through: "comments_desks", on_delete: :delete_all
@@ -20,12 +22,14 @@ defmodule HsTavern.Comment do
     timestamps()
   end
 
+  @params [:body, :user_id, :entity_id, :entity_type, :media_data, :media_type]
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:body, :user_id, :card_id])
+    |> cast(params, @params)
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:card_id)
     |> validate_required([:body, :user_id, :card_id])
@@ -33,9 +37,9 @@ defmodule HsTavern.Comment do
 
   def changeset_with_card(struct, params \\ %{}) do
     struct
-    |> cast(params, [:card_id, :body, :user_id, :entity_id, :entity_type])
+    |> cast(params, @params)
     |> prepare_changes( fn changeset ->
-      from(c in Card, where: c.id == ^params.entity_id)
+      from(c in Card, where: c.id == ^params["entity_id"])
       |> changeset.repo.update_all(inc: [comments_count: 1])
       changeset
     end )
@@ -43,11 +47,11 @@ defmodule HsTavern.Comment do
 
   end
   def changeset_with_desk(struct, params \\ %{}) do
-    desk = Repo.get! Desk, params.entity_id
+    desk = Repo.get! Desk, params["entity_id"]
     struct
-    |> cast(params, [:body, :user_id, :entity_id, :entity_type])
+    |> cast(params, @params)
     |> prepare_changes( fn changeset ->
-      from(d in Desk, where: d.id == ^params.entity_id)
+      from(d in Desk, where: d.id == ^params["entity_id"])
       |> changeset.repo.update_all(inc: [comments_count: 1])
       changeset
     end )

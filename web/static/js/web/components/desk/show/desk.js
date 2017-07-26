@@ -75,8 +75,8 @@ export default class Desk extends React.Component {
               comments={desk.comments}
               currentUser={store.user}
               totalCount={desk.comments_count}
-              createCallback={(body)=>{
-                channel.push("comment",{desk_id: desk.id, body: body} )
+              createCallback={(commentData)=>{
+                channel.push("comment", Object.assign({}, commentData, {entity_id: desk.id, entity_type: "desk"}))
               }}
               />
             </div>

@@ -27,8 +27,12 @@ export default class CommentEditor extends React.Component {
     this.state = {editorState, isShowEmoji, isShowGiphy};
     this.onChange = (editorState) => this.setState({editorState})
     this.handleSuggestion = this.handleSuggestion.bind(this);
+    this.attachMedia = this.attachMedia.bind(this);
   }
 
+  attachMedia(media_type, media_data) {
+    this.setState({media_type, media_data})
+  }
   handleSuggestion(e) {
     const {editorState} = this.state;
     const {mentionSuggestions, cardSuggestions, showToolbar} = this.props.commentEditorState;
@@ -104,6 +108,27 @@ export default class CommentEditor extends React.Component {
                     handleReturn={(e)=>{return this.handleSuggestion(e)}}
                     onTab={(e)=>{return this.handleSuggestion(e)}}
                   />
+                  {this.state.media_type == 'giphy' &&
+                   <div className="media">
+                     <div className="media-content">
+                       <img
+                         src={this.state.media_data.url}
+                         style={{
+                           width: this.state.media_data.width + 'px',
+                           height: this.state.media_data.height + 'px'
+                         }}
+                       />
+                     </div>
+
+                    <div className="media-right">
+                      <button className="delete"
+                        onClick={()=>{
+                          this.setState({media_data: null, media_type: null})
+                        }}
+                      ></button>
+                    </div>
+                   </div>
+                  }
                 </div>
               </div>
 
@@ -112,8 +137,10 @@ export default class CommentEditor extends React.Component {
                   <div className="level-item">
                     <button className="button"
                       onClick={()=> {
-                        let rawContent = JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()));
-                        createCallback(rawContent)
+                        const rawContent = JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()));
+                        let {media_data, media_type} = this.state;
+                        media_data = JSON.stringify(media_data)
+                        createCallback({body: rawContent, media_data, media_type})
                       }}
                     >create comment</button>
                   </div>
@@ -125,6 +152,7 @@ export default class CommentEditor extends React.Component {
                         {this.state.isShowGiphy &&
                          <GiphyPanel
                            isShow={this.state.isShowGiphy}
+                           attachMedia={this.attachMedia}
                            hidePanel={()=>{
                              this.setState({isShowGiphy: false})
                            }}
@@ -138,11 +166,6 @@ export default class CommentEditor extends React.Component {
                         </span>
                       </a>
                       </div>
-                      <a data-tip="Insert desk" className="button is-small is-white">
-                        <span className="icon is-small">
-                          <i className="fa fa-navicon"></i>
-                        </span>
-                      </a>
                       <div className='editor__emoji-button'>
                         {this.state.isShowEmoji &&
                          <EmojiPanel

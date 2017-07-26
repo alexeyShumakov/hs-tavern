@@ -1,11 +1,17 @@
 import React from "react";
 import Time from "../../utils/time";
+import _ from "lodash";
 import commentChannel from "../../channels/comment";
 import {Editor, EditorState, convertFromRaw, CompositeDecorator} from "draft-js";
 import selectedMentionDecorator from "../../editor/decorators/selectedMention";
 import selectedCardDecorator from "../../editor/decorators/selectedCard";
 import linkifyDecorator from "../../editor/decorators/linkify";
 import emojiDecorator from "../../editor/decorators/emoji";
+import GiphyAttachment from "./attachments/giphy";
+
+const attachments = {
+  giphy: GiphyAttachment
+}
 
 export default class Comment extends React.Component {
   constructor(props) {
@@ -26,6 +32,7 @@ export default class Comment extends React.Component {
 
   render() {
     const {isLogin, comment, likeCallback, openAuthModal} = this.props;
+    const Attachment = attachments[comment.media_type]
     return(
       <div className="media">
         <div className="media-left">
@@ -42,6 +49,7 @@ export default class Comment extends React.Component {
               editorState={this.state.editorState}
               readOnly={true}
             />
+            {_.isObject(Attachment) && <Attachment data={comment.media_data}/>}
          </div>
 
           <nav className="level">
