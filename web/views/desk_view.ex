@@ -3,19 +3,23 @@ defmodule HsTavern.DeskView do
   alias HsTavern.Serializers.{DeskSerializer, CardSerializer}
 
   def desks_json(desks) do
-    %{desks: %{
-      index: DeskSerializer.short_to_map(desks)
-    }}
+    %{
+      desks: %{
+        index: DeskSerializer.short_to_map(desks)
+      }
+    }
     |> Poison.encode!
     |> escape_javascript
     |> raw
   end
 
   def desks_with_filters_json(desks, filters) do
-    %{desks: %{
-      index: DeskSerializer.short_to_map(desks),
-      filters: filters
-    }}
+    %{
+      desks: %{
+        index: DeskSerializer.short_to_map(desks),
+        filters: filters
+      }
+    }
     |> Poison.encode!
     |> escape_javascript
     |> raw
@@ -23,20 +27,24 @@ defmodule HsTavern.DeskView do
   end
 
   def desk_json(desk) do
-    %{desks: %{
-      show: DeskSerializer.to_map(desk)
-    }}
+    %{
+      desks: %{
+        show: DeskSerializer.to_map(desk)
+      }
+    }
     |> Poison.encode!
     |> escape_javascript
     |> raw
 
   end
+
   def builder_json(cards, filters, desk) do
-    %{ builder: %{
+    %{
+      builder: %{
         filters: filters,
-        cards: Enum.map(cards, &CardSerializer.short_to_map&1),
+        cards: CardSerializer.short_to_map(cards),
         desk: DeskSerializer.to_map(desk)
-      },
+      }
     }
     |> Poison.encode!
     |> escape_javascript

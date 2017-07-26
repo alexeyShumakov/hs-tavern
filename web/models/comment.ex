@@ -1,9 +1,11 @@
 defmodule HsTavern.Comment do
+  @moduledoc """
+  comment model
+  """
   import Ecto.Query, only: [from: 2]
 
   use HsTavern.Web, :model
   alias HsTavern.{Repo, User, Card, Like, Desk}
-
 
   schema "comments" do
     field :body, :string
@@ -38,23 +40,24 @@ defmodule HsTavern.Comment do
   def changeset_with_card(struct, params \\ %{}) do
     struct
     |> cast(params, @params)
-    |> prepare_changes( fn changeset ->
-      from(c in Card, where: c.id == ^params["entity_id"])
-      |> changeset.repo.update_all(inc: [comments_count: 1])
+    |> prepare_changes(fn changeset ->
+      query = from(c in Card, where: c.id == ^params["entity_id"])
+      changeset.repo.update_all(query, inc: [comments_count: 1])
       changeset
-    end )
+    end)
     |> foreign_key_constraint(:user_id)
 
   end
+
   def changeset_with_desk(struct, params \\ %{}) do
     desk = Repo.get! Desk, params["entity_id"]
     struct
     |> cast(params, @params)
-    |> prepare_changes( fn changeset ->
-      from(d in Desk, where: d.id == ^params["entity_id"])
-      |> changeset.repo.update_all(inc: [comments_count: 1])
+    |> prepare_changes(fn changeset ->
+      query = from(d in Desk, where: d.id == ^params["entity_id"])
+      changeset.repo.update_all(query, inc: [comments_count: 1])
       changeset
-    end )
+    end)
     |> put_assoc(:desks, [desk])
     |> foreign_key_constraint(:user_id)
   end

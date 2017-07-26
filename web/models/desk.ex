@@ -19,28 +19,29 @@ defmodule HsTavern.Desk do
     timestamps()
   end
 
+  @cast_params [:user_id, :player_class, :standard, :description, :title]
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :player_class, :standard, :description, :title])
+    |> cast(params, @cast_params)
     |> put_assoc(:cards, get_cards(params["cards"]))
     |> foreign_key_constraint(:user_id)
     |> check_cards_count(params)
-    |> validate_required([:user_id, :player_class, :standard, :description, :title])
+    |> validate_required(@cast_params)
   end
 
   def update_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :player_class, :standard, :description, :title])
+    |> cast(params, @cast_params)
     |> foreign_key_constraint(:user_id)
     |> check_cards_count(params)
-    |> validate_required([:user_id, :player_class, :standard, :description, :title])
+    |> validate_required(@cast_params)
   end
 
   defp check_cards_count(changeset, params) do
-    count = params["cards"] |> Enum.map(fn(card)-> card["count"] end) |> Enum.sum
+    count = params["cards"] |> Enum.map(fn(card) -> card["count"] end) |> Enum.sum
     if count != 30 do
       add_error(changeset, :cards_count, "cards count error")
     else

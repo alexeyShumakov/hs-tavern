@@ -29,6 +29,10 @@ defmodule HsTavern.Serializers.CardSerializer do
     }
   end
 
+  def short_to_map(cards) when is_list(cards) do
+    cards |> Enum.map(&short_to_map&1)
+  end
+
   def short_to_map(card) do
     %{
       id: card.id,
@@ -44,7 +48,7 @@ defmodule HsTavern.Serializers.CardSerializer do
   end
 
   def serialize(map) do
-    %{ cards: map }
+    %{cards: map}
     |> Poison.encode!
     |> escape_javascript
   end

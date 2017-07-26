@@ -4,7 +4,7 @@ defmodule HsTavern.Api.UserController do
   alias HsTavern.Serializers.UserSerializer
 
   def search(conn, params) do
-    users = UserProvider.search_users(params) |> UserSerializer.to_map
+    users = params |> UserProvider.search_users |> UserSerializer.to_map
     conn |> json(users)
   end
 end

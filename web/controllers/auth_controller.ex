@@ -5,11 +5,7 @@ defmodule HsTavern.AuthController do
 
   plug Ueberauth
 
-  def sign_out(conn, _params) do
-    conn
-    |> Guardian.Plug.sign_out
-    |> json(%{status: :ok})
-  end
+  def sign_out(conn, _params), do: conn |> Guardian.Plug.sign_out |> json(%{status: :ok})
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     {:ok, data} = HTTPoison.get("https://graph.facebook.com/v2.9/me?access_token=#{auth.credentials.token}&fields=email,name,picture")
@@ -37,26 +33,10 @@ defmodule HsTavern.AuthController do
     Repo.one query
   end
 
-  def add_user_avatar(user, url) do
-    changeset = User.changeset(user, %{avatar: url})
-    Repo.update!(changeset)
-  end
+  def add_user_avatar(user, url), do: user |> User.changeset(%{avatar: url}) |> Repo.update!(changeset)
+  def create_user(data), do: %User{} |> User.changeset(data) |> Repo.insert!
+  def create_auth(data), do: %Authorization{} |> Authorization.changeset(data) |> Repo.insert!
 
-  def create_user(data) do
-    changeset = User.changeset(%User{}, data)
-    Repo.insert!(changeset)
-  end
-
-  def create_auth(data) do
-    changeset = Authorization.changeset(%Authorization{}, data)
-    Repo.insert!(changeset)
-  end
-
-  def get_email(%{email: nil, id: id, provider: provider }) do
-    "#{id}@#{provider}.com"
-  end
-
-  def get_email(%{email: email, id: _, provider: _ }) do
-    email
-  end
+  def get_email(%{email: nil, id: id, provider: provider}), do: "#{id}@#{provider}.com"
+  def get_email(%{email: email, id: _, provider: _}), do: email
 end

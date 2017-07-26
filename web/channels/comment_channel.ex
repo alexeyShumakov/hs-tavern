@@ -1,4 +1,8 @@
 defmodule HsTavern.CommentChannel do
+  @moduledoc """
+  comment channel
+  """
+
   import Guardian.Phoenix.Socket
   use Phoenix.Channel
   alias HsTavern.{CommentProvider, LikeProvider}
@@ -22,7 +26,7 @@ defmodule HsTavern.CommentChannel do
 
   def handle_out("like", %{comment_id: comment_id}, socket) do
     user = current_resource(socket)
-    comment = CommentProvider.get_comment!(comment_id, user) |> CommentSerializer.to_map
+    comment = comment_id |> CommentProvider.get_comment!(user) |> CommentSerializer.to_map
     push socket, "like", comment
     {:noreply, socket}
   end

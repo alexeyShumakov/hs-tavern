@@ -1,4 +1,7 @@
 defmodule HsTavern.Like do
+  @moduledoc """
+  like model
+  """
   use HsTavern.Web, :model
   alias HsTavern.{Card, User, Comment, Desk, Repo}
 
@@ -14,10 +17,10 @@ defmodule HsTavern.Like do
   end
 
   @entities %{
-      "comment" => {:comments, Comment},
-      "desk" => {:desks, Desk},
-      "card" => {:cards, Card}
-    }
+    "comment" => {:comments, Comment},
+    "desk" => {:desks, Desk},
+    "card" => {:cards, Card}
+  }
 
   @doc """
   Builds a changeset based on the `struct` and `params`.
@@ -31,28 +34,28 @@ defmodule HsTavern.Like do
   end
 
   def create_with_entity(struct, %{entity_type: entity_type, entity_id: entity_id} = params) do
-    { entity_atom, entity_module } = @entities[entity_type]
+    {entity_atom, entity_module} = @entities[entity_type]
     entity = Repo.get! entity_module, entity_id
     struct
     |> changeset(params)
-    |> prepare_changes( fn changeset ->
+    |> prepare_changes(fn changeset ->
       entity_module
       |> where(id: ^entity_id)
       |> changeset.repo.update_all(inc: [likes_count: 1])
       changeset
-    end )
+    end)
     |> put_assoc(entity_atom, [entity])
   end
 
   def remove_with_entity(struct, %{entity_type: entity_type, entity_id: entity_id} = params) do
-    { _, entity_module } = @entities[entity_type]
+    {_, entity_module} = @entities[entity_type]
     struct
     |> changeset(params)
-    |> prepare_changes( fn changeset ->
+    |> prepare_changes(fn changeset ->
       entity_module
       |> where(id: ^entity_id)
       |> changeset.repo.update_all(inc: [likes_count: -1])
       changeset
-    end )
+    end)
   end
 end
