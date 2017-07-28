@@ -22,7 +22,7 @@ defmodule HsTavern.CardChannel do
     case Repo.insert(changeset) do
       {:ok, comment} ->
         card = Repo.get HsTavern.Card, params["entity_id"]
-        comment = Comment |> where(id: ^comment.id) |> preload(:user) |> Repo.one! |> CommentSerializer.to_map(comment)
+        comment = Comment |> where(id: ^comment.id) |> preload(:user) |> Repo.one! |> CommentSerializer.to_map
         broadcast! socket, "create_comment", %{comment: comment, comments_count: card.comments_count}
       {:error, _reason} -> nil
     end

@@ -31,7 +31,7 @@ export default class Comment extends React.Component {
   }
 
   render() {
-    const {isLogin, comment, likeCallback, openAuthModal} = this.props;
+    const {currentUser, isLogin, comment, likeCallback, openAuthModal} = this.props;
     const Attachment = attachments[comment.media_type]
     return(
       <div className="media">
@@ -69,6 +69,11 @@ export default class Comment extends React.Component {
             </div>
           </nav>
         </div>
+        {currentUser.id == comment.user.id &&
+          <div className="media-right">
+            <button className="delete"></button>
+          </div>
+        }
       </div>
     )
   }

@@ -141,6 +141,7 @@ export default class CommentEditor extends React.Component {
                         let {media_data, media_type} = this.state;
                         media_data = JSON.stringify(media_data)
                         createCallback({body: rawContent, media_data, media_type})
+                        this.setState({editorState: EditorState.createEmpty(), media_data: null, media_type: null})
                       }}
                     >create comment</button>
                   </div>

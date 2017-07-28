@@ -17,6 +17,7 @@ export default class CommentsList extends React.Component {
         isLogin={currentUser.is_authenticated}
         likeCallback={likeCallback}
         openAuthModal={openAuthModal}
+        currentUser={currentUser}
         />)
     })
 

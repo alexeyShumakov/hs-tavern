@@ -10,4 +10,8 @@ defmodule HsTavern.CommentController do
     |> CommentSerializer.to_map
     json(conn, comments)
   end
+
+  def delete(conn, %{"id" => id}, user, _) do
+
+  end
 end

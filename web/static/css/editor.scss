@@ -44,14 +44,15 @@
   z-index: 5;
   position: absolute;
   bottom: 20px;
-  left: -160px;
+  left: -220px;
   width: 250px;
   height: 320px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .giphy-box {
   @extend .emoji-box;
+  overflow: hidden;
   width: 250px;
   height: 320px;
   .columns {

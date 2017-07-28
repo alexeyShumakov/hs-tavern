@@ -23,6 +23,12 @@ defmodule HsTavern.Router do
     plug Guardian.Plug.LoadResource
   end
 
+  scope "/ajax", HsTavern.Ajax do
+    pipe_through [:browser, :browser_auth]
+
+    resources "/desks", DeskController, only: [:index, :show, :delete, :update, :create]
+  end
+
   scope "/", HsTavern do
     pipe_through [:browser, :browser_auth]
 
@@ -31,7 +37,7 @@ defmodule HsTavern.Router do
     resources "/comments", CommentController, only: [:index]
     resources "/cards", CardController, only: [:index, :show]
     resources "/builder", BuilderController, only: [:index, :show]
-    resources "/desks", DeskController, only: [:delete, :index, :create, :show, :edit, :update]
+    resources "/desks", DeskController, only: [:index, :show, :edit]
 
   end
 
@@ -51,7 +57,6 @@ defmodule HsTavern.Router do
    scope "/api", HsTavern do
     pipe_through [:api, :api_auth]
     resources "/cards", Api.CardController, only: [:show, :index]
-    resources "/desks", Api.DeskController, only: [:show, :index, :update]
     get "/users/search", Api.UserController, :search
    end
 end

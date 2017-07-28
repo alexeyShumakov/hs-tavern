@@ -4,61 +4,47 @@ import _ from "lodash";
 
 export function builderUpdateServerDesk() {
   return(dispatch, getState) => {
-    let  {desk, isValid} = getState().builder
-    let cards = desk.cards.map((card)=> {return _.pick(card, "id", "card_id", "count")})
-    desk = Object.assign({}, desk, {cards})
+    let  {desk, isValid} = getState().builder;
+    let cards = desk.cards.map((card) => {return _.pick(card, "id", "card_id", "count");});
+    desk = Object.assign({}, desk, {cards});
     if(isValid) {
-      return axios.put(`/desks/${desk.id}`, {desk})
+      return axios.put(`/ajax/desks/${desk.id}`, {desk});
     } else {
-      return Promise.reject()
+      return Promise.reject();
     }
-  }
+  };
 }
 
 export function builderSaveDesk() {
   return(dispatch, getState) => {
-    let  {desk, isValid} = getState().builder
-    let cards = desk.cards.map((card)=> {return _.pick(card, "card_id", "count")})
-    desk = Object.assign({}, desk, {cards})
+    let  {desk, isValid} = getState().builder;
+    let cards = desk.cards.map((card) => {return _.pick(card, "card_id", "count");});
+    desk = Object.assign({}, desk, {cards});
     if(isValid) {
-      return axios.post("/desks", {desk})
+      return axios.post("/ajax/desks", {desk});
     } else {
-      return Promise.reject()
+      return Promise.reject();
     }
-  }
+  };
 }
 
 export function builderValidateDesk() {
-  return {
-    type: "BUILDER_VALIDATE_DESK"
-  }
+  return {type: "BUILDER_VALIDATE_DESK"};
 }
 
 export function builderRemoveCard(card) {
-  return {
-    type: "BUILDER_REMOVE_CARD",
-    card
-  }
+  return {type: "BUILDER_REMOVE_CARD", card};
 }
 export function builderAddCardToDesk(card) {
-  return {
-    type: "BUILDER_ADD_CARD_TO_DESK",
-    card
-  }
+  return {type: "BUILDER_ADD_CARD_TO_DESK", card};
 }
 
 export function builderUpdateDeskCard(card) {
-  return {
-    type: "BUILDER_UPDATE_DESK_CARD",
-    card
-  }
+  return {type: "BUILDER_UPDATE_DESK_CARD", card};
 }
 
 export function builderUpdateDesk(desk) {
-  return {
-    type: "BUILDER_UPDATE_DESK",
-    desk
-  }
+  return {type: "BUILDER_UPDATE_DESK", desk};
 }
 
 export function builderFetchCards() {
@@ -68,39 +54,30 @@ export function builderFetchCards() {
       dispatch(builderSetFilters(resp.data.filters));
       dispatch(builderSetCards(resp.data.index));
     }, ()=> {
-    })
-  }
+    });
+  };
 }
 
 export function builderClear() {
-  return { type: "BUILDER_CLEAR" }
+  return { type: "BUILDER_CLEAR" };
 }
 
 export function builderSetCards(cards) {
-  return {
-    type: "SET_BUILDER_CARDS",
-    cards
-  }
+  return {type: "SET_BUILDER_CARDS", cards};
 }
 export function builderSetDesk(desk) {
-  return {
-    type: "SET_BUILDER_DESK",
-    desk
-  }
+  return {type: "SET_BUILDER_DESK", desk};
 }
 
 export function builderSetFilters(filters) {
-  return {
-    type: "SET_BUILDER_FILTERS",
-    filters
-  }
+  return {type: "SET_BUILDER_FILTERS", filters};
 }
 
 function createParams(filters) {
-  let f = {}
+  let f = {};
   f["page"] = filters.pagination.page;
   f["page_size"] = filters.pagination.page_size;
-  f["keyword"] = filters.keyword || ""
+  f["keyword"] = filters.keyword || "";
   if(filters.rarity)
     f["rarity"] = filters.rarity;
   if(filters.player_class)
@@ -112,8 +89,8 @@ function createParams(filters) {
   if(filters.cost)
     f["cost"] = `${filters.cost.min};${filters.cost.max}`;
   if(filters.collectible == false)
-    f["collectible"] = filters.collectible
+    f["collectible"] = filters.collectible;
   if(filters.standard == false)
-    f["standard"] = filters.standard
+    f["standard"] = filters.standard;
   return f;
 }

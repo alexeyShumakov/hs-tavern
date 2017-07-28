@@ -1,0 +1,62 @@
+defmodule HsTavern.Ajax.DeskController do
+  use HsTavern.Web, :controller
+  use Guardian.Phoenix.Controller
+  alias HsTavern.{Desk, DeskCard, DeskProvider}
+  alias HsTavern.Serializers.DeskSerializer
+
+  plug Guardian.Plug.EnsureAuthenticated when action in [:delete, :update, :create]
+
+  def index(conn, params, user, _) do
+    {desks, filters} = DeskProvider.get_desks_with_filters(user, params)
+    desks = DeskSerializer.short_to_map(desks)
+    json(conn, %{desks: desks, filters: filters})
+  end
+
+  def show(conn, %{"id" => id}, user, _) do
+    desk = DeskProvider.one_desk!(id, user)
+    json(conn, DeskSerializer.to_map(desk))
+  end
+
+  def delete(conn, %{"id" => id}, user, _) do
+    desk = Repo.get!(HsTavern.Desk, id)
+    if desk.user_id == user.id do
+      Repo.delete! desk
+    end
+    json(conn, %{status: :deleted})
+  end
+
+  def update(conn, %{"id"=> id, "desk" => params}, user, _) do
+    desk = DeskProvider.one_desk!(id, user)
+    changeset = Desk.update_changeset(desk, params)
+    if desk.user_id == user.id do
+      case changeset.valid? do
+        true ->
+          DeskCard |> where(desk_id: ^params["id"]) |> Repo.delete_all
+          params["cards"]
+          |> Enum.map(fn card ->
+            card |> Map.put("desk_id", params["id"]) |> create_desk_card
+          end)
+          desk = Repo.update!(changeset)
+          conn |> json(%{id: desk.id})
+        false ->
+          conn |> send_resp(422, "invalid")
+      end
+    else
+      conn |> send_resp(403, "")
+    end
+  end
+
+  def create(conn, %{"desk" => params}, user, _) do
+    desk = Desk.changeset(%Desk{}, params |> Map.put("user_id", user.id))
+    case Repo.insert(desk) do
+      {:ok, desk} ->
+        conn |> json(%{status: :ok, id: desk.id})
+      {:error, _} ->
+        conn |> send_resp(422, "")
+    end
+  end
+
+  def create_desk_card(card) do
+    %DeskCard{} |> DeskCard.changeset(card) |> Repo.insert!
+  end
+end
