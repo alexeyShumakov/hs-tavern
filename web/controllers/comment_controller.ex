@@ -11,7 +11,7 @@ defmodule HsTavern.CommentController do
     json(conn, comments)
   end
 
-  def delete(conn, %{"id" => id}, user, _) do
+  # def delete(conn, %{"id" => id}, user, _) do
 
-  end
+  # end
 end

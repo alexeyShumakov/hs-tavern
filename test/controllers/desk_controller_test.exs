@@ -1,66 +1,24 @@
 defmodule HsTavern.DeskControllerTest do
   use HsTavern.ConnCase
+  import HsTavern.Factory
 
-  alias HsTavern.{Repo, User, Card}
-
-  @valid_attrs %{
-    "user_id" => 1,
-    "description" => "some content",
-    "player_class" => "some content",
-    "standard" => true,
-    "title" => "some content",
-    "cards" => []
-  }
-
-  @invalid_attrs %{
-    "cards" => []
-  }
-
-  @card_attrs %{
-    title: "card title",
-    game_id: "CRD_001",
-    card_set: "standard",
-    type: "spell",
-    player_class: "mage",
-    collectible: true,
-    rarity: "Legendary",
-    race: "dragon",
-    cost: 1,
-    attack: 1,
-    health: 1
-  }
-
-  def guardian_login() do
-    user = User.changeset(%User{}, %{email: "email@e.com", name: "name"}) |> Repo.insert!
+  def guardian_login(user) do
     build_conn()
       |> bypass_through(HsTavern.Router, [:browser])
       |> get("/")
       |> Guardian.Plug.sign_in(user)
-      |> send_resp(200, "Hi")
+      |> send_resp(200, "")
       |> recycle()
   end
 
-  def cards(count \\ 2) do
-    1..15 |> Enum.map(fn(_) -> Card.changeset(%Card{}, @card_attrs) |> Repo.insert! end )
-    |> Enum.map( fn card -> %{"count" => count, "card_id" => card.id} end )
-  end
-
-  test "POST /desks valid data" do
-    conn = guardian_login()
-           |> post("/desks", [desk: %{@valid_attrs | "cards" => cards()}])
-
-    assert conn.status == 200
-  end
-
-  test "POST /desks invalid data" do
-    conn = guardian_login()
-           |> post("/desks", [desk: %{@invalid_attrs | "cards" => cards()}])
-    assert conn.status == 422
-  end
-
-  test "POST /desks invalid cards" do
-    conn = guardian_login()
-           |> post("/desks", [desk: %{@valid_attrs | "cards" => cards(1)}])
-    assert conn.status == 422
+  describe "index/4" do
+    test "show all desks titles" do
+      user = insert(:user)
+      desks = 1..3 |> Enum.map(fn(i) -> insert(:desk, %{user: user, title: "desk title##{i}"}) end)
+      conn = guardian_login(user) |> get("/desks")
+      desks |> Enum.each(fn(desk) ->
+        assert html_response(conn, 200) =~ desk.title
+      end)
+    end
   end
 end

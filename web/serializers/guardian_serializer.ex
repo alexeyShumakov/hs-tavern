@@ -5,8 +5,7 @@ defmodule HsTavern.GuardianSerializer do
 
   @behaviour Guardian.Serializer
 
-  alias HsTavern.Repo
-  alias HsTavern.User
+  alias HsTavern.{Repo, User}
 
   def for_token(%User{} = user), do: {:ok, "User:#{user.id}"}
   def for_token(_), do: {:error, "Unknown resource type"}

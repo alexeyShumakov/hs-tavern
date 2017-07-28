@@ -62,7 +62,8 @@ defmodule HsTavern.Mixfile do
       {:giphy, "~> 0.1.1"},
       {:wallaby, "~> 0.18.1"},
       {:ex_machina, "~> 2.0"},
-      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:canada, "~> 1.0.1"}
     ]
   end
   # Aliases are shortcuts or tasks specific to the current project.

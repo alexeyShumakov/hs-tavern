@@ -1,7 +1,8 @@
 defmodule HsTavern.DeskController do
   use HsTavern.Web, :controller
   use Guardian.Phoenix.Controller
-  alias HsTavern.{Desk, DeskCard, DeskProvider}
+  alias HsTavern.{DeskProvider, Permissions}
+  import Canada, only: [can?: 2]
 
   plug Guardian.Plug.EnsureAuthenticated when action in [:my_desks, :edit]
 
@@ -23,6 +24,8 @@ defmodule HsTavern.DeskController do
 
   def edit(conn, %{"id" => id}, user, _) do
     desk = DeskProvider.one_desk!(id, user)
+    if !can?(user, edit(desk)), do: Permissions.browser_forbidden(conn)
+
     params = %{"class" => desk.player_class, "page_size" => 6}
     {cards, filters} = HsTavern.CardFilter.filter(params)
     render(conn, "edit.html", cards: cards, filters: filters, desk: desk)

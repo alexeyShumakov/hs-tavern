@@ -26,17 +26,6 @@ defmodule HsTavern.Comment do
 
   @params [:body, :user_id, :entity_id, :entity_type, :media_data, :media_type]
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @params)
-    |> foreign_key_constraint(:user_id)
-    |> foreign_key_constraint(:card_id)
-    |> validate_required([:body, :user_id, :card_id])
-  end
-
   def changeset_with_card(struct, params \\ %{}) do
     struct
     |> cast(params, @params)
