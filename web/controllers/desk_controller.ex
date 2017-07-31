@@ -24,10 +24,12 @@ defmodule HsTavern.DeskController do
 
   def edit(conn, %{"id" => id}, user, _) do
     desk = DeskProvider.one_desk!(id, user)
-    if !can?(user, edit(desk)), do: Permissions.browser_forbidden(conn)
-
-    params = %{"class" => desk.player_class, "page_size" => 6}
-    {cards, filters} = HsTavern.CardFilter.filter(params)
-    render(conn, "edit.html", cards: cards, filters: filters, desk: desk)
+    if can?(user, edit(desk)) do
+      params = %{"class" => desk.player_class, "page_size" => 6}
+      {cards, filters} = HsTavern.CardFilter.filter(params)
+      render(conn, "edit.html", cards: cards, filters: filters, desk: desk)
+    else
+      Permissions.browser_forbidden(conn)
+    end
   end
 end
