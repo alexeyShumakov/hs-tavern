@@ -1,4 +1,4 @@
-defmodule HsTavern.ChannelCase do
+defmodule HsTavernWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -27,7 +27,7 @@ defmodule HsTavern.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint HsTavern.Endpoint
+      @endpoint HsTavernWeb.Endpoint
     end
   end
 

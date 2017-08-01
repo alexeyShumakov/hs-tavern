@@ -1,15 +1,16 @@
 defmodule HsTavern.Factory do
   use ExMachina.Ecto, repo: HsTavern.Repo
+  alias HsTavern.{User, Desk, DeskCard, Card}
 
   def user_factory do
-    %HsTavern.User {
+    %User {
       name: "John Doe",
       email: sequence(:email, &"user#{&1}example.com")
     }
   end
 
   def desk_factory do
-    %HsTavern.Desk {
+    %Desk {
       title: "desk title",
       description: "desk description",
       user: build(:user),
@@ -18,14 +19,14 @@ defmodule HsTavern.Factory do
   end
 
   def desk_card_factory do
-    %HsTavern.DeskCard {
+    %DeskCard {
       count: 1,
       card: build(:card)
     }
   end
 
   def card_factory do
-    %HsTavern.Card {
+    %Card {
       title: "card title",
       game_id: "CRD_001",
       card_set: "standard",

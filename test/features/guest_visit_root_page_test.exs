@@ -1,5 +1,5 @@
 defmodule HsTavern.GuestVisitRootPageTest do
-  use HsTavern.IntegrationCase, async: true
+  use HsTavernWeb.IntegrationCase, async: true
 
   import Wallaby.Query, only: [css: 2]
 

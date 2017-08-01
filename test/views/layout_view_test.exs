@@ -1,3 +1,3 @@
-defmodule HsTavern.LayoutViewTest do
-  use HsTavern.ConnCase, async: true
+defmodule HsTavernWeb.LayoutViewTest do
+  use HsTavernWeb.ConnCase, async: true
 end

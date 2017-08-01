@@ -1,10 +1,10 @@
 defmodule HsTavern.DeskControllerTest do
-  use HsTavern.ConnCase
+  use HsTavernWeb.ConnCase
   import HsTavern.Factory
 
   def guardian_login(user) do
     build_conn()
-      |> bypass_through(HsTavern.Router, [:browser])
+      |> bypass_through(HsTavernWeb.Router, [:browser])
       |> get("/")
       |> Guardian.Plug.sign_in(user)
       |> send_resp(200, "")

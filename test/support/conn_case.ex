@@ -1,4 +1,4 @@
-defmodule HsTavern.ConnCase do
+defmodule HsTavernWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,10 +25,10 @@ defmodule HsTavern.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import HsTavern.Router.Helpers
+      import HsTavernWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint HsTavern.Endpoint
+      @endpoint HsTavernWeb.Endpoint
     end
   end
 

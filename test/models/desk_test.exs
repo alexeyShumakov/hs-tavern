@@ -35,8 +35,8 @@ defmodule HsTavern.DeskTest do
   end
 
   test "cards count invalid" do
-    attrs = %{@invalid_attrs | "cards" => cards(1)}
-    assert {:cards_count, "cards count error"} in errors_on(%Desk{}, attrs)
+    changeset = Desk.changeset(%Desk{}, %{@valid_attrs | "cards" => cards(1)})
+    assert "cards count error" in errors_on(changeset).cards_count
   end
 
   test "desk cards is invalid" do

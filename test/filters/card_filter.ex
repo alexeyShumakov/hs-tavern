@@ -1,4 +1,4 @@
-defmodule HsTavern.CardFilterTest do
+defmodule HsTavernWeb.CardFilterTest do
   use HsTavern.ConnCase
 
   alias HsTavern.{Card, Repo, CardFilter}

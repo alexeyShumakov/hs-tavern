@@ -1,5 +1,5 @@
 defmodule HsTavern.CardControllerTest do
-  use HsTavern.ConnCase
+  use HsTavernWeb.ConnCase
 
   alias HsTavern.{Card, Repo}
   @valid_attrs %{

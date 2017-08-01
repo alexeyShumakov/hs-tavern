@@ -1,4 +1,4 @@
-defmodule HsTavern.IntegrationCase do
+defmodule HsTavernWeb.IntegrationCase do
   use ExUnit.CaseTemplate
 
   using do
@@ -10,7 +10,7 @@ defmodule HsTavern.IntegrationCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import HsTavern.Router.Helpers
+      import HsTavernWeb.Router.Helpers
     end
   end
 

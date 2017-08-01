@@ -14,10 +14,10 @@ config :wallaby,
   driver: Wallaby.Experimental.Chrome
 
 # Configures the endpoint
-config :hs_tavern, HsTavern.Endpoint,
+config :hs_tavern, HsTavernWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "uMaHMwzutkHh/ObAPpQsFVK1NVYHprbzg94Q1HW50eJf60jJBzGcz1FxY7IA/khz",
-  render_errors: [view: HsTavern.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: HsTavernWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: HsTavern.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
