@@ -1,15 +1,7 @@
-defmodule HsTavern.DeskControllerTest do
+defmodule HsTavernWeb.DeskControllerTest do
   use HsTavernWeb.ConnCase
   import HsTavern.Factory
-
-  def guardian_login(user) do
-    build_conn()
-      |> bypass_through(HsTavernWeb.Router, [:browser])
-      |> get("/")
-      |> Guardian.Plug.sign_in(user)
-      |> send_resp(200, "")
-      |> recycle()
-  end
+  import HsTavernWeb.TestHelper, only: [guardian_login: 1]
 
   describe "index/4" do
     test "show all desks titles" do
@@ -66,7 +58,7 @@ defmodule HsTavern.DeskControllerTest do
     test "guest can't edit desk" do
       desk = insert(:desk)
       conn = build_conn() |> get("/desks/#{desk.id}/edit") 
-      assert conn.status == 401
+      assert redirected_to(conn) == "/"
     end
   end
 end

@@ -14,7 +14,8 @@ defmodule HsTavern.Factory do
       title: "desk title",
       description: "desk description",
       user: build(:user),
-      cards: 1..30 |> Enum.map(fn(_) -> build(:desk_card) end )
+      cards: 1..30 |> Enum.map(fn(_) -> build(:desk_card) end ),
+      player_class: "Druid"
     }
   end
 

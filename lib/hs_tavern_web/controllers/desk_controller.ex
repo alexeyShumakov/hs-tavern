@@ -4,7 +4,8 @@ defmodule HsTavernWeb.DeskController do
   alias HsTavern.{DeskProvider, Permissions}
   import Canada, only: [can?: 2]
 
-  plug Guardian.Plug.EnsureAuthenticated when action in [:my_desks, :edit]
+  action_fallback HsTavernWeb.FallbackController
+  plug Guardian.Plug.EnsureAuthenticated, [handler: HsTavernWeb.FallbackController] when action in [:my_desks, :edit]
 
   def index(conn, params, user, _) do
     desks = DeskProvider.get_desks(user, params)
@@ -29,7 +30,7 @@ defmodule HsTavernWeb.DeskController do
       {cards, filters} = HsTavern.CardFilter.filter(params)
       render(conn, "edit.html", cards: cards, filters: filters, desk: desk)
     else
-      Permissions.browser_forbidden(conn)
+      Permissions.forbidden()
     end
   end
 end
