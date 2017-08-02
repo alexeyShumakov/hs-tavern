@@ -3,7 +3,7 @@ import _ from "lodash";
 
 export function ceFetchMentionSuggestions(name) {
   return(dispatch, getState) => {
-    return axios.get("/api/users/search", {params: {name}})
+    return axios.get("/ajax/users/search", {params: {name}})
       .then((resp)=>{
         dispatch(ceSetMentionSuggestions(resp.data));
       });

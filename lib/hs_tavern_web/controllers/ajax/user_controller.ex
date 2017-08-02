@@ -1,4 +1,4 @@
-defmodule HsTavernWeb.Api.UserController do
+defmodule HsTavernWeb.Ajax.UserController do
   use HsTavern.Web, :controller
   alias HsTavern.UserProvider
   alias HsTavern.Serializers.UserSerializer

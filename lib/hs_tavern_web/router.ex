@@ -28,6 +28,7 @@ defmodule HsTavernWeb.Router do
 
     resources "/desks", DeskController, only: [:index, :show, :delete, :update, :create]
     resources "/cards", CardController, only: [:show, :index]
+    get "/users/search", UserController, :search
   end
 
   scope "/", HsTavernWeb do
@@ -54,9 +55,4 @@ defmodule HsTavernWeb.Router do
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
   end
-
-   scope "/api", HsTavernWeb.Api do
-    pipe_through [:api, :api_auth]
-    get "/users/search", UserController, :search
-   end
 end
