@@ -19,7 +19,7 @@ export function ceSetMentionSuggestions(suggestions) {
 
 export function ceFetchCardSuggestions(keyword) {
   return(dispatch, getState) => {
-    return axios.get("/api/cards", {params: {keyword: keyword, per_page: 6}})
+    return axios.get("/ajax/cards", {params: {keyword: keyword, per_page: 6}})
       .then((resp)=>{
         dispatch(ceSetCardSuggestions(resp.data.index));
       });

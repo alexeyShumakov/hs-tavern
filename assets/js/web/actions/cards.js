@@ -138,7 +138,7 @@ export function fetchCard(id) {
       const newCard = Object.assign({}, card, payload)
       dispatch(setCard(newCard));
     })
-    return axios.get(`/api/cards/${id}`).then((response) => {
+    return axios.get(`/ajax/cards/${id}`).then((response) => {
       dispatch(setCard(response.data));
     })
   }
@@ -147,7 +147,7 @@ export function fetchCard(id) {
 export function pushCards() {
   return(dispatch, getState) => {
     const filters = getState().cards.filters;
-    return axios.get('/api/cards', {params: createParams(filters)}).then((response) => {
+    return axios.get('/ajax/cards', {params: createParams(filters)}).then((response) => {
       const cards = getState().cards.index.concat(response.data.index);
       dispatch(setCards(cards));
       const newFilters = Object.assign(
@@ -162,7 +162,7 @@ export function fetchCards(force = false) {
   return(dispatch, getState) => {
     const filters = getState().cards.filters;
     if(_.isEmpty(getState().cards.index) || force) {
-      return axios.get('/api/cards', {params: createParams(filters)}).then((response) => {
+      return axios.get('/ajax/cards', {params: createParams(filters)}).then((response) => {
         dispatch(setCards(response.data.index));
         const newFilters = Object.assign(
           {}, filters,

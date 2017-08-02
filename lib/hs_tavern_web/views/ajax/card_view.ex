@@ -1,4 +1,4 @@
-defmodule HsTavernWeb.Api.CardView do
+defmodule HsTavernWeb.Ajax.CardView do
   use HsTavern.Web, :view
   alias HsTavern.Serializers.CardSerializer
 

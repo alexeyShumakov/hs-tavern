@@ -50,7 +50,7 @@ export function builderUpdateDesk(desk) {
 export function builderFetchCards() {
   return(dispatch, getState) => {
     let params = createParams(getState().builder.filters);
-    return axios.get("/api/cards", {params}).then((resp) => {
+    return axios.get("/ajax/cards", {params}).then((resp) => {
       dispatch(builderSetFilters(resp.data.filters));
       dispatch(builderSetCards(resp.data.index));
     }, ()=> {

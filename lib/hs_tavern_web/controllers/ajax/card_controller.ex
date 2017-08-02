@@ -1,4 +1,4 @@
-defmodule HsTavernWeb.Api.CardController do
+defmodule HsTavernWeb.Ajax.CardController do
   use HsTavern.Web, :controller
   use Guardian.Phoenix.Controller
 

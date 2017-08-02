@@ -28,7 +28,7 @@ defmodule HsTavern.Factory do
 
   def card_factory do
     %Card {
-      title: "card title",
+      title: sequence(:slug, &"card title#{&1}"),
       game_id: "CRD_001",
       card_set: "standard",
       type: "spell",
@@ -38,7 +38,8 @@ defmodule HsTavern.Factory do
       race: "dragon",
       cost: 1,
       attack: 1,
-      health: 1
+      health: 1,
+      slug: sequence(:slug, &"card-title#{&1}")
     }
   end
 end
