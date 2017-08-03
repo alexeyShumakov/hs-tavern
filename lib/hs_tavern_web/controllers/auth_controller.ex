@@ -6,7 +6,7 @@ defmodule HsTavernWeb.AuthController do
 
   def sign_out(conn, _params), do: conn |> Guardian.Plug.sign_out |> json(%{status: :ok})
 
-  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
+  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, %{"provider" => "facebook"}) do
     {:ok, data} = HTTPoison.get("https://graph.facebook.com/v2.9/me?access_token=#{auth.credentials.token}&fields=email,name,picture")
     user_data = Poison.decode!(data.body)
 

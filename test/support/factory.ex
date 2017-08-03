@@ -1,11 +1,19 @@
 defmodule HsTavern.Factory do
   use ExMachina.Ecto, repo: HsTavern.Repo
-  alias HsTavern.{Comment, User, Desk, DeskCard, Card}
+  alias HsTavern.{Comment, User, Desk, DeskCard, Card, Authorization}
 
   def user_factory do
     %User {
       name: "John Doe",
-      email: sequence(:email, &"user#{&1}example.com")
+      email: sequence(:email, &"user#{&1}example.com"),
+      authorizations: [build(:authorization)]
+    }
+  end
+
+  def authorization_factory do
+    %Authorization {
+      uid: sequence(:uid, &"#{&1}"),
+      provider: "facebook"
     }
   end
 
