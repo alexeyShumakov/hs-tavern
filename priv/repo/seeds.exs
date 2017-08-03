@@ -7,7 +7,7 @@ defmodule Seeds.Helper do
   end
 end
 
-alias HsTavern.{Repo, Card, User, Comment, Like, DeskCard, Desk}
+alias HsTavern.{Repo, Card, User, Comment, Like, Desk}
 classes = ["Neutral", "Hunter", "Shaman",
  "Mage", "Druid", "Priest", "Paladin",
  "Rogue", "Warlock", "Warrior"
@@ -76,19 +76,19 @@ end)
 
 Enum.each(1..comments_count, fn id ->
   params = %{}
-  |> Map.put(:body, comments_body)
-  |> Map.put(:entity_id, :rand.uniform(cards_count))
-  |> Map.put(:entity_type, "card")
-  |> Map.put(:user_id, :rand.uniform(users_count))
+  |> Map.put("body", comments_body)
+  |> Map.put("entity_id", :rand.uniform(cards_count))
+  |> Map.put("entity_type", "card")
+  |> Map.put("user_id", :rand.uniform(users_count))
   Comment.changeset_with_card(%Comment{}, params) |> Repo.insert!
 end)
 
 Enum.each(1..comments_count, fn id ->
   params = %{}
-  |> Map.put(:body, comments_body)
-  |> Map.put(:entity_id, :rand.uniform(desks_count))
-  |> Map.put(:entity_type, "desk")
-  |> Map.put(:user_id, :rand.uniform(users_count))
+  |> Map.put("body", comments_body)
+  |> Map.put("entity_id", :rand.uniform(desks_count))
+  |> Map.put("entity_type", "desk")
+  |> Map.put("user_id", :rand.uniform(users_count))
   Comment.changeset_with_desk(%Comment{}, params) |> Repo.insert!
 end)
 

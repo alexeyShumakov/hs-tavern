@@ -19,16 +19,19 @@ defmodule HsTavernWeb.AuthControllerTest do
 
   describe "GET /auth/facabook/callback" do
     test "create user and sign_in", %{conn: conn} do
-      user_data = %{body: ~s({\"id\": \"0\", \"name\": \"John Doe\"})}
+      user_data = %{body: ~s({\"id\": \"0\", \"name\": \"John Doe\", \"email\": \"john@mail.com\"})}
       with_mock HTTPoison, [get: fn(_url) -> {:ok, user_data} end] do
         conn = conn
         |> assign(:ueberauth_auth,  %{credentials: %{token: "valid-token"}})
         |> get(auth_path(conn, :callback, "facebook"))
+
+        last_user = User |> last() |> Repo.one!
+
         assert called HTTPoison.get("https://graph.facebook.com/v2.9/me?access_token=valid-token&fields=email,name,picture")
         assert Guardian.Plug.authenticated?(conn)
         assert conn.status == 200
-        last_user = User |> last() |> Repo.one!
         assert last_user.name == "John Doe"
+        assert last_user.email == "john@mail.com"
       end
     end
 
