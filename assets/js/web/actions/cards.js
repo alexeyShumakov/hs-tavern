@@ -6,7 +6,7 @@ import actionTypes from "../constants";
 
 export function fetchAllCardComments(cardId) {
   return(dispatch, getState) => {
-    return axios.get("/comments", {params: {entity_type: "card", entity_id: cardId}})
+    return axios.get("/ajax/comments", {params: {entity_type: "card", entity_id: cardId}})
       .then((resp)=>{
       const card = getState().cards.show;
       const newCard = Object.assign({}, card, {comments: resp.data});

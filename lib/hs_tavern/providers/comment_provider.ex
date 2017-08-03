@@ -29,7 +29,7 @@ defmodule HsTavern.CommentProvider do
   end
 
   def check_comment(comment, user) do
-      Map.put(comment, :like_me, Enum.member?(comment.likes_users, user))
+    Map.put(comment, :like_me, Enum.member?(comment.likes_users, user))
   end
 
   def check_comments(comments, nil), do: comments

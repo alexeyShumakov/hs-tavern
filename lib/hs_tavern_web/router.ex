@@ -26,6 +26,7 @@ defmodule HsTavernWeb.Router do
   scope "/ajax", HsTavernWeb.Ajax, as: :ajax do
     pipe_through [:browser, :browser_auth]
 
+    resources "/comments", CommentController, only: [:index]
     resources "/desks", DeskController, only: [:index, :show, :delete, :update, :create]
     resources "/cards", CardController, only: [:show, :index]
     get "/users/search", UserController, :search
@@ -36,7 +37,6 @@ defmodule HsTavernWeb.Router do
 
     get "/", DeskController, :index
     get "/my_desks", DeskController, :my_desks
-    resources "/comments", CommentController, only: [:index]
     resources "/cards", CardController, only: [:index, :show]
     resources "/builder", BuilderController, only: [:index, :show]
     resources "/desks", DeskController, only: [:index, :show, :edit]

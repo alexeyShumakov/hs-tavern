@@ -1,4 +1,4 @@
-defmodule HsTavernWeb.CommentController do
+defmodule HsTavernWeb.Ajax.CommentController do
   use HsTavern.Web, :controller
   use Guardian.Phoenix.Controller
   alias HsTavern.CommentProvider

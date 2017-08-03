@@ -1,6 +1,6 @@
 defmodule HsTavern.Factory do
   use ExMachina.Ecto, repo: HsTavern.Repo
-  alias HsTavern.{User, Desk, DeskCard, Card}
+  alias HsTavern.{Comment, User, Desk, DeskCard, Card}
 
   def user_factory do
     %User {
@@ -16,6 +16,16 @@ defmodule HsTavern.Factory do
       user: build(:user),
       cards: 1..30 |> Enum.map(fn(_) -> build(:desk_card) end ),
       player_class: "Druid"
+    }
+  end
+
+  def comment_factory do
+    %Comment{
+      body: "comment",
+      likes_count: 0,
+      entity_type: "desk",
+      entity_id: 1,
+      user: build(:user)
     }
   end
 

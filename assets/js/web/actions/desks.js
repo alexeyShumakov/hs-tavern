@@ -34,7 +34,7 @@ export function pushDeskComment(comment) {
 
 export function fetchAllDeskComments(deskId) {
   return(dispatch, getState) => {
-    return axios.get("/comments", {params: {entity_type: "desk", entity_id: deskId}})
+    return axios.get("/ajax/comments", {params: {entity_type: "desk", entity_id: deskId}})
       .then((resp)=>{
       let desk = getState().desks.show;
       desk = Object.assign({}, desk, {comments: resp.data});
