@@ -20,4 +20,7 @@ config :hs_tavern, HsTavern.Repo,
   password: "postgres",
   database: "hs_tavern_test",
   hostname: "localhost",
+  timeout: 60_000,
+  ownership_timeout: 60_000,
+  pool_timeout: 60_000,
   pool: Ecto.Adapters.SQL.Sandbox
