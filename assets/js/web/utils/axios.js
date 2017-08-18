@@ -1,4 +1,4 @@
-import store from "../store/store.js";
+import store from "../store/store";
 import axios from "axios";
 
 const csrfToken = store.getState().user.csrf_token;

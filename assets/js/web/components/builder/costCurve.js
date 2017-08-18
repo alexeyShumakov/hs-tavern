@@ -1,6 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
-export default class Curve extends React.Component {
+class Curve extends React.Component {
   render() {
     let {cards} = this.props;
     let  curve = [
@@ -37,3 +39,9 @@ export default class Curve extends React.Component {
     )
   }
 }
+
+Curve.propTypes = {
+  cards: PropTypes.array.isRequired
+}
+
+export default Curve;

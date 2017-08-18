@@ -1,5 +1,7 @@
 import React from "react";
-export default (props) => {
+import PropTypes from "prop-types";
+
+const Filter = (props) => {
   return(
     <div className="tabs">
       <ul>
@@ -16,5 +18,12 @@ export default (props) => {
       </ul>
     </div>
   )
-
 }
+
+Filter.propTypes = {
+  callback: PropTypes.func.isRequired,
+  selectedClass: PropTypes.string,
+  currentClass: PropTypes.string
+}
+
+export default Filter;
