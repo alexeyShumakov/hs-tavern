@@ -1,11 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import _ from "lodash";
 
-export default class KeywordFilter extends React.Component {
+class KeywordFilter extends React.Component {
   constructor(props) {
     super(props);
     this.setFilters = this.setFilters.bind(this);
     this.fetchCards = _.debounce(props.fetchCards, 300);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(e) {
+    this.setFilters(e.target.value);
+    this.fetchCards();
   }
   setFilters(keyword) {
     const pagination = _.merge(this.props.filters.pagination, {page: 1});
@@ -19,25 +25,29 @@ export default class KeywordFilter extends React.Component {
   render() {
     const {keyword} = this.props.filters;
     return(
-    <div className="field">
-      <p className="control has-icons-left">
-        <span className="icon is-small is-left">
-          <i className="fa fa-search"></i>
-        </span>
-        <input
-          ref={(input) => { this.Input = input; }}
-          value={keyword}
-          onChange={(e)=> {
-            this.setFilters(e.target.value);
-            this.fetchCards();
-          }}
-          className="input"
-          type="text"
-          placeholder="Search card"
-        />
-      </p>
-    </div>
-
+      <div className="field">
+        <p className="control has-icons-left">
+          <span className="icon is-small is-left">
+            <i className="fa fa-search"></i>
+          </span>
+          <input
+            ref={(input) => { this.Input = input; }}
+            value={keyword}
+            onChange={this.handleChange}
+            className="input"
+            type="text"
+            placeholder="Search card"
+          />
+        </p>
+      </div>
     )
   }
 }
+
+KeywordFilter.propTypes = {
+  setFilters: PropTypes.func.isRequired,
+  fetchCards: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired
+}
+
+export default KeywordFilter;

@@ -186,7 +186,14 @@ export default class Builder extends React.Component {
             <h3 className="title is-4">{desk.player_class}</h3>
             <h5 className="subtitle" href="">{_.sumBy(deskCards, 'count')}/30</h5>
             {deskCards.map((card)=>{
-              return <DeskCard key={card.card_id} card={card} actions={actions} />
+               return(
+                 <DeskCard
+                   key={card.card_id}
+                   card={card}
+                   remove={actions.builderRemoveCard}
+                   update={actions.builderUpdateDeskCard}
+                 />
+               )
             })}
           </div>
         </div>

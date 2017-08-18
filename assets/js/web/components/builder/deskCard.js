@@ -1,28 +1,27 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
-export default class DeskCard extends React.Component {
+class DeskCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {isShow: false}
+    this.removeCard = this.removeCard.bind(this);
+  }
+
+  removeCard() {
+    const {card } = this.props;
+    const { remove, update } = this.props;
+    const newCard = Object.assign({}, card, {count: card.count - 1})
+    newCard.count > 0 ? update(newCard) : remove(newCard);
   }
 
   render() {
-    const {card } = this.props;
-    const { builderUpdateDeskCard, builderRemoveCard } = this.props.actions;
-    const removeCard = () => {
-      let newCard = Object.assign({}, card, {count: card.count - 1})
-      newCard.count > 0 && builderUpdateDeskCard(newCard) || builderRemoveCard(newCard);
-    }
+    const {card} = this.props;
     return(
       <div
-        onMouseEnter={()=>{
-          this.setState({isShow:true})
-        }}
-        onMouseLeave={()=>{
-          this.setState({isShow:false})
-        }}
-        onClick={removeCard}
-        key={card.id}
+        onMouseEnter={()=>{this.setState({isShow:true})}}
+        onMouseLeave={()=>{this.setState({isShow:false})}}
+        onClick={this.removeCard}
         className="media builder__desk-card">
 
         {this.state.isShow &&
@@ -30,12 +29,13 @@ export default class DeskCard extends React.Component {
             <img src={card.img}/>
           </div>
         }
+
         <div className="media-left">
           <b className="builder__desk-card-cost">{card.cost}</b>
         </div>
-        <div className="media-content">
-         {card.title}
-        </div>
+
+        <div className="media-content">{card.title}</div>
+
         <div className="media-right">
           {card.rarity == "Legendary" ?
               <span className="icon is-small">
@@ -48,3 +48,17 @@ export default class DeskCard extends React.Component {
     )
   }
 }
+
+DeskCard.propTypes = {
+  remove: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
+  card: PropTypes.shape({
+    cost: PropTypes.number.isRequired,
+    count: PropTypes.number.isRequired,
+    img: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    rarity: PropTypes.string.isRequired
+  }).isRequired
+}
+
+export default DeskCard;

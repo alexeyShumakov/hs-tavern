@@ -1,19 +1,22 @@
 import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
-export default class DeskErrors extends React.Component {
+class DeskErrors extends React.Component {
   render() {
-    let {errors, isValid} = this.props;
+    let {errors} = this.props;
     return(
       <div className="message is-danger">
         <div className="message-body">
-          <ul>
-            { Object.entries(errors).map((obj)=> {
-              return <li key={obj[0]}>{obj[1]}</li>
-            })
-            }
-          </ul>
+          <ul> {_.map(errors, (obj)=> {return <li key={obj}>{obj}</li>})} </ul>
         </div>
       </div>
     )
   }
 }
+
+DeskErrors.propTypes = {
+  errors: PropTypes.object.isRequired
+}
+
+export default DeskErrors;
