@@ -1,6 +1,8 @@
-import store from "../store/store";
 import axios from "axios";
-
-const csrfToken = store.getState().user.csrf_token;
-const token = store.getState().user.token;
-export default axios.create({ headers: { 'X-CSRF-Token': csrfToken, 'Authorization': token }});
+const shared = typeof($shared) !== 'undefined' && JSON.parse($shared);
+export default axios.create({
+  headers: {
+    'X-CSRF-Token': shared && shared.user.csrf_token,
+    'Authorization': shared && shared.user.token
+  }
+});

@@ -7,7 +7,7 @@ class Filter extends React.Component {
   constructor(props) {
     super(props)
     this.handleChange = this.handleChange.bind(this);
-    this.handleAcfterChange = this.handleAfterChange.bind(this);
+    this.handleAfterChange = this.handleAfterChange.bind(this);
   }
 
   handleChange(e) {

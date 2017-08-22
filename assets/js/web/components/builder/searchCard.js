@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import _ from "lodash";
 import {isFullDesk, findCardInDesk, isFullDeskCard, checkCard} from "../../utils/builderUtils";
 
-export default class SearchCard extends React.Component {
+class SearchCard extends React.Component {
   constructor(props) {
     super(props);
     this.handlePanelClick = this.handlePanelClick.bind(this);
@@ -47,3 +48,16 @@ export default class SearchCard extends React.Component {
     )
   }
 }
+
+SearchCard.propTypes = {
+  card: PropTypes.object.isRequired,
+  desk: PropTypes.object.isRequired,
+  actions: PropTypes.shape({
+    builderUpdateDeskCard: PropTypes.func.isRequired,
+    builderAddCardToDesk: PropTypes.func.isRequired,
+    fetchCard: PropTypes.func.isRequired,
+    openCardsModal: PropTypes.func.isRequired
+  }).isRequired
+}
+
+export default SearchCard;

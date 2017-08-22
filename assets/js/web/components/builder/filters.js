@@ -1,0 +1,50 @@
+import React from "react";
+import PropTypes from "prop-types";
+
+import ClassFilter from "./classFilter";
+import CostFilter from "./costFilter";
+import KeywordFilter from "./keywordFilter";
+import SetsFilter from "./setsFilter";
+
+class Filters extends React.Component {
+  render() {
+    let {fetchCards, setFilters, filters, currentClass, selectedClass} = this.props;
+    return(
+      <div className='builder-filters'>
+        <div className="columns">
+          <div className="column is-half">
+            <KeywordFilter {...{fetchCards, setFilters, filters}}/>
+          </div>
+
+          <div className="column">
+            <SetsFilter {...{filters, fetchCards, setFilters}}/>
+          </div>
+
+          <div className="column">
+            <div className="slider-wrapper">
+              <CostFilter field="cost" classFilter="cost" {...{filters, fetchCards, setFilters}}/>
+            </div>
+          </div>
+        </div>
+
+        <ClassFilter
+          callback={(player_class) => {
+            setFilters(Object.assign({}, filters, {player_class}));
+            fetchCards();
+          }}
+          {...{currentClass, selectedClass}}
+        />
+      </div>
+    )
+  }
+}
+
+Filters.propTypes = {
+  fetchCards: PropTypes.func.isRequired,
+  setFilters: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired,
+  currentClass: PropTypes.string.isRequired,
+  selectedClass: PropTypes.string
+}
+
+export default Filters;

@@ -1,20 +1,22 @@
 import React from "react";
 import _ from "lodash";
+import PropTypes from 'prop-types';
 
-export default (props) => {
+
+const SetsFilter = (props) => {
+  const {setFilters, fetchCards, filters} = props;
   const handleChange = (e) => {
+    const pagination = _.merge(filters.pagination, {page: 1});
+    const newFilters = Object.assign({}, filters, {pagination}, {set: e.target.value});
+    setFilters(newFilters);
+    fetchCards(true);
+  };
 
-    const pagination = _.merge(props.filters.pagination, {page: 1});
-    const filter = {set: e.target.value}
-    const newFilters = Object.assign({}, props.filters, {pagination:pagination}, filter);
-    props.setFilters(newFilters)
-    props.fetchCards(true);
-  }
   return(
     <div className="field">
       <p className="control">
         <span className="select is-fullwidth">
-          <select value={props.filters.set} onChange={handleChange}>
+          <select value={filters.set} onChange={handleChange}>
             <option value="All">All Sets</option>
             <option value="Basic">Basic</option>
             <option value="Classic">Classic</option>
@@ -34,3 +36,11 @@ export default (props) => {
     </div>
   )
 }
+
+SetsFilter.propTypes = {
+  setFilters: PropTypes.func.isRequired,
+  fetchCards: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired
+}
+
+export default SetsFilter;
