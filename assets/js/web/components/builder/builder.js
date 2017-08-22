@@ -1,18 +1,19 @@
-import React from "react";
-import _ from "lodash";
+import React from 'react';
+import _ from 'lodash';
 
-import Filters from "./filters";
-import CardsBlock from "./cardsBlock";
-import DeskCard from "./deskCard";
-import Curve from "./costCurve";
-import Errors from "./errorsNotification";
+import Filters from './filters';
+import CardsBlock from './cardsBlock';
+import DeskCard from './deskCard';
+import Curve from './costCurve';
+import Errors from './errorsNotification';
+import DescriptionEditor from './descriptionEditor';
 
 export default class Builder extends React.Component {
   render() {
-    let {mainAction, user, builder, actions, route} = this.props;
-    let { builderSetDesk, builderSaveDesk, builderValidateDesk, builderFetchCards, builderSetFilters } = actions;
+    const { mainAction, user, builder, actions, route } = this.props;
+    const { builderSetDesk, builderValidateDesk, builderFetchCards, builderSetFilters } = actions;
     const { desk, errors, isValid, filters, cards } = builder;
-    return(
+    return (
       <div className="columns">
         <div className="column is-three-quarters">
           <div className="box builder__search-cards">
@@ -26,26 +27,11 @@ export default class Builder extends React.Component {
             <CardsBlock
               fetchCards={builderFetchCards}
               setFilters={builderSetFilters}
-              {...{filters, cards, actions, desk}}
+              {...{ filters, cards, actions, desk }}
             />
           </div>
 
-          <div className="box">
-            <h2 className="title is-4">Description</h2>
-            <div className="field">
-              <p className="control">
-                <textarea
-                  value={desk.description}
-                  onChange={(e)=> {
-                    let newDesk =Object.assign({}, desk, {description: e.target.value})
-                    builderSetDesk(newDesk)
-                  }}
-                  className="textarea"
-                  placeholder="Textarea">
-                </textarea>
-              </p>
-            </div>
-          </div>
+          <DescriptionEditor {...{ builderSetDesk, desk }} />
         </div>
 
         <div className="column">
@@ -55,23 +41,25 @@ export default class Builder extends React.Component {
               <p className="control">
                 <input
                   value={desk.title}
-                  onChange={(e)=> {
-                    let newDesk =Object.assign({}, desk, {title: e.target.value})
-                    builderSetDesk(newDesk)
+                  onChange={(e) => {
+                    const newDesk = Object.assign({}, desk, { title: e.target.value });
+                    builderSetDesk(newDesk);
                   }}
                   className="input"
                   type="text"
-                  placeholder="Desk title"/>
+                  placeholder="Desk title"
+                />
               </p>
             </div>
 
             <div className="field">
               <p className="control">
                 <label className="checkbox">
-                  <input type="checkbox"
+                  <input
+                    type="checkbox"
                     checked={desk.standard}
-                    onChange={(e)=>{
-                      let newDesk =Object.assign({}, desk, {standard: e.target.checked})
+                    onChange={(e) => {
+                      const newDesk = Object.assign({}, desk, { standard: e.target.checked });
                       builderSetDesk(newDesk);
                     }}
                   /> Standard
@@ -80,40 +68,41 @@ export default class Builder extends React.Component {
             </div>
 
             <Curve cards={desk.cards} />
-            <hr/>
+            <hr />
 
             <div className="field">
-              <button onClick={()=> {
-                if(!user.is_authenticated)
-                  return actions.setModal(true)
-
-                builderValidateDesk()
-                mainAction().then((response)=>{
-                  let id = response.data.id
-                  actions.fetchDesk(id).then(() => {
-                    route.history.push(`/desks/${id}`);
-                  })
-                }, ()=>{})
-              }}
-                className="button is-primary is-fullwidth">
+              <button
+                className="button is-primary is-fullwidth"
+                onClick={() => {
+                  if (!user.is_authenticated) {
+                    return actions.setModal(true);
+                  }
+                  builderValidateDesk();
+                  return mainAction().then((response) => {
+                    const id = response.data.id;
+                    actions.fetchDesk(id).then(() => {
+                      route.history.push(`/desks/${id}`);
+                    });
+                  }, () => {});
+                }}
+              >
                 <span>Save</span>
               </button>
             </div>
             <h3 className="title is-4">{desk.player_class}</h3>
             <h5 className="subtitle">{_.sumBy(desk.cards, 'count')}/30</h5>
-            {desk.cards.map((card)=>{
-               return(
-                 <DeskCard
-                   key={card.card_id}
-                   card={card}
-                   remove={actions.builderRemoveCard}
-                   update={actions.builderUpdateDeskCard}
-                 />
-               )
-            })}
+            { desk.cards.map(card => (
+              <DeskCard
+                key={card.card_id}
+                card={card}
+                remove={actions.builderRemoveCard}
+                update={actions.builderUpdateDeskCard}
+              />
+            ))
+            }
           </div>
         </div>
       </div>
-    )
+    );
   }
 }

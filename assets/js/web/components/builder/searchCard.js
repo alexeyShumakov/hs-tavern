@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import _ from "lodash";
-import {isFullDesk, findCardInDesk, isFullDeskCard, checkCard} from "../../utils/builderUtils";
+import React from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import { isFullDesk, findCardInDesk, isFullDeskCard, checkCard } from '../../utils/builderUtils';
 
 class SearchCard extends React.Component {
   constructor(props) {
@@ -11,41 +11,44 @@ class SearchCard extends React.Component {
   }
 
   handleCardClick() {
-    let {card, desk, actions} = this.props;
-    let deskCard = findCardInDesk(card, desk);
-    if(!isFullDesk(desk) && deskCard && checkCard(deskCard))
-      return actions.builderUpdateDeskCard(Object.assign({}, deskCard, {count: deskCard.count + 1}));
+    const { card, desk, actions } = this.props;
+    const deskCard = findCardInDesk(card, desk);
+    if (!isFullDesk(desk) && deskCard && checkCard(deskCard)) {
+      const newCard = Object.assign({}, deskCard, { count: deskCard.count + 1 });
+      return actions.builderUpdateDeskCard(newCard);
+    }
 
-    if(!isFullDesk(desk) && !deskCard) {
-      let newCard = _.pick(card, ["img", "cost", "rarity", "title"]);
-      newCard = Object.assign({}, newCard, {card_id: card.id, count: 1});
+    if (!isFullDesk(desk) && !deskCard) {
+      let newCard = _.pick(card, ['img', 'cost', 'rarity', 'title']);
+      newCard = Object.assign({}, newCard, { card_id: card.id, count: 1 });
       return actions.builderAddCardToDesk(newCard);
     }
+    return '';
   }
 
   handlePanelClick() {
-    let {card, actions} = this.props;
+    const { card, actions } = this.props;
     window.history.pushState(null, null, `/cards/${card.slug}`);
-    return actions.fetchCard(card.slug).then(()=> {actions.openCardsModal(card);});
+    return actions.fetchCard(card.slug).then(() => { actions.openCardsModal(card); });
   }
 
   render() {
-    let {card, desk} = this.props;
-    let desk_card = findCardInDesk(card, desk);
-    let style = {backgroundImage: `url(${card.img})`};
-    return(
+    const { card, desk } = this.props;
+    const deskCard = findCardInDesk(card, desk);
+    const style = { backgroundImage: `url(${card.img})` };
+    return (
       <div className="column is-one-third-tablet is-one-third-desktop">
         <div className="hs-card__wrapper">
           <div className="hs-card__panel" onClick={this.handlePanelClick}>
             <a className="icon box is-marginless">
-              <i className="fa fa-search"></i>
+              <i className="fa fa-search" />
             </a>
           </div>
-          <div className="hs-card" style={style} onClick={this.handleCardClick}/>
-          {isFullDeskCard(desk_card) && <div className="hs-card__overlay is-overlay"/>}
-          </div>
+          <div className="hs-card" style={style} onClick={this.handleCardClick} />
+          {isFullDeskCard(deskCard) && <div className="hs-card__overlay is-overlay" />}
+        </div>
       </div>
-    )
+    );
   }
 }
 
@@ -56,8 +59,8 @@ SearchCard.propTypes = {
     builderUpdateDeskCard: PropTypes.func.isRequired,
     builderAddCardToDesk: PropTypes.func.isRequired,
     fetchCard: PropTypes.func.isRequired,
-    openCardsModal: PropTypes.func.isRequired
-  }).isRequired
-}
+    openCardsModal: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default SearchCard;

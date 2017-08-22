@@ -1,29 +1,25 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const Filter = (props) => {
-  return(
-    <div className="tabs">
-      <ul>
-        <li
-          onClick={()=>{props.callback(props.currentClass)}}
-          className={props.currentClass == props.selectedClass ? "is-active" : ""}>
-          <a>{props.currentClass}</a>
-        </li>
-        <li
-          onClick={()=>{props.callback("Neutral")}}
-          className={"Neutral" == props.selectedClass ? "is-active" : ""}>
-          <a>Neutral</a>
-    </li>
-      </ul>
-    </div>
-  )
-}
+const Filter = props => (
+  <div className="tabs">
+    <ul>
+      <li className={props.currentClass === props.selectedClass ? 'is-active' : ''}>
+        <a role="presentation" onClick={() => { props.callback(props.currentClass); }} >
+          {props.currentClass}
+        </a>
+      </li>
+      <li className={props.selectedClass === 'Neutral' ? 'is-active' : ''} >
+        <a role="presentation" onClick={() => { props.callback('Neutral'); }} >Neutral</a>
+      </li>
+    </ul>
+  </div>
+);
 
 Filter.propTypes = {
   callback: PropTypes.func.isRequired,
-  selectedClass: PropTypes.string,
-  currentClass: PropTypes.string
-}
+  selectedClass: PropTypes.string.isRequired,
+  currentClass: PropTypes.string.isRequired,
+};
 
 export default Filter;

@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import _ from "lodash";
+import React from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 class KeywordFilter extends React.Component {
   constructor(props) {
@@ -9,26 +9,29 @@ class KeywordFilter extends React.Component {
     this.fetchCards = _.debounce(props.fetchCards, 300);
     this.handleChange = this.handleChange.bind(this);
   }
+
+  componentDidMount() {
+    this.Input.focus();
+  }
+
+  setFilters(keyword) {
+    const pagination = _.merge(this.props.filters.pagination, { page: 1 });
+    const newFilters = Object.assign({}, this.props.filters, { keyword }, { pagination });
+    this.props.setFilters(newFilters);
+  }
+
   handleChange(e) {
     this.setFilters(e.target.value);
     this.fetchCards();
   }
-  setFilters(keyword) {
-    const pagination = _.merge(this.props.filters.pagination, {page: 1});
-    const newFilters = Object.assign({}, this.props.filters, {keyword}, {pagination: pagination});
-    this.props.setFilters(newFilters);
-  }
 
-  componentDidMount(){
-    this.Input.focus();
-  }
   render() {
-    const {keyword} = this.props.filters;
-    return(
+    const { keyword } = this.props.filters;
+    return (
       <div className="field">
         <p className="control has-icons-left">
           <span className="icon is-small is-left">
-            <i className="fa fa-search"></i>
+            <i className="fa fa-search" />
           </span>
           <input
             ref={(input) => { this.Input = input; }}
@@ -40,14 +43,14 @@ class KeywordFilter extends React.Component {
           />
         </p>
       </div>
-    )
+    );
   }
 }
 
 KeywordFilter.propTypes = {
   setFilters: PropTypes.func.isRequired,
   fetchCards: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
-}
+  filters: PropTypes.object.isRequired,
+};
 
 export default KeywordFilter;

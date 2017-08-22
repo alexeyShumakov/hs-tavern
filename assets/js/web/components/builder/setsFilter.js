@@ -1,18 +1,18 @@
-import React from "react";
-import _ from "lodash";
+import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 
 const SetsFilter = (props) => {
-  const {setFilters, fetchCards, filters} = props;
+  const { setFilters, fetchCards, filters } = props;
   const handleChange = (e) => {
-    const pagination = _.merge(filters.pagination, {page: 1});
-    const newFilters = Object.assign({}, filters, {pagination}, {set: e.target.value});
+    const pagination = _.merge(filters.pagination, { page: 1 });
+    const newFilters = Object.assign({}, filters, { pagination }, { set: e.target.value });
     setFilters(newFilters);
     fetchCards(true);
   };
 
-  return(
+  return (
     <div className="field">
       <p className="control">
         <span className="select is-fullwidth">
@@ -34,13 +34,13 @@ const SetsFilter = (props) => {
         </span>
       </p>
     </div>
-  )
-}
+  );
+};
 
 SetsFilter.propTypes = {
   setFilters: PropTypes.func.isRequired,
   fetchCards: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
-}
+  filters: PropTypes.object.isRequired,
+};
 
 export default SetsFilter;

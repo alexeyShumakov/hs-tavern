@@ -1,32 +1,34 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 
 class DeskCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {isShow: false}
+    this.state = { isShow: false };
     this.removeCard = this.removeCard.bind(this);
   }
 
   removeCard() {
-    const {card } = this.props;
+    const { card } = this.props;
     const { remove, update } = this.props;
-    const newCard = Object.assign({}, card, {count: card.count - 1})
-    newCard.count > 0 ? update(newCard) : remove(newCard);
+    const newCard = Object.assign({}, card, { count: card.count - 1 });
+    return newCard.count > 0 ? update(newCard) : remove(newCard);
   }
 
   render() {
-    const {card} = this.props;
-    return(
+    const { card } = this.props;
+    return (
       <div
-        onMouseEnter={()=>{this.setState({isShow:true})}}
-        onMouseLeave={()=>{this.setState({isShow:false})}}
+        role="presentation"
+        onMouseEnter={() => { this.setState({ isShow: true }); }}
+        onMouseLeave={() => { this.setState({ isShow: false }); }}
         onClick={this.removeCard}
-        className="media builder__desk-card">
+        className="media builder__desk-card"
+      >
 
         {this.state.isShow &&
           <div className="box builder__desk-card-img">
-            <img src={card.img}/>
+            <img src={card.img} alt="" />
           </div>
         }
 
@@ -37,15 +39,15 @@ class DeskCard extends React.Component {
         <div className="media-content">{card.title}</div>
 
         <div className="media-right">
-          {card.rarity == "Legendary" ?
-              <span className="icon is-small">
-                <i className="fa fa-star"></i>
-              </span>
+          {card.rarity === 'Legendary' ?
+            <span className="icon is-small">
+              <i className="fa fa-star" />
+            </span>
             : card.count
           }
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -57,8 +59,8 @@ DeskCard.propTypes = {
     count: PropTypes.number.isRequired,
     img: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    rarity: PropTypes.string.isRequired
-  }).isRequired
-}
+    rarity: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default DeskCard;
