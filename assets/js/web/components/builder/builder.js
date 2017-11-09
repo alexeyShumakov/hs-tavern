@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import Filters from './filters';
@@ -8,10 +9,11 @@ import Curve from './costCurve';
 import Errors from './errorsNotification';
 import DescriptionEditor from './descriptionEditor';
 
-export default class Builder extends React.Component {
+class Builder extends React.Component {
   render() {
     const { mainAction, user, builder, actions, route } = this.props;
-    const { builderSetDesk, builderValidateDesk, builderFetchCards, builderSetFilters } = actions;
+    const { builderSetDesk, builderValidateDesk, builderRemoveCard, builderUpdateDeskCard,
+      builderFetchCards, builderSetFilters, setModal } = actions;
     const { desk, errors, isValid, filters, cards } = builder;
     return (
       <div className="columns">
@@ -75,7 +77,7 @@ export default class Builder extends React.Component {
                 className="button is-primary is-fullwidth"
                 onClick={() => {
                   if (!user.is_authenticated) {
-                    return actions.setModal(true);
+                    return setModal(true);
                   }
                   builderValidateDesk();
                   return mainAction().then((response) => {
@@ -92,12 +94,7 @@ export default class Builder extends React.Component {
             <h3 className="title is-4">{desk.player_class}</h3>
             <h5 className="subtitle">{_.sumBy(desk.cards, 'count')}/30</h5>
             { desk.cards.map(card => (
-              <DeskCard
-                key={card.card_id}
-                card={card}
-                remove={actions.builderRemoveCard}
-                update={actions.builderUpdateDeskCard}
-              />
+              <DeskCard key={card.card_id} card={card} remove={builderRemoveCard} update={builderUpdateDeskCard} />
             ))
             }
           </div>
@@ -106,3 +103,34 @@ export default class Builder extends React.Component {
     );
   }
 }
+Builder.propTypes = {
+  mainAction: PropTypes.func.isRequired,
+  builder: PropTypes.shape({
+    desk: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      cards: PropTypes.array.isRequired,
+      player_class: PropTypes.string.isRequired,
+      standard: PropTypes.bool.isRequired
+    }),
+    errors: PropTypes.object.isRequired,
+    isValid: PropTypes.bool.isRequired,
+    filters: PropTypes.object.isRequired,
+    cards: PropTypes.array.isRequired
+  }),
+
+  user: PropTypes.shape({
+    is_authenticated: PropTypes.bool.isRequired
+  }),
+  actions: PropTypes.shape({
+    builderRemoveCard: PropTypes.func.isRequired,
+    builderUpdateDeskCard: PropTypes.func.isRequired,
+    builderSetDesk: PropTypes.func.isRequired,
+    builderValidateDesk: PropTypes.func.isRequired,
+    builderFetchCards: PropTypes.func.isRequired,
+    builderSetFilters: PropTypes.func.isRequired,
+    setModal: PropTypes.func.isRequired
+  }),
+
+};
+
+export default Builder;

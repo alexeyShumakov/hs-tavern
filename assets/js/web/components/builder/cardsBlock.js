@@ -47,7 +47,7 @@ class CardsBlock extends React.Component {
 
         <div className="columns is-multiline">
           { _.sortBy(cards, ['cost', 'title']).map(card => (
-            <SearchCard key={card.id} desk={desk} card={card} actions={actions} />
+            <SearchCard key={card.id} {...{desk, card, actions}} />
           ))
           }
         </div>
@@ -61,7 +61,7 @@ CardsBlock.porpTypes = {
   setFilters: PropTypes.func.isRequired,
   filters: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  cards: PropTypes.array.isRequire,
+  cards: PropTypes.array.isRequired,
   desk: PropTypes.object.isRequired,
 };
 

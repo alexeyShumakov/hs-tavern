@@ -9,7 +9,9 @@ import DescriptionEditor from '../../../../js/web/components/builder/description
 
 function setup() {
   const props = {
-    ueser: {},
+    ueser: {
+      is_authenticated: true
+    },
     builder: {
       cards: [
         { id: 1, title: 'foo' },
@@ -17,6 +19,8 @@ function setup() {
       desk: {
         description: 'foo',
         player_class: 'Druid',
+        standard: true,
+        title: '',
         cards: [
           { cost: 1, card_id: 1, count: 1, img: 'http://img.address', title: 'foo title', rarity: 'Common' },
           { cost: 1, card_id: 2, count: 2, img: 'http://img.address', title: 'foo title', rarity: 'Common' },
@@ -30,6 +34,7 @@ function setup() {
     },
     mainAction: jest.fn(),
     actions: {
+      setModal: jest.fn(),
       builderSetDesk: jest.fn(),
       builderSaveDesk: jest.fn(),
       builderValidateDesk: jest.fn(),

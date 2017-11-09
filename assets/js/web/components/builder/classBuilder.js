@@ -4,13 +4,16 @@ import Builder from './builder';
 
 export default class ClassBuilder extends React.Component {
   componentWillMount() {
-    const player_class = _.capitalize(this.props.route.match.params.heroClass);
-    const desk = _.merge({}, this.props.store.builder.desk, { player_class });
-    this.props.actions.builderSetDesk(desk);
-    if (_.isEmpty(this.props.store.builder.cards)) {
-      const newFilters = Object.assign({}, this.props.store.builder.filters, { player_class });
-      this.props.actions.builderSetFilters(newFilters);
-      this.props.actions.builderFetchCards();
+    const { actions, store, route } = this.props;
+    const { desk, filters, cards } = store.builder;
+    const { builderSetDesk, builderSetFilters, builderFetchCards } = actions;
+    const player_class = _.capitalize(route.match.params.heroClass);
+    const newDesk = _.merge({}, desk, { player_class });
+    builderSetDesk(newDesk);
+    if (_.isEmpty(cards)) {
+      const newFilters = Object.assign({}, filters, { player_class });
+      builderSetFilters(newFilters);
+      builderFetchCards();
     }
   }
 
